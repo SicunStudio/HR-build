@@ -84,7 +84,9 @@ def addPerson():
 		database.execute("insert into test (id,name,gender,qq,tel,wchat,emg,school,class,apart,depart,grp,occup,dateofjoin) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (request.form['id'], request.form['name'], request.form['gender'], request.form['qq'], request.form['tel'], request.form['wchat'], request.form['emg'], request.form['school'], request.form['class'], request.form['apart'], request.form['depart'], request.form['group'], request.form['occup'], request.form['dateofjoin']))
 	except:
 		# issue: execute() fail when NULL exist in request.form
-		print("addPerson() failed!")
+		# solution: <input> .required
+		flash('Ooops!')  # dunno if this will show
+		print('addPerson() failed!')
 	database.commit()
 	database.close()
 
@@ -93,6 +95,7 @@ def addIssue():
 	try:
 		database.execute("insert into issue (id,title,body) values ('%s','%s','%s')" % (request.form['id'],request.form['title'],request.form['body']))
 	except:
+		flash('Ooops!')
 		print((request.form['id'], request.form['title'], request.form['body']))
 	database.commit()
 	database.close()
@@ -125,16 +128,21 @@ def login():
 			flash("用户名或密码错误！")
 			return render_template('login.html')
 
-@app.route('/personal/')
+@app.route('/personal/', methods=['GET', 'POST'])
 def personal():
 	try:
 		session['id']
-		database = getAdmin('id','id',session['id'])
-		return render_template('personal_base.html', database = database)
 	except KeyError:
-		print("TypeError")
 		flash("请登录")
 		return redirect(url_for('login'))
+	else:
+		if request.method == 'GET':
+			database = getAdmin('id','id',session['id'])
+			return render_template('personal_base.html', database = database)
+		elif request.method == 'POST':
+			filename = request.form['title'] + ' - ' + request.form['time'] + '.xlsx'
+
+			#return redirect()
 
 @app.route('/logout/')
 def logout():
@@ -144,63 +152,74 @@ def logout():
 
 @app.route('/update/<id>', methods=['GET', 'POST'])
 def update(id):
-	# update for personale info
+	'''  update for personale info  '''
 	try:
 		session['id']
+
+	except KeyError:
+		flash("请登录！")
+		return redirect(url_for('login'))
+	else:
 		if request.method == 'GET':
 			print(id)
 			return render_template('info_update.html', database=getConditonal('*','id',id),id=id)
 		elif request.method == 'POST':
 			updatePerson(id)
 			return redirect(url_for('personal'))
-	except KeyError:
-		flash("请登录！")
-		return redirect(url_for('login'))
 
 @app.route('/search_person/', methods=['GET', 'POST'])
 def search_person():
 	try:
 		session['id']
+	except KeyError:
+		flash("请登录!")
+		return redirect(url_for('login'))
+	else:
 		if request.method == 'POST':
 			return render_template('search_person.html', result=grepPerson(request.form['direction'],request.form['content']))
 		elif request.method == 'GET':
 			return render_template('search_person.html', result=grepPerson('id','苟'))
-	except KeyError:
-		flash("请登录!")
-		return redirect(url_for('login'))
 
 @app.route('/entry_person/', methods=['GET', 'POST'])
 def entryPerson():
 	try:
 		session['id']
+	except KeyError:
+		flash("请登录！")
+		return redirect(url_for('login'))
+	else:
 		if request.method == 'POST':
 			addPerson()
 			print("addPerson() called")
 			return redirect(url_for('personal'))
 		elif request.method == 'GET':
 			return render_template('info_entry.html')
-	except KeyError:
-		flash("请登录！")
-		return redirect(url_for('login'))
 
 @app.route('/entry_issue/', methods=['GET', 'POST'])
 def entryIssue():
 	try:
 		session['id']
+	except KeyError:
+		flash("请登录！")
+		return redirect(url_for('login'))
+	else:
 		if request.method == 'POST':
 			addIssue()
 			print("addIssue() called")
 			return redirect(url_for('personal'))
 		elif request.method == 'GET':
 			return render_template('issue_entry.html')
-	except KeyError:
-		flash("请登录！")
-		return redirect(url_for('login'))
 
 @app.route('/search_issue/', methods=['GET', 'POST'])
 def search_issue():
 	try:
 		session['id']
+	except IndexError:
+		return render_template('search_issue.html', name="姓名", result=[("编号","标题","内容"),])
+	except KeyError:
+		flash("请登录!")
+		return redirect(url_for('login'))
+	else:
 		if request.method == 'POST':
 			# fxxk the same-name issue!!!
 			if request.form['direction'] == 'name':
@@ -214,27 +233,22 @@ def search_issue():
 			return render_template('search_issue.html', name=getConditonal('name','id',id_listed[0][0])[0][0], result=result)
 		elif request.method == 'GET':
 			return render_template('search_issue.html', name="姓名", result=[("#!","编号","标题","内容"),])
-	except IndexError:
-			return render_template('search_issue.html', name="姓名", result=[("编号","标题","内容"),])
-	except KeyError:
-		flash("请登录!")
-		return redirect(url_for('login'))
 
 @app.route('/update_issue/<idx>', methods=['GET', 'POST'])
 def alter(idx):
 	# alter for issue
 	try:
 		session['id']
+	except KeyError:
+		flash("请登录！")
+		return redirect(url_for('login'))
+	else:
 		if request.method == 'GET':
 			print(id)
 			return render_template('issue_update.html', database=grepIssue('idx',idx))
 		elif request.method == 'POST':
 			updateIssue(idx)
 			return redirect(url_for('personal'))
-	except KeyError:
-		flash("请登录！")
-		return redirect(url_for('login'))
-
 
 ######## main ########
 
