@@ -143,7 +143,7 @@ def personal():
 			filename = request.form['title'] + ' - ' + request.form['date'] + '.xlsx'
 			session['filename'] = filename
 			xlsxSwissKnife.newFile(filename, request.form['depart'], date=request.form['date'])
-			#return redirect(url_for('score'))
+			return redirect(url_for('score'))
 
 @app.route('/logout/')
 def logout():
@@ -237,7 +237,7 @@ def search_issue():
 
 @app.route('/update_issue/<idx>', methods=['GET', 'POST'])
 def alter(idx):
-	# alter for issue
+	''' alter for issue '''
 	try:
 		session['id']
 	except KeyError:
@@ -250,6 +250,21 @@ def alter(idx):
 		elif request.method == 'POST':
 			updateIssue(idx)
 			return redirect(url_for('personal'))
+
+@app.route('/score_page/')
+def score():
+	try:
+		session['id']
+	except KeyError:
+		flash("请登录！")
+		return render_template(url_for('login'))
+	else:
+		if 'filename' not in session:
+			return redirect(url_for('personal'))
+		else:
+			data = xlsxSwissKnife.read('./score-sheets' + request.form['filename'])
+			return render_template('score-entry.html', data=data)
+
 
 ######## main ########
 
