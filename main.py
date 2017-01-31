@@ -5,7 +5,7 @@
 
 from flask import Flask, render_template, url_for
 from flask import redirect, request, session, make_response, flash
-import sqlite3, os
+import sqlite3, os, xlsxSwissKnife
 
 app = Flask(__name__)
 app.secret_key = 'DogLeeNation(2B||!2B)-->|'
@@ -140,9 +140,10 @@ def personal():
 			database = getAdmin('id','id',session['id'])
 			return render_template('personal_base.html', database = database)
 		elif request.method == 'POST':
-			filename = request.form['title'] + ' - ' + request.form['time'] + '.xlsx'
-
-			#return redirect()
+			filename = request.form['title'] + ' - ' + request.form['date'] + '.xlsx'
+			session['filename'] = filename
+			xlsxSwissKnife.newFile(filename, request.form['depart'], date=request.form['date'])
+			#return redirect(url_for('score'))
 
 @app.route('/logout/')
 def logout():
