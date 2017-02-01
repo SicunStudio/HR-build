@@ -1,72 +1,83 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-'   self-made utils for operating .xlsx files based on openpyxl (*nix only) ---- by smdsbz   '
+'   self-made utils for operating .xlsx files based on openpyxl ---- by smdsbz   '
 
 from openpyxl import Workbook, load_workbook
 from datetime import datetime
-#import os, shutil
+import os
 
+######## general config ########
+
+FOLDER = os.path.join(os.curdir, 'score-sheets')
 
 ######## utils ########
 
 def _read_test():
 	''' return table header line '''
-	wb = load_workbook('./score-sheets/template.xlsx')
+	wb = load_workbook(os.path.join(FOLDER, 'template.xlsx'))
 	data = wb.get_sheet_by_name(wb.get_sheet_names()[0])
 	return tuple([ content.value for content in data['A2':'M2'][0] ])
 
-def _move_cursor(data, name='something you have to mess up with'):
+def _move_cursor(ws, name='something you have to mess up with'):
 	'''
-	  return the index asked
-	  IF no match THEN yield index-number for the next empty row
+	return the index asked
+	IF no match THEN return index-number of the adjacent empty row
 	'''
-	nameCells = data['A'][2:] # 1: test-use; running: 2
+	nameCells = ws['A'][2:] # 1: test-use; running: 2
 	names = tuple(filter(lambda s: s and s.strip(), [ content.value for content in nameCells ]))  # thx 2 MichealLiao
-	#print(names)
 	if name in names:
 		return names.index(name) + 3 # 2: test-use
 	else:
 		return len(names) + 3
 
 def newFile(title="测试测试", depart="其他", *, date=str(datetime.now())):
-	filename = './score-sheets/' + title + ' - ' + date + '.xlsx'
-	wb = load_workbook('./score-sheets/template.xlsx')
-	ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
-	ws.title = title
-	ws['B1'], ws['F1'], ws['J1'] = title, depart, date
-	wb.save(filename)
+	''' derive a new .xlsx from ./score-sheets/template.xlsx '''
+	filename = title + ' - ' + date + '.xlsx'
+	dst = os.path.join(FOLDER, filename)
+	try:
+		wb = load_workbook(os.path.join(FOLDER, 'template.xlsx'))
+	except IOError:
+		return 0
+	else:
+		ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+		ws.title = title
+		ws['B1'].value, ws['F1'].value, ws['J1'].value = title, depart, date
+		wb.save(dst)
+		return 1
 
-def write(src, data):
-	wb = load_workbook(src)
-	ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
-	cur = str(_move_cursor(ws, data[0]))
-	dst = ws['A'+cur:'K'+cur][0]
-	# here goes the ugly lines again....
-	organized = {0:data[0], 1:data[1], 2:data[2], 3:data[3], 4:data[4], 5:data[5], 6:data[6], 7:data[7], 8:data[8], 9:data[9], 10:data[10]}
-	for k, v in organized.items():
-		dst[k].value = v
-	wb.save(src)
+def write(filname, data_in):
+	''' write/update one persona at a time '''
+	dst = os.path.join(FOLDER, filename)
+	try:
+		wb = load_workbook(dst)
+	except IOError:
+		return 0
+	else:
+		ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+		cur = str(_move_cursor(ws, data_in[0]))
+		for i, o in zip(ws['A'+cur:'K'+cur][0], data_in):
+			o.value = i
+		wb.save(dst)
+		return 1
 
-def read(src):
-	wb = load_workbook(src)
-	ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
-	end = _move_cursor(ws)
-	if end == 3:
+def read(filename):
+	''' return * in filename '''
+	dst = os.path.join(FOLDER, filename)
+	try:
+		wb = load_workbook(dst)
+	except IOError:
+		print('IOError during read({})'.format(dst))
 		return []
-	rtr = []
-	for each in range(3, end):
-		cur = str(each)
-		tmp = [ws['A'+cur].value, ws['B'+cur].value, ws['C'+cur].value, ws['D'+cur].value, ws['E'+cur].value, ws['F'+cur].value, ws['G'+cur].value, ws['H'+cur].value, ws['I'+cur].value, ws['J'+cur].value, ws['K'+cur].value]
-		rtr.append(tmp)
-	return rtr
-
-######## test-use ########
-
-if __name__ == '__main__':
-	# expecting result in console ==> "姓名\项目"
-	print(_read_test())
-	# expecting result in console ==> 2
-	print("姓名\项目 is at", _move_cursor(name="姓名\\项目"))
-	# expecting result in console ==> 3
-	print("if no match:", _move_cursor())
+	else:
+		ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+		end = _move_cursor(ws)
+		if end == 3:  # empty sheet
+			return []
+		rtr = []
+		for row in tuple(map(str, range(3, end))):  # ('3', '4', '5', ..., '{end-1}')
+			tmp = []  # single person container
+			for col in 'ABCDEFGHIJK':
+				tmp.append(ws[col+row].value)
+			rtr.append(tmp)
+		return rtr  # everyone contained

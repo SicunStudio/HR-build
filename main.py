@@ -41,15 +41,13 @@ def verify(id, passwd):
 	with sqlite3.connect(DATABASE) as database:
 		cursor = database.execute("select passwd from admin where id = '%s'" % id)
 		correct = cursor.fetchone()
-		if correct==None:
-			# wrong id
+		if correct==None:  # wrong id
 			flash("用户名或密码错误！")
 			return 0
-		else:
+		else:  # correct
 			if passwd==correct[0]:
 				return 1
-			else:
-				# wrong passwd
+			else:  # wrong passwd
 				flash("用户名或密码错误！")
 				return 0
 
@@ -81,9 +79,18 @@ def grepPerson(column, require):
 
 def grepIssue(column, require):
 	with sqlite3.connect(DATABASE) as database:
-		cursor = database.execute("select * from issue where %s = '%s'" % (column, require))
-		data = cursor.fetchall()
-		return data
+		if column == 'idx':
+			cursor = database.execute("select * from issue where idx = %s" % require)
+			return cursor.fetchall()
+		else:
+			if column == 'name':
+				cursor = database.execute("select id from test where name = '%s'" % require)
+				id = cursor.fetchone()[0]
+			elif column == 'id':
+				id = require
+			cursor = database.execute("select * from issue where id = '%s'" % id)
+			data = cursor.fetchall()
+			return data
 
 def addPerson():
 	with sqlite3.connect(DATABASE) as database:
@@ -177,18 +184,9 @@ def entryIssue():
 @login_verify
 def search_issue():
 	if request.method == 'POST':
-		# fxxk the same-name issue!!!
-		if request.form['direction'] == 'name':
-			id_listed = getConditonal('id','name',request.form['content'])
-		else:
-			id_listed = request.form['content']
-		print(id_listed)
-		result = grepIssue('id',id_listed[0][0])
-		if result == []:
-			result = [(id_listed[0][0],"无搜索结果",""),]
-		return render_template('search_issue.html', name=getConditonal('name','id',id_listed[0][0])[0][0], result=result)
+		return render_template('search_issue.html', result=grepIssue(request.form['direction'], request.form['content']))
 	elif request.method == 'GET':
-		return render_template('search_issue.html', name="姓名", result=[("#!","编号","标题","内容"),])
+		return render_template('search_issue.html', result=grepIssue('id', '苟'))
 
 @app.route('/update_issue/<idx>', methods=['GET', 'POST'])
 @login_verify
