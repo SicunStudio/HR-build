@@ -15,6 +15,7 @@ app.secret_key = 'DogLeeNation(2B||!2B)-->|'
 
 ######## global configuration ########
 
+FOLDER = os.path.join(os.curdir, 'score-sheets')  # xlsx location
 DATABASE = os.path.join(app.root_path, 'data.db')  # db loaction
 
 ######## functions ########
@@ -129,8 +130,11 @@ def personal():
 	elif request.method == 'POST':
 		filename = request.form['title'] + ' - ' + request.form['date'] + '.xlsx'
 		session['filename'] = filename
-		xlsxSwissKnife.newFile(filename, request.form['depart'], date=request.form['date'])
-		return redirect(url_for('score'))
+		if xlsxSwissKnife.newFile(request.form['title'], request.form['depart'], date=request.form['date']):
+			return redirect(url_for('score'))
+		else:
+			flash("创建表格失败！")
+			return redirect(url_for('personal'))
 
 @app.route('/logout/')
 def logout():
@@ -205,7 +209,8 @@ def score():
 	if 'filename' not in session:
 		return redirect(url_for('personal'))
 	else:
-		data = xlsxSwissKnife.read('./score-sheets/' + request.form['filename'])
+		data = xlsxSwissKnife.read(session['filename'])
+		print(data)
 		return render_template('score-entry.html', data=data)
 
 

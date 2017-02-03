@@ -5,11 +5,13 @@
 
 from openpyxl import Workbook, load_workbook
 from datetime import datetime
-import os
+import os, sqlite3
 
 ######## general config ########
 
-FOLDER = os.path.join(os.curdir, 'score-sheets')
+FOLDER = os.path.join(os.curdir, 'score-sheets')  # xlsx location
+DATABASE = os.path.join(os.curdir, 'data.db')  # db loaction
+# that is to say: main.py, xlsxSwissKnife.py and data.da must be under the same dir
 
 ######## utils ########
 
@@ -31,7 +33,7 @@ def _move_cursor(ws, name='something you have to mess up with'):
 	else:
 		return len(names) + 3
 
-def newFile(title="测试测试", depart="其他", *, date=str(datetime.now())):
+def newFile(title="测试测试", depart="其它", *, date=str(datetime.now())):
 	''' derive a new .xlsx from ./score-sheets/template.xlsx '''
 	filename = title + ' - ' + date + '.xlsx'
 	dst = os.path.join(FOLDER, filename)
@@ -43,6 +45,11 @@ def newFile(title="测试测试", depart="其他", *, date=str(datetime.now())):
 		ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
 		ws.title = title
 		ws['B1'].value, ws['F1'].value, ws['J1'].value = title, depart, date
+		with sqlite3.connect(DATABASE) as database:
+			cursor = database.execute("select name from test where depart = '%s'" % depart)
+			names = cursor.fetchall()
+		for i in range(len(names)):
+			ws['A'+str(i+3)].value = names[i][0]
 		wb.save(dst)
 		return 1
 
@@ -56,7 +63,7 @@ def write(filname, data_in):
 	else:
 		ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
 		cur = str(_move_cursor(ws, data_in[0]))
-		for i, o in zip(ws['A'+cur:'K'+cur][0], data_in):
+		for i, o in zip(ws['B'+cur:'K'+cur][0], data_in[1:]):
 			o.value = i
 		wb.save(dst)
 		return 1
@@ -70,6 +77,7 @@ def read(filename):
 		print('IOError during read({})'.format(dst))
 		return []
 	else:
+		print('load sucessully!')
 		ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
 		end = _move_cursor(ws)
 		if end == 3:  # empty sheet
