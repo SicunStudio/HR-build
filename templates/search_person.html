@@ -35,10 +35,10 @@
 		<div class="container">
 			<div class="container">
 				<br>
-				<form method="post">
+				<!--form-->
 					<div class="row valign-wrapper">
 						<div class="input-field col s3 left">
-							<select name="direction">
+							<select id="direction" name="direction">
 								<option value="name">姓名</option>
 								<option value="apart">寝室</option>
 								<option value="depart">部门</option>
@@ -47,53 +47,21 @@
 							</select>
 						</div>
 						<div class="input-field col s8">
-							<input name="content" id="search" type="text" class="black-text" required>
-							<!--label for="search"><i class="material-icons black-text">search</i>搜索</label-->
+							<input name="content" id="content" type="text" class="black-text" required>
 						</div>
-						<button class="btn-flat waves-effect waves-dark col s1 right valign" type="submit"><i class="material-icons">search</i></button>
+						<!-- original -->
+						<!--button class="btn-flat waves-effect waves-dark col s1 right valign" type="submit"><i class="material-icons">search</i></button-->
+						<!-- AJAX ver -->
+						<button class="btn-flat waves-effect waves-dark col s1 right valign" onclick="search()"><i class="material-icons">search</i></button>
 					</div>
-				</form>
+				<!--/form-->
 			</div>
 
-			{% for each in result %}
-			<div class="card">
-				<div class="card-content">
-					<div class="row">
-						<span class="card-title col s4 left"><a href="/update/{{ each[0] }}" class="light-green-text text-darken-4">{{ each[1] }}</a></span>
-						<span class="card-title col s7">{{ each[0] }}</span>
-					</div>
+			<div id="result-table">
 
-					<div class="row">
-						<table class="striped col s12">
-							<tr>
-								<th>性别</th><td>{{ each[2] }}</td>
-								<th>QQ</th><td>{{ each[3] }}</td>
-							</tr>
-							<tr>
-								<th>电话</th><td>{{ each[4] }}</td>
-								<th>微信</th><td>{{ each[5] }}</td>
-							</tr>
-							<tr>
-								<th>应急联系方式</th><td>{{ each[6] }}</td>
-								<th>院系</th><td>{{ each[7] }}</td>
-							</tr>
-							<tr>
-								<th>班级</th><td>{{ each[8] }}</td>
-								<th>寝室</th><td>{{ each[9] }}</td>
-							</tr>
-							<tr>
-								<th>部门</th><td>{{ each [10] }}</td>
-								<th>组别</th><td>{{ each[11] }}</td>
-							</tr>
-							<tr>
-								<th>职务</th><td>{{ each[12] }}</td>
-								<th>加入时间</th><td>{{ each[13] }}</td>
-							</tr>
-						</table>
-					</div>
-				</div>
+
 			</div>
-			{% endfor %}
+
 
 		</div>
 
@@ -102,6 +70,7 @@
 
 	</main>
 
+	<script src="../static/js/ugly_js_for_search_person.js"></script>
 	<script>
 		$(document).ready(function(){
 			$('.collapsible').collapsible();

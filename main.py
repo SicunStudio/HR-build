@@ -4,7 +4,7 @@
 '''   HR System build   '''
 
 from flask import Flask, render_template, url_for
-from flask import redirect, request, session, make_response, flash
+from flask import redirect, request, session, make_response, flash, jsonify
 from functools import wraps
 import sqlite3, os, xlsxSwissKnife
 
@@ -76,13 +76,17 @@ def grepPerson(column, require):
 	with sqlite3.connect(DATABASE) as database:
 		cursor = database.execute("select * from test where %s GLOB '*%s*'" % (column, require))
 		data = cursor.fetchall()
-		return data
+		result = dict()
+		for each in data:
+			result[each[0]] = each[1:]
+		return result
 
 def grepIssue(column, require):
 	with sqlite3.connect(DATABASE) as database:
+		raw_data = []
 		if column == 'idx':
 			cursor = database.execute("select * from issue where idx = %s" % require)
-			return cursor.fetchall()
+			raw_data = cursor.fetchall()
 		else:
 			if column == 'name':
 				cursor = database.execute("select id from test where name = '%s'" % require)
@@ -91,7 +95,11 @@ def grepIssue(column, require):
 				id = require
 			cursor = database.execute("select * from issue where id = '%s'" % id)
 			data = cursor.fetchall()
-			return data
+			raw_data = data
+		result = dict()
+		for each in raw_data:
+			result[each[0]] = each[1:]
+		return result
 
 def addPerson():
 	with sqlite3.connect(DATABASE) as database:
@@ -156,13 +164,19 @@ def update(id):
 		updatePerson(id)
 		return redirect(url_for('personal'))
 
-@app.route('/search_person/', methods=['GET', 'POST'])
+@app.route('/search_person/')
 @login_verify
 def search_person():
-	if request.method == 'POST':
-		return render_template('search_person.html', result=grepPerson(request.form['direction'],request.form['content']))
-	elif request.method == 'GET':
-		return render_template('search_person.html', result=grepPerson('id','苟'))
+	''' search_person entry '''
+	return render_template('search_person.html', result=grepPerson('id','苟'))
+
+@app.route('/searching_person/', methods=['GET'])
+@login_verify
+def searching_person():
+	''' search_person process '''
+	direction = request.args.get('d')
+	content = request.args.get('c')
+	return jsonify(result=grepPerson(direction, content))
 
 @app.route('/entry_person/', methods=['GET', 'POST'])
 @login_verify
@@ -184,13 +198,17 @@ def entryIssue():
 	elif request.method == 'GET':
 		return render_template('issue_entry.html')
 
-@app.route('/search_issue/', methods=['GET', 'POST'])
+@app.route('/search_issue/')
 @login_verify
 def search_issue():
-	if request.method == 'POST':
-		return render_template('search_issue.html', result=grepIssue(request.form['direction'], request.form['content']))
-	elif request.method == 'GET':
-		return render_template('search_issue.html', result=grepIssue('id', '苟'))
+	return render_template('search_issue.html', result=grepIssue('id', '苟'))
+
+@app.route('/searching_issue/', methods=['GET'])
+@login_verify
+def searching_issue():
+	direction = request.args.get('d')
+	content = request.args.get('c')
+	return jsonify(result=grepIssue(direction, content))
 
 @app.route('/update_issue/<idx>', methods=['GET', 'POST'])
 @login_verify

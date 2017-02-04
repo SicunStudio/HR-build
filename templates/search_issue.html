@@ -35,39 +35,26 @@
 		<div class="container">
 			<div class="container">
 				<br>
-				<form method="post">
 					<div class="row valign-wrapper">
 						<div class="input-field col s3 left">
-							<select name="direction">
+							<select id="direction" name="direction">
 								<option value="name" selected>姓名</option>
 								<option value="id">编号</option>
 							</select>
 						</div>
 						<div class="input-field col s8">
-							<input name="content" id="search" type="text" class="black-text" required>
+							<input name="content" id="content" type="text" class="black-text" required>
 							<!--label for="search"><i class="material-icons black-text">search</i>搜索</label-->
 						</div>
-						<button class="btn-flat waves-effect waves-dark col s1 right valign" type="submit"><i class="material-icons">search</i></button>
+						<!-- original ver -->
+						<!--button class="btn-flat waves-effect waves-dark col s1 right valign" type="submit"><i class="material-icons">search</i></button-->
+						<!-- AJAX ver -->
+						<button class="btn-flat waves-effect waves-dark col s1 right valign" onclick="search()"><i class="material-icons">search</i></button>
 					</div>
-				</form>
 			</div>
 
-			{% for each in result %}
-			<div class="card">
-				<div class="card-content">
-					<div class="row">
-						<span class="card-title col s4 left">Issue&nbsp;No.{{ each[0] }}</span>
-						<span class="card-title col s7">{{ each[1] }}</span>
-					</div>
-					<div class="row">
-						<div class="divider"></div><br>
-						<div class="col s4"><a href="/update_issue/{{ each[0] }}" class="light-green-text text-darken-4" title="单击以修改"><b>{{ each[2] }}</b></a></div>
-						<pre class="col s8" style="white-space:pre-wrap;word-wrap:break-word">{{ each[3] }}</pre>
-						<br>
-					</div>
-				</div>
+			<div id="result-table">
 			</div>
-			{% endfor %}
 
 		</div>
 
@@ -76,6 +63,7 @@
 
 	</main>
 
+	<script src="../static/js/ugly_js_for_search_issue.js"></script>
 	<script>
 		$(document).ready(function(){
 			$('.collapsible').collapsible();
