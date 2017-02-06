@@ -1,0 +1,34 @@
+<!-- TODO: Model-ize all the templates! -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="{{ url_for('static', filename='css/google_material_icons.css') }}" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/materialize.css') }}"  media="screen,projection"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>HR系统_demo</title>
+		<meta name="theme-color" content="#33691E">
+
+        <!-- //Should localize necessary Javascript libraries -->
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-2.1.1.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/materialize.min.js') }}"></script>
+	</head>
+
+	<body>
+
+
+		<header>
+			<div class="navbar-fixed">
+				<nav>
+				  <div class="nav-wrapper light-green darken-4">
+					<a href="#" class="brand-logo"><img src="" style="width:1em; height:1em;" alt="something to fill in"/>HR系统_demo</a>
+				  </div>
+				</nav>
+			</div>
+        </header>
+
+        <main>
+            {% block main_content %}
+            {% endblock %}
+        </main>
+    </body>
+</html>

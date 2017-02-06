@@ -7,6 +7,7 @@ from flask import Flask, render_template, url_for
 from flask import redirect, request, session, make_response, flash, jsonify
 from functools import wraps
 import sqlite3, os, xlsxSwissKnife
+from debug_utils import *
 
 ######## initializaton ########
 
@@ -148,7 +149,7 @@ def personal():
 def logout():
 	if 'id' in session:
 		session.pop('id', None)
-		# the following lines are wierd
+		# the following lines are weird
 		session.pop('passwd', None)
 		session.pop('filename', None)
 	return redirect(url_for('index'))
@@ -158,7 +159,7 @@ def logout():
 def update(id):
 	'''  update for personale info  '''
 	if request.method == 'GET':
-		print(id)
+		printLog(id)
 		return render_template('info_update.html', database=getConditonal('*','id',id),id=id)
 	elif request.method == 'POST':
 		updatePerson(id)
@@ -183,7 +184,7 @@ def searching_person():
 def entryPerson():
 	if request.method == 'POST':
 		addPerson()
-		print("addPerson() called")
+		printLog("addPerson() called")
 		return redirect(url_for('personal'))
 	elif request.method == 'GET':
 		return render_template('info_entry.html')
@@ -193,7 +194,7 @@ def entryPerson():
 def entryIssue():
 	if request.method == 'POST':
 		addIssue()
-		print("addIssue() called")
+		printLog("addIssue() called")
 		return redirect(url_for('personal'))
 	elif request.method == 'GET':
 		return render_template('issue_entry.html')
@@ -215,7 +216,7 @@ def searching_issue():
 def alter(idx):
 	''' alter for issue '''
 	if request.method == 'GET':
-		print(id)
+		printLog(id)
 		return render_template('issue_update.html', database=grepIssue('idx',idx))
 	elif request.method == 'POST':
 		updateIssue(idx)
@@ -228,7 +229,7 @@ def score():
 		return redirect(url_for('personal'))
 	else:
 		data = xlsxSwissKnife.read(session['filename'])
-		print(data)
+		printLog(data)
 		return render_template('score-entry.html', data=data)
 
 
