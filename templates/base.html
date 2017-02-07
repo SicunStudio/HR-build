@@ -36,6 +36,13 @@
                                     <a class="dropdown-button" href="#!" data-activates="out" title="注销登录">登出</a>
                                 </li>
                             </ul>
+
+                            <!-- Username Indicator -->
+                            <ul class="right">
+                                <li>
+                                    <a class="dropdown-button">{{ session['id'] }}</a>
+                                </li>
+                            </ul>
                         {% endif %}
                     </div>
                 </nav>
