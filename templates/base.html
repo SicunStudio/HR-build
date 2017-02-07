@@ -20,7 +20,8 @@
             <div class="navbar-fixed">
                 <nav>
                     <div class="nav-wrapper light-green darken-4">
-                        <a href="#" class="brand-logo"><img src="" style="width:1em; height:1em;" alt="something to fill in"/>HR系统_demo</a>
+                        <!-- Header title link should redirect to the home page -->
+                        <a href="{{ url_for('personal') }}" class="brand-logo"><img src="" style="width:1em; height:1em;" alt="something to fill in"/>HR系统_demo</a>
                         {% if 'id' in session %}
                             <!-- Log-out Switcher
                                 The following part will only be seen after logging in
