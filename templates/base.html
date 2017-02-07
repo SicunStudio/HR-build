@@ -22,7 +22,7 @@
                 <nav>
                     <div class="nav-wrapper light-green darken-4">
                         <!-- Header title link should redirect to the home page -->
-                        <a href="{{ url_for('personal') }}" class="brand-logo"><img src="" style="width:1em; height:1em;" alt="something to fill in"/>HR系统_demo</a>
+                        <a href="{{ url_for('personal') }}" class="brand-logo" title="点击返回主页面"><img src="" style="width:1em; height:1em;" alt="something to fill in"/>HR系统_demo</a>
                         {% if 'id' in session %}
                             <!-- Log-out Switcher
                                 The following part will only be seen after logging in
@@ -33,7 +33,7 @@
                             </ul>
                             <ul class="right">
                                 <li>
-                                    <a class="dropdown-button" href="#!" data-activates="out">登出</a>
+                                    <a class="dropdown-button" href="#!" data-activates="out" title="注销登录">登出</a>
                                 </li>
                             </ul>
                         {% endif %}
