@@ -68,3 +68,22 @@ function search(){
 	})
 	//location.href="/searching_person?d=" + direction + "&c=" + content;
 }
+
+/**
+ * Support pressing Enter key to perform a search
+ * @constructor
+ */
+function EnterKeyToSearch() {
+	var key;
+	if(window.event)
+		key = event.keyCode;
+	else if(event.which)
+		key = event.which;
+	var keychar = String.fromCharCode(key);
+
+	if (keychar == "\r"){
+		console.log("SEARCHBOX: Enter key pressed");
+		search();
+	}
+
+}
