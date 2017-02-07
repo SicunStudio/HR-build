@@ -1,3 +1,9 @@
+/**
+ * Search AJAX Module ---- Just make your experience comfortable!
+ * 	* Search person
+ * @param issues
+ */
+
 function show_result(persons){
 	var bfr = "";
 	for (var id in persons) {
