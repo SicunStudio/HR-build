@@ -3,10 +3,10 @@
 
 '''   HR System build   '''
 
-from flask import Flask, render_template, url_for
-from flask import redirect, request, session, make_response, flash, jsonify
+from flask import Flask, request, session, render_template, url_for, redirect
+from flask import make_response, flash, jsonify, send_from_directory
 from functools import wraps
-import sqlite3, os, xlsxSwissKnife
+import sqlite3, os, re, xlsxSwissKnife
 from debug_utils import *
 
 ######## initializaton ########
@@ -222,6 +222,8 @@ def alter(idx):
 		updateIssue(idx)
 		return redirect(url_for('personal'))
 
+# openpyxl issue solved
+# just don't know when I could get the new release
 @app.route('/score_page/')
 @login_verify
 def score():
@@ -230,8 +232,19 @@ def score():
 	else:
 		data = xlsxSwissKnife.read(session['filename'])
 		printLog(data)
-		return render_template('score-entry.html', data=data)
+		return render_template('score_entry.html', data=data)
 
+@app.route('/score_dl/')
+@login_verify
+def score_download():
+	collection = os.listdir(FOLDER)
+	print(collection)
+	return render_template('score_download.html', collection=collection)
+
+@app.route('/download/<filename>')
+@login_verify
+def download(filename):
+	return send_from_directory(FOLDER, filename, as_attachment=True)
 
 ######## run ########
 
