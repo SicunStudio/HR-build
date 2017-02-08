@@ -63,7 +63,7 @@
             {% block main_content %}
             {% endblock %}
         </main>
-
+<!-- TODO: 显示完消息之后，若用后退或前进进行导航，则同样的Flash消息还会再次出现 -->
     <!-- Flash Notification Controller based on Materialize Toaster -->
     <!-- Use the theme from Toastr -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
@@ -80,6 +80,7 @@
                         message: "{{ msg[1] }}".replace("&lt;","<").replace("&gt;", ">"),
                         category: "{{ msg[0] }}"
                     });
+
                 {% endfor %}
 
                 /** Show toast messages **/
