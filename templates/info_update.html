@@ -2,14 +2,6 @@
 
 {% block main_content %}
 
-			<div class="navbar-fixed">
-				<nav>
-				  <div class="nav-wrapper light-green darken-4">
-					<a href="#" class="brand-logo"><img src="" style="width:1em; height:1em;" alt="something to fill in"/>HR系统_demo</a>
-				  </div>
-				</nav>
-			</div>
-
 			<div class="container">
 				<!-- don'no how 2 let <div> auto-fit -->
 				<br><br>
@@ -22,53 +14,53 @@
 							</div>
 						</div>
 						<div class="input-field col s12">
-							<input name="name" type="text" class="validate" value="{{ database[0][1] }}">
+							<input name="name" type="text" class="validate" value="{{ database[0][1] }}" required>
 							<label for="name">姓名</label>
 						</div>
 						<div class="col s12">
 							<p>性别&nbsp;&nbsp;
-							  <input name="gender" type="radio" id="m" class="with-gap" value="男"/>
+							  <input name="gender" type="radio" id="m" class="with-gap" value="男" required/>
 							  <label for="m">男</label>
 							  <input name="gender" type="radio" id="f" class="with-gap" value="女"/>
 							  <label for="f">女</label>
 							</p>
 						</div>
 						<div class="input-field col s12">
-							<input name="qq" type="tel" class="validate" value="{{ database[0][3] }}">
+							<input name="qq" type="tel" class="validate" value="{{ database[0][3] }}" required>
 							<label for="qq">QQ</label>
 						</div>
 						<div class="input-field col s12">
-							<input name="tel" type="tel" class="validate" value="{{ database[0][4] }}">
+							<input name="tel" type="tel" class="validate" value="{{ database[0][4] }}" required>
 							<label for="tel">电话</label>
 						</div>
 						<div class="input-field col s12">
-							<input name="wchat" type="text" class="validate" value="{{ database[0][5] }}">
+							<input name="wchat" type="text" class="validate" value="{{ database[0][5] }}" required>
 							<label for="wchat">微信</label>
 						</div>
 						<div class="input-field col s12">
-							<input name="emg" type="text" class="validate" value="{{ database[0][6] }}">
+							<input name="emg" type="text" class="validate" value="{{ database[0][6] }}" required>
 							<label for="emg">应急联系方式</label>
 						</div>
 						<div class="progress col s6 offset-s3">
 							<div class="determinate" style="width:100%"></div>
 						</div>
 						<div class="input-field col s12">
-							<input name="school" type="text" class="validate" value="{{ database[0][7] }}">
+							<input name="school" type="text" class="validate" value="{{ database[0][7] }}" required>
 							<label for="school">院系</label>
 						</div>
 						<div class="input-field col s12">
-							<input name="class" type="text" class="validate" value="{{ database[0][8] }}">
+							<input name="class" type="text" class="validate" value="{{ database[0][8] }}" required>
 							<label for="class">班级</label>
 						</div>
 						<div class="input-field col s12">
-							<input name="apart" type="text" class="validate" value="{{ database[0][9] }}">
+							<input name="apart" type="text" class="validate" value="{{ database[0][9] }}" required>
 							<label for="apart">寝室（格式：公寓-楼栋号-房间号）</label>
 						</div>
 						<div class="progress col s6 offset-s3">
 							<div class="determinate" style="width:100%"></div>
 						</div>
 						<div class="col s12">
-							<select name="depart">
+							<select name="depart" required>
 						      <option value="" disabled selected>部门</option>
 						      <option value="财务部" id="fun">财务部</option>
 						      <option value="秘书部" id="sec">秘书部</option>
@@ -88,28 +80,28 @@
 						    <!--label>Materialize Select</label-->
 						</div>
 						<div class="input-field col s12 m6">
-							<input name="group" type="text" class="validate" value="{{ database[0][11] }}">
+							<input name="group" type="text" class="validate" value="{{ database[0][11] }}" required>
 							<label for="group">组别</label>
 						</div>
 						<div class="input-field col s12 m6">
-							<input name="occup" type="text" class="validate" value="{{ database[0][12] }}">
+							<input name="occup" type="text" class="validate" value="{{ database[0][12] }}" required>
 							<label for="occup">担任职务</label>
 						</div>
 						<div class="progress col s6 offset-s3">
 							<div class="determinate" style="width:100%"></div>
 						</div>
 						<div class="input-field col s12">
-							<input disabled name="id" type="text" class="validate" value="{{ database[0][0] }}">
+							<input disabled name="id" type="text" class="validate" value="{{ database[0][0] }}" required>
 							<label for="id">社联编号</label>
 						</div>
 						<div class="col s12">
 							<label for="dateofjoin">加入社联的时间</label>
-							<input name="dateofjoin" type="text" class="datepicker" value="{{ database[0][13] }}">
+							<input name="dateofjoin" type="text" class="datepicker" value="{{ database[0][13] }}" required>
 						</div>
 						<div class="progress col s6 offset-s3">
 							<div class="determinate green darken-1" style="width:100%"></div>
 						</div>
-
+                    </div>
                         <div class="row valign-wrapper">
                             <div class="col s12 m8 offset-m2 l8 offset-l2">
                                 <div class="col s9 red-text left valign">
@@ -122,9 +114,9 @@
                                 </button>
                             </div>
                         </div>
-				</form>
+                    </form>
 			</div>
-		</div>
+
 
 
 		<script>
