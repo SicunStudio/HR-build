@@ -45,13 +45,13 @@ def verify(id, passwd):
 		cursor = database.execute("select passwd from admin where id = '%s'" % id)
 		correct = cursor.fetchone()
 		if correct==None:  # wrong id
-			flash("用户名或密码错误！")
+			flash("用户名或密码错误！", category="error")
 			return 0
 		else:  # correct
 			if passwd==correct[0]:
 				return 1
 			else:  # wrong passwd
-				flash("用户名或密码错误！")
+				flash("用户名或密码错误！", category="error")
 				return 0
 
 def login_verify(to_be_decorated):
@@ -59,7 +59,7 @@ def login_verify(to_be_decorated):
 	@wraps(to_be_decorated)
 	def decorated(*args, **kwargs):
 		if 'id' not in session:
-			flash("请登录！")
+			flash("请登录！", category="error")
 			return redirect(url_for('login'))
 		return to_be_decorated(*args, **kwargs)
 	return decorated
@@ -161,7 +161,7 @@ def personal():
 		if xlsxSwissKnife.newFile(request.form['title'], request.form['depart'], date=request.form['date']):
 			return redirect(url_for('score'))
 		else:
-			flash("创建表格失败！")
+			flash("创建表格失败！", category="error")
 			return redirect(url_for('personal'))
 
 @app.route('/logout/')

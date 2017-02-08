@@ -64,6 +64,44 @@
             {% endblock %}
         </main>
 
+    <!-- Flash Notification Controller based on Materialize Toaster -->
+    <!-- Use the theme from Toastr -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <script id="notification-controller">
+        $(document).ready(function(){
+            var showFlashToast = function(){
+                /** Generate flash message list **/
+                var msg_list = [];
+                {% for msg in get_flashed_messages(with_categories=true) %}
+                    msg_list.push({
+                        message: "{{ msg[1] }}",
+                        category: "{{ msg[0] }}"
+                    });
+                {% endfor %}
+
+                /** Show toast messages **/
+                if(msg_list.length > 0){
+                    for(var i=0; i<msg_list.length; i++)
+                    {
+                        switch(msg_list[i].category)
+                        {
+                            case "error":
+                                Materialize.toast(msg_list[i].message, 3000, "toast-error");
+                                break;
+                            case "success":
+                                Materialize.toast(msg_list[i].message, 3000, "toast-success");
+                                break;
+                            default:
+                                Materialize.toast(msg_list[i].message, 3000, "toast-info");
+                        }
+
+                    }
+                }
+            };
+            $("body").bind("onload", showFlashToast());
+        });
+    </script>
+
 </body>
 
 </html>
