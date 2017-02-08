@@ -17,6 +17,7 @@ app.secret_key = 'DogLeeNation(2B||!2B)-->|'
 ######## global configuration ########
 
 FOLDER = os.path.join(os.curdir, 'score-sheets')  # xlsx location
+INVENTORY = os.path.join(FOLDER, 'inventory.db')
 DATABASE = os.path.join(app.root_path, 'data.db')  # db loaction
 
 ######## functions ########
@@ -111,6 +112,24 @@ def addIssue():
 	with sqlite3.connect(DATABASE) as database:
 		database.execute("insert into issue (id,title,body) values ('%s','%s','%s')" % (request.form['id'],request.form['title'],request.form['body']))
 		database.commit()
+
+def grepScore(*, title=None, date=None, depart=None):
+	result = dict()
+	if not (title or date or depart):
+		return result
+	with sqlite3.connect(INVENTORY) as database:
+		if title:
+			cur = database.execute("select * from score where title glob '%s'" % title)
+			ls = cur.fetchall()
+		elif date:
+			cur = database.execute("select * from score where date glob '%s'" % date)
+			ls = cur.fetchall()
+		elif depart:
+			cur = database.execute("select * from score where depart glob '%s'" % depart)
+			ls = cur.fetchall()
+		for each in ls:
+			result[each[0]] = each[1:]
+		return result
 
 ######## route ########
 
@@ -237,14 +256,15 @@ def score():
 @app.route('/score_dl/')
 @login_verify
 def score_download():
-	collection = os.listdir(FOLDER)
+	#collection = os.listdir(FOLDER)
+	collection = grepScore(title='*')
 	print(collection)
 	return render_template('score_download.html', collection=collection)
 
 @app.route('/download/<filename>')
 @login_verify
 def download(filename):
-	return send_from_directory(FOLDER, filename, as_attachment=True)
+	return send_from_directory(FOLDER, filename+'.xlsx', as_attachment=True)
 
 ######## run ########
 

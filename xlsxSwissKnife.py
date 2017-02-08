@@ -10,6 +10,7 @@ import os, sqlite3
 ######## general config ########
 
 FOLDER = os.path.join(os.curdir, 'score-sheets')  # xlsx location
+INVENTORY = os.path.join(FOLDER, 'inventory.db')
 DATABASE = os.path.join(os.curdir, 'data.db')  # db loaction
 # that is to say: main.py, xlsxSwissKnife.py and data.da must be under the same dir
 
@@ -35,7 +36,7 @@ def _move_cursor(ws, name='something you have to mess up with'):
 
 def newFile(title="测试测试", depart="其它", *, date=str(datetime.now())):
 	''' derive a new .xlsx from ./score-sheets/template.xlsx '''
-	filename = title + ' - ' + date + '.xlsx'
+	filename = title + '.xlsx'
 	dst = os.path.join(FOLDER, filename)
 	try:
 		wb = load_workbook(os.path.join(FOLDER, 'template.xlsx'))
@@ -48,9 +49,13 @@ def newFile(title="测试测试", depart="其它", *, date=str(datetime.now())):
 		with sqlite3.connect(DATABASE) as database:
 			cursor = database.execute("select name from test where depart = '%s'" % depart)
 			names = cursor.fetchall()
+			print('hi?')
 		for i in range(len(names)):
 			ws['A'+str(i+3)].value = names[i][0]
 		wb.save(dst)
+		with sqlite3.connect(INVENTORY) as database:
+			cursor = database.execute("insert into score values ('%s', '%s', '%s')" % (title, date, depart))
+			database.commit()
 		return 1
 
 def write(filname, data_in):
