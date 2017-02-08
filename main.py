@@ -66,13 +66,38 @@ def login_verify(to_be_decorated):
 
 def updatePerson(id):
 	with sqlite3.connect(DATABASE) as database:
-		database.execute("update test set name = '%s', gender = '%s', qq = '%s', tel = '%s', wchat = '%s', emg = '%s', school = '%s', class = '%s', apart = '%s', depart = '%s', grp = '%s', occup = '%s', dateofjoin = '%s' where id = '%s'" % (request.form['name'], request.form['gender'], request.form['qq'], request.form['tel'], request.form['wchat'], request.form['emg'], request.form['school'], request.form['class'], request.form['apart'], request.form['depart'], request.form['group'], request.form['occup'], request.form['dateofjoin'], id))
+		SQL = "update test set name = '%s', gender = '%s', qq = '%s', tel = '%s', wchat = '%s', emg = '%s', school = '%s', class = '%s', apart = '%s', depart = '%s', grp = '%s', occup = '%s', dateofjoin = '%s' where id = '%s'" % (request.form['name'], request.form['gender'], request.form['qq'], request.form['tel'], request.form['wchat'], request.form['emg'], request.form['school'], request.form['class'], request.form['apart'], request.form['depart'], request.form['group'], request.form['occup'], request.form['dateofjoin'], id)
+		printLog("============== UPDATE PERSON ==============")
+		printLog(SQL)
+		printLog("===========================================")
+
+	try:
+		database.execute(SQL)
 		database.commit()
+	except Exception as e:
+		flash("(⊙﹏⊙)b 修改资料时出错了：%s <br>请狠狠地戳开发人员~~~" % e.args(0), category="error")
+		return
+	else:
+		flash("成功修改 %s 的资料" % id, category="success")
+		return
+
 
 def updateIssue(idx):
 	with sqlite3.connect(DATABASE) as database:
-		database.execute("update issue set title = '%s', body = '%s' where idx = '%s'" % (request.form['title'], request.form['body'], idx))
+		SQL = "update issue set title = '%s', body = '%s' where idx = '%s'" % (request.form['title'], request.form['body'], idx)
+		printLog("============== UPDATE ISSUE ==============")
+		printLog(SQL)
+		printLog("===========================================")
+
+	try:
+		database.execute(SQL)
 		database.commit()
+	except Exception as e:
+		flash("(⊙﹏⊙)b 修改资料时出错了：%s 请狠狠地戳开发人员~~~" % e.args(0), category="error")
+		return
+	else:
+		flash("成功修改事务", category="success")
+		return
 
 def grepPerson(column, require):
 	with sqlite3.connect(DATABASE) as database:
@@ -105,13 +130,37 @@ def grepIssue(column, require):
 
 def addPerson():
 	with sqlite3.connect(DATABASE) as database:
-		database.execute("insert into test (id,name,gender,qq,tel,wchat,emg,school,class,apart,depart,grp,occup,dateofjoin) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (request.form['id'], request.form['name'], request.form['gender'], request.form['qq'], request.form['tel'], request.form['wchat'], request.form['emg'], request.form['school'], request.form['class'], request.form['apart'], request.form['depart'], request.form['group'], request.form['occup'], request.form['dateofjoin']))
+		SQL = "insert into test (id,name,gender,qq,tel,wchat,emg,school,class,apart,depart,grp,occup,dateofjoin) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (request.form['id'], request.form['name'], request.form['gender'], request.form['qq'], request.form['tel'], request.form['wchat'], request.form['emg'], request.form['school'], request.form['class'], request.form['apart'], request.form['depart'], request.form['group'], request.form['occup'], request.form['dateofjoin'])
+		printLog("============== ADD PERSON ==============")
+		printLog(SQL)
+		printLog("===========================================")
+
+	try:
+		database.execute(SQL)
 		database.commit()
+	except Exception as e:
+		flash("(⊙﹏⊙)b 修改资料时出错了：%s <br>请狠狠地戳开发人员~~~" % e.args(0), category="error")
+		return
+	else:
+		flash("成功录入人员：%s，<br>编号 %s" % (request.form['name'], request.form['id']), category="success")
+		return
 
 def addIssue():
 	with sqlite3.connect(DATABASE) as database:
-		database.execute("insert into issue (id,title,body) values ('%s','%s','%s')" % (request.form['id'],request.form['title'],request.form['body']))
+		SQL = "insert into issue (id,title,body) values ('%s','%s','%s')" % (request.form['id'],request.form['title'],request.form['body'])
+		printLog("============== ADD ISSUE ==============")
+		printLog(SQL)
+		printLog("===========================================")
+
+	try:
+		database.execute(SQL)
 		database.commit()
+	except Exception as e:
+		flash("(⊙﹏⊙)b 录入资料时出错了：%s <br>请狠狠地戳开发人员~~~" % e.args(0), category="error")
+		return
+	else:
+		flash("成功录入事务：%s" % request.form['title'], category="success")
+		return
 
 def grepScore(*, title=None, date=None, depart=None):
 	result = dict()
@@ -171,6 +220,8 @@ def logout():
 		# the following lines are weird
 		session.pop('passwd', None)
 		session.pop('filename', None)
+		# Give out a flash toast
+		# flash("已登出", category='message')
 	return redirect(url_for('index'))
 
 @app.route('/update/<id>', methods=['GET', 'POST'])

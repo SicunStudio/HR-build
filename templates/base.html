@@ -74,7 +74,10 @@
                 var msg_list = [];
                 {% for msg in get_flashed_messages(with_categories=true) %}
                     msg_list.push({
-                        message: "{{ msg[1] }}",
+                        /** Jinja will automatically use ISO char to keep the tag symbol("<>"),
+                         * so we have to replace it back.
+                         * **/
+                        message: "{{ msg[1] }}".replace("&lt;","<").replace("&gt;", ">"),
                         category: "{{ msg[0] }}"
                     });
                 {% endfor %}
@@ -83,16 +86,17 @@
                 if(msg_list.length > 0){
                     for(var i=0; i<msg_list.length; i++)
                     {
+                        var $messageHTML = $("<div>" + msg_list[i].message + "</div>");
                         switch(msg_list[i].category)
                         {
                             case "error":
-                                Materialize.toast(msg_list[i].message, 3000, "toast-error");
+                                Materialize.toast($messageHTML, 5000, "toast-error");
                                 break;
                             case "success":
-                                Materialize.toast(msg_list[i].message, 3000, "toast-success");
+                                Materialize.toast($messageHTML, 3000, "toast-success");
                                 break;
                             default:
-                                Materialize.toast(msg_list[i].message, 3000, "toast-info");
+                                Materialize.toast($messageHTML, 3000, "toast-info");
                         }
 
                     }
