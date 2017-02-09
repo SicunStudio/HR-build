@@ -15,6 +15,7 @@
 </head>
 
 <body>
+    <input type="hidden" value="0" id="refresh-flag">
 
     <!-- [PUBLIC ZONE] PAGE HEADER -->
 		<header>
@@ -68,30 +69,22 @@
     <!-- Use the theme from Toastr -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
     <script id="notification-controller">
-        $(document).ready(function(){
-            var showFlashToast = function(){
-                /** Generate flash message list **/
-                var msg_list = [];
-                {% for msg in get_flashed_messages(with_categories=true) %}
-                    msg_list.push({
-                        /** Jinja will automatically use ISO char to keep the tag symbol("<>"),
-                         * so we have to replace it back.
-                         * **/
-                        message: "{{ msg[1] }}".replace("&lt;","<").replace("&gt;", ">"),
-                        category: "{{ msg[0] }}"
-                    });
+        $(document).ready(function() {
+            var showFlashToast = function () {
+                //alert("Shown");
+                var refresh_flag = document.getElementById("refresh-flag");
+                if (refresh_flag.value == "0") {
+                    refresh_flag.value = "1";
 
-                {% endfor %}
-
-                /** Show toast messages **/
-                if(msg_list.length > 0){
-                    for(var i=0; i<msg_list.length; i++)
-                    {
-                        var $messageHTML = $("<div>" + msg_list[i].message + "</div>");
-                        switch(msg_list[i].category)
-                        {
+                    {% for msg in get_flashed_messages(with_categories=true) %}
+                        var message = {
+                            text: "{{ msg[1] }}".replace("&lt;", "<").replace("&gt;", ">"),
+                            category: "{{ msg[0] }}"
+                        };
+                        var $messageHTML = $("<div>" + message.text + "</div>");
+                        switch (message.category) {
                             case "error":
-                                Materialize.toast($messageHTML, 5000, "toast-error");
+                                Materialize.toast($messageHTML, 4000, "toast-error");
                                 break;
                             case "success":
                                 Materialize.toast($messageHTML, 3000, "toast-success");
@@ -100,11 +93,15 @@
                                 Materialize.toast($messageHTML, 3000, "toast-info");
                         }
 
-                    }
+                    {% endfor %}
+                }
+                else{
+                    location.reload();
                 }
             };
-            $("body").bind("onload", showFlashToast());
-        });
+
+            $("body").bind("onload", showFlashToast())
+        })
     </script>
 
 </body>

@@ -58,7 +58,7 @@
 									</div>
 									<div class="valign-wrapper">
 										<div class="col s9 red-text left valign">
-											{% for msg in get_flashed_messages() %}
+											{% for msg in get_flashed_messages(category_filter=["error"]) %}
 											{{ msg }}
 											{% endfor %}
 										</div>

@@ -7,6 +7,8 @@ from flask import Flask, request, session, render_template, url_for, redirect
 from flask import make_response, flash, jsonify, send_from_directory
 from functools import wraps
 import sqlite3, os, re, xlsxSwissKnife
+
+
 from debug_utils import *
 
 ######## initializaton ########
@@ -221,7 +223,7 @@ def logout():
 		session.pop('passwd', None)
 		session.pop('filename', None)
 		# Give out a flash toast
-		# flash("已登出", category='message')
+		flash("已登出", category='message')
 	return redirect(url_for('index'))
 
 @app.route('/update/<id>', methods=['GET', 'POST'])
@@ -316,6 +318,7 @@ def score_download():
 @login_verify
 def download(filename):
 	return send_from_directory(FOLDER, filename+'.xlsx', as_attachment=True)
+
 
 ######## run ########
 
