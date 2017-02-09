@@ -13,15 +13,15 @@
 						</div>
 					</div>
 					<div class="input-field col s12">
-						<input name="id" type="text" class="validate" value="{{ database[0][1] }}" disabled>
+						<input name="id" type="text" class="validate" value="{{ database[1] }}" disabled>
 						<label for="id">社联编号</label>
 					</div>
 					<div class="input-field col s12">
-						<input name="title" type="text" class="validate" value="{{ database[0][2] }}">
+						<input name="title" type="text" class="validate" value="{{ database[2] }}">
 						<label for="title">标题</label>
 					</div>
 					<div class="input-field col s12">
-						<textarea name="body" class="materialize-textarea">{{ database[0][3] }}</textarea>
+						<textarea name="body" class="materialize-textarea">{{ database[3] }}</textarea>
 						<label for="body">详细信息</label>
 					</div>
 					<button class="btn col s3 waves-effect waves-light right" type="submit">提交<i class="material-icons right">send</i>
