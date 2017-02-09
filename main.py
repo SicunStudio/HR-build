@@ -73,15 +73,15 @@ def updatePerson(id):
 		printLog(SQL)
 		printLog("===========================================")
 
-	try:
-		database.execute(SQL)
-		database.commit()
-	except Exception as e:
-		flash("(⊙﹏⊙)b 修改资料时出错了：%s <br>请狠狠地戳开发人员~~~" % e.args(0), category="error")
-		return
-	else:
-		flash("成功修改 %s 的资料" % id, category="success")
-		return
+		try:
+			database.execute(SQL)
+			database.commit()
+		except Exception as e:
+			flash("(⊙﹏⊙)b 修改资料时出错了：%s <br>请狠狠地戳开发人员~~~" % e.args(0), category="error")
+			return
+		else:
+			flash("成功修改 %s 的资料" % id, category="success")
+			return
 
 
 def updateIssue(idx):
@@ -91,15 +91,15 @@ def updateIssue(idx):
 		printLog(SQL)
 		printLog("===========================================")
 
-	try:
-		database.execute(SQL)
-		database.commit()
-	except Exception as e:
-		flash("(⊙﹏⊙)b 修改资料时出错了：%s 请狠狠地戳开发人员~~~" % e.args(0), category="error")
-		return
-	else:
-		flash("成功修改事务", category="success")
-		return
+		try:
+			database.execute(SQL)
+			database.commit()
+		except Exception as e:
+			flash("(⊙﹏⊙)b 修改资料时出错了：%s 请狠狠地戳开发人员~~~" % e.args(0), category="error")
+			return
+		else:
+			flash("成功修改事务", category="success")
+			return
 
 def grepPerson(column, require):
 	with sqlite3.connect(DATABASE) as database:
@@ -125,10 +125,7 @@ def grepIssue(column, require):
 			cursor = database.execute("select * from issue where id = '%s'" % id)
 			data = cursor.fetchall()
 			raw_data = data
-		result = dict()
-		for each in raw_data:
-			result[each[0]] = each[1:]
-		return result
+		return raw_data[0]
 
 def addPerson():
 	with sqlite3.connect(DATABASE) as database:
@@ -137,15 +134,15 @@ def addPerson():
 		printLog(SQL)
 		printLog("===========================================")
 
-	try:
-		database.execute(SQL)
-		database.commit()
-	except Exception as e:
-		flash("(⊙﹏⊙)b 修改资料时出错了：%s <br>请狠狠地戳开发人员~~~" % e.args(0), category="error")
-		return
-	else:
-		flash("成功录入人员：%s，<br>编号 %s" % (request.form['name'], request.form['id']), category="success")
-		return
+		try:
+			database.execute(SQL)
+			database.commit()
+		except Exception as e:
+			flash("(⊙﹏⊙)b 修改资料时出错了：%s <br>请狠狠地戳开发人员~~~" % e.args(0), category="error")
+			return
+		else:
+			flash("成功录入人员：%s，<br>编号 %s" % (request.form['name'], request.form['id']), category="success")
+			return
 
 def addIssue():
 	with sqlite3.connect(DATABASE) as database:
@@ -154,15 +151,15 @@ def addIssue():
 		printLog(SQL)
 		printLog("===========================================")
 
-	try:
-		database.execute(SQL)
-		database.commit()
-	except Exception as e:
-		flash("(⊙﹏⊙)b 录入资料时出错了：%s <br>请狠狠地戳开发人员~~~" % e.args(0), category="error")
-		return
-	else:
-		flash("成功录入事务：%s" % request.form['title'], category="success")
-		return
+		try:
+			database.execute(SQL)
+			database.commit()
+		except Exception as e:
+			flash("(⊙﹏⊙)b 录入资料时出错了：%s <br>请狠狠地戳开发人员~~~" % e.args(0), category="error")
+			return
+		else:
+			flash("成功录入事务：%s" % request.form['title'], category="success")
+			return
 
 def grepScore(*, title=None, date=None, depart=None):
 	result = dict()
@@ -289,7 +286,8 @@ def alter(idx):
 	''' alter for issue '''
 	if request.method == 'GET':
 		printLog(id)
-		return render_template('issue_update.html', database=grepIssue('idx',idx))
+		print(grepIssue('idx', idx))
+		return render_template('issue_update.html', database=grepIssue('idx', idx))
 	elif request.method == 'POST':
 		updateIssue(idx)
 		return redirect(url_for('personal'))
