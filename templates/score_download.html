@@ -7,7 +7,7 @@
 		<div class="collection col s12 m8 offset-m2 l8 offset-l2">
 			{% if collection %}
 				{% for each in collection %}
-				<a href="{{ url_for('download', filename=each)}}" class="collection-item">
+				<a href="{{ url_for('downloading', filename=each)}}" class="collection-item">
 					{{ each }}
 				</a>
 				{% endfor %}

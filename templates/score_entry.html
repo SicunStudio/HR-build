@@ -2,82 +2,111 @@
 
 {% block main_content %}
 
-		<div class="container">
-			<!-- don'no how 2 let <div> auto-fit height -->
-			<br><br>
-			<div class="row">
-				<form class="col s12 m8 offset-m2 l8 offset-l2" method="post">
-					<h5 class="center">评分系统</h5>
-					<div class="row">
-						<div class="col s12">
-							<ul class="tabs">
-								{% for each in data %}
-								<li class="tab col s3"><a href="#{{ each[0] }}">{{ each[0] }}</a></li>
-								{% endfor %}
-							</ul>
-						</div>
-						{% for each in data %}
-						<div class="col s12" id="{{ each[0] }}">
-							<div class="row">
-								<h6 class="col s12 center">自评部分</h6>
-								<div class="divider col s12"></div>
-								<div class="input-field col s4">
-									<input type="number" name="dim-self" id="dim-self" required>
-									<label for="dim-self">维度自评</label>
-								</div>
-								<div class="input-field col s4">
-									<input type="number" name="act-self" id="act-self" required>
-									<label for="act-self">活动自评</label>
-								</div>
-								<div class="input-field col s4">
-									<input type="number" name="act-num" id="act-num" required>
-									<label for="act-num">活动项数</label>
-								</div>
-								<div class="input-field col s6">
-									<input type="number" name="dly-self" id="dly-self" required>
-									<label for="dly-self">日常自评</label>
-								</div>
-								<div class="input-field col s6">
-									<input type="number" name="dly-act" id="dly-act" required>
-									<label for="dly-act">日常项目</label>
-								</div>
-								<div class="divider col s12"></div>
-								<div class="input-field col s6">
-									<input type="number" name="mntr-dim" id="mntr-dim" required>
-									<label for="mntr-dim">部长维度评分</label>
-								</div>
-								<div class="input-field col s6">
-									<input type="number" name="mntr-act" id="mntr-act" required>
-									<label for="mntr-act">部长活动评分</label>
-								</div>
-								<div class="input-field col s6">
-									<input type="number" name="attd" id="attd" required>
-									<label for="attd">考勤得分</label>
-								</div>
-								<div class="input-field col s6">
-									<input type="number" name="bonus" id="bonus" required>
-									<label for="bonus">加分</label>
-								</div>
-								<div class="divider col s12"></div>
-								<h6 class="col s6 left-align">自评部分总分：<span id="self-total">59</span></h6>
-								<h6 class="col s6 left-align">最后得分：<span id="total">59</span></h6>
-							</div>
-						</div>
-						{% endfor %}
-					</div>
-					<button class="btn col s3 waves-effect waves-light right" type="submit">提交<i class="material-icons right">send</i></button>
-				</form>
+<div class="container">
+	<!-- don'no how 2 let <div> auto-fit height -->
+	<br><br>
+	<div class="row">
+		<h5 class="center">评分系统</h5>
+		<div class="row">
+			<div class="col s12 m8 offset-m2 l8 offset-l2">
+				<ul class="tabs tabs-fixed-width">
+					{% for each in data %}
+					<li class="tab"><a href="#{{ each }}">{{ each }}</a></li>
+					{% endfor %}
+				</ul>
 			</div>
+			{% for each in data %}
+			<form class="col s12 m8 offset-m2 l8 offset-l2" name="{{ each }}" id="{{ each }}" method="post">
+				<div class="row">
+					<!--h6 class="col s12 center">自评部分</h6>
+					<div class="divider col s12"></div-->
+					<div class="input-field col s4">
+						<input type="number" name="dim-self" id="dim-self" value="{{ each['B'] }}" required>
+						<label for="dim-self">维度自评</label>
+					</div>
+					<div class="input-field col s4">
+						<input type="number" name="act-self" id="act-self" required>
+						<label for="act-self">活动自评</label>
+					</div>
+					<div class="input-field col s4">
+						<input type="number" name="act-num" id="act-num" required>
+						<label for="act-num">活动项数</label>
+					</div>
+					<div class="input-field col s6">
+						<input type="number" name="dly-self" id="dly-self" required>
+						<label for="dly-self">日常自评</label>
+					</div>
+					<div class="input-field col s6">
+						<input type="number" name="dly-act" id="dly-act" required>
+						<label for="dly-act">日常项目</label>
+					</div>
+					<div class="divider col s12"></div>
+					<div class="input-field col s6">
+						<input type="number" name="mntr-dim" id="mntr-dim" required>
+						<label for="mntr-dim">部长维度评分</label>
+					</div>
+					<div class="input-field col s6">
+						<input type="number" name="mntr-act" id="mntr-act" required>
+						<label for="mntr-act">部长活动评分</label>
+					</div>
+					<div class="input-field col s6">
+						<input type="number" name="attd" id="attd" required>
+						<label for="attd">考勤得分</label>
+					</div>
+					<div class="input-field col s6">
+						<input type="number" name="bonus" id="bonus" required>
+						<label for="bonus">加分</label>
+					</div>
+					<div class="divider col s12"></div>
+					<h6 class="col s6 left-align">自评部分总分：<span id="self-total">59</span></h6>
+					<h6 class="col s6 left-align">最后得分：<span id="total">59</span></h6>
+				</div>
+			</form>
+			{% endfor %}
 		</div>
+		<button class="btn col s3 waves-effect waves-light right" type="submit">提交<i class="material-icons right">send</i></button>
+	</div>
+</div>
 
 
 
 	<script>
         $(document).ready(function() {
-            //Materialize.updateTextFields();
-            //$('ul.tabs').tabs();
+            Materialize.updateTextFields();
+            $('ul.tabs').tabs();
         });
 
+		/*
+		//Array.forEach implementation for IE support..
+		//https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/forEach
+		if (!Array.prototype.forEach) {
+			Array.prototype.forEach = function(callback, thisArg) {
+				var T, k;
+				if (this == null) {
+					throw new TypeError(" this is null or not defined");
+				}
+				var O = Object(this);
+				var len = O.length >>> 0; // Hack to convert O.length to a UInt32
+				if ({}.toString.call(callback) != "[object Function]") {
+					throw new TypeError(callback + " is not a function");
+				}
+				if (thisArg) {
+					T = thisArg;
+				}
+				k = 0;
+				while (k < len) {
+					var kValue;
+					if (k in O) {
+						kValue = O[k];
+						callback.call(T, kValue, k, O);
+					}
+					k++;
+				}
+			};
+		}
+		*/
+
+		/*
         function count() {
             // stupid way of instant updating count-result
             var dim_self = Number(document.getElementById("dim-self").value);
@@ -96,6 +125,29 @@
             return;
         }
         setInterval("count()", 500);
+		*/
+
+		function jqcount() {
+			$("form[id=预言家] input").each(function(index, self){
+				// stupid way of instant updating count-result
+				var dim_self = Number(self.getElementById("dim-self").value);
+				var act_self = Number(self.getElementById("act-self").value);
+				var act_num = Number(self.getElementById("act-num").value);
+				var dly_self = Number(self.getElementById("dly-self").value);
+				var dly_act = Number(self.getElementById("dly-act").value);
+				var mntr_dim = Number(self.getElementById("mntr-dim").value);
+				var mntr_act = Number(self.getElementById("mntr-act").value);
+				var atdc = Number(self.getElementById("attd").value);
+				var bns = Number(self.getElementById("bonus").value);
+				var self_total = dim_self + act_self + act_num + dly_self + dly_act;
+				var total = self_total + mntr_dim + mntr_act + atdc + bns;
+				console.log(total);
+				document.getElementById("self-total").innerHTML = self_total;
+				document.getElementById("total").innerHTML = total;
+				return;
+			});
+		}
+		setInterval("jqcount()", 500);
 
 	</script>
 

@@ -207,9 +207,9 @@ def personal():
 		filename = request.form['title'] + '.xlsx'
 		session['filename'] = filename
 		if xlsxSwissKnife.newFile(request.form['title'], request.form['depart'], date=request.form['date']):
-			return redirect(url_for('score'))
+			return redirect(url_for('score', title=request.form['title']))
 		else:
-			flash("创建表格失败！", category="error")
+			# flash msg added in xlsxSwissKnife
 			return redirect(url_for('personal'))
 
 @app.route('/logout/')
@@ -292,17 +292,28 @@ def alter(idx):
 		updateIssue(idx)
 		return redirect(url_for('personal'))
 
-# openpyxl issue solved
-# just don't know when I could get the new release
-@app.route('/score_page/')
+@app.route('/score_page/<title>')
 @login_verify
-def score():
+def score(title):
 	if 'filename' not in session:
 		return redirect(url_for('personal'))
 	else:
 		data = xlsxSwissKnife.read(session['filename'])
 		printLog(data)
 		return render_template('score_entry.html', data=data)
+
+@app.route('/scoring_page/', methods=['GET'])
+@login_verify
+def scoring():
+	b = int(request.form.get('dim-self', 0))
+	c = int(request.form.get('act-self', 0))
+	d = int(request.form.get('act-num', 0))
+	e = int(request.form.get('dly-self', 0))
+	f = int(request.form.get('dly-act', 0))
+	g = int(request.form.get('mntr-dim', 0))
+	h = int(request.form.get('mntr-act', 0))
+	i = int(request.form.get('attd', 0))
+	j = int(request.form.get('bonus', 0))
 
 @app.route('/score_dl/')
 @login_verify
@@ -312,7 +323,7 @@ def score_download():
 	print(collection)
 	return render_template('score_download.html', collection=collection)
 
-@app.route('/download/<filename>')
+@app.route('/downloading/<filename>')
 @login_verify
 def download(filename):
 	return send_from_directory(FOLDER, filename+'.xlsx', as_attachment=True)

@@ -40,17 +40,25 @@ def newFile(title="测试测试", depart="其它", *, date=str(datetime.now())):
 	  derive a new .xlsx from ./score-sheets/template.xlsx
 	  (openpyxl Compatibility: always use MS Excel to generate the template.xlsx)
 	'''
-	assert session['filename'] == title + '.xlsx'
-	if session['filename'] in os.listdir(FOLDER):
+	filename = title + '.xlsx'
+	dst = os.path.join(FOLDER, filename)
+	if filename in os.listdir(FOLDER):
 		flash("该表格已经存在！", category='error')
 		return 0
-	dst = os.path.join(FOLDER, session['filename'])
 	try:
 		wb = load_workbook(os.path.join(FOLDER, 'template.xlsx'))
 	except IOError:
 		flash("表格模板损坏！<br>请联系管理员！", category='error')
 		return 0
 	else:
+		with sqlite3.connect(INVENTORY) as database:
+			try:
+				cursor = database.execute("insert into score values ('%s', '%s', '%s')" % (title, date, depart))
+			except sqlite3.IntegrityError:
+				flash("该表格名称已被占用！", category='error')
+				return 0
+			else:
+				database.commit()
 		ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
 		# fill header
 		ws.title = title
@@ -64,10 +72,7 @@ def newFile(title="测试测试", depart="其它", *, date=str(datetime.now())):
 			ws['A'+str(i+3)].value = names[i][0]
 		wb.save(dst)
 		# register at inventory.db
-		with sqlite3.connect(INVENTORY) as database:
-			cursor = database.execute("insert into score values ('%s', '%s', '%s')" % (title, date, depart))
-			database.commit()
-		flash("成功创建表格！<br><sup>请一次性填写完表格！</sup>"， category='success')
+		flash("成功创建表格！<br><sup>请一次性填写完表格！</sup>", category='success')
 		return 1
 
 def write(filname, data_in):
@@ -76,6 +81,7 @@ def write(filname, data_in):
 	try:
 		wb = load_workbook(dst)
 	except IOError:
+		flash("写入表格错误！", category='error')
 		return 0
 	else:
 		ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
@@ -108,5 +114,5 @@ def read(filename):
 			someone = dict()  # single person container
 			for col in 'BCDEFGHIJK':
 				someone[col] = ws[col+row].value
-			everyone[ws['A'+row].value] = tmp  # join the party
+			everyone[ws['A'+row].value] = someone  # join the party
 		return everyone
