@@ -204,7 +204,7 @@ def personal():
 		database = getAdmin('id','id',session['id'])
 		return render_template('personal_base.html', database = database)
 	elif request.method == 'POST':
-		filename = request.form['title'] + ' - ' + request.form['date'] + '.xlsx'
+		filename = request.form['title'] + '.xlsx'
 		session['filename'] = filename
 		if xlsxSwissKnife.newFile(request.form['title'], request.form['depart'], date=request.form['date']):
 			return redirect(url_for('score'))

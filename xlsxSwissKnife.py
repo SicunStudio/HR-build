@@ -4,6 +4,7 @@
 '   self-made utils for operating .xlsx files based on openpyxl ---- by smdsbz   '
 
 from openpyxl import Workbook, load_workbook
+from flask import flash
 from datetime import datetime
 import os, sqlite3
 
@@ -35,17 +36,26 @@ def _move_cursor(ws, name='something you have to mess up with'):
 		return len(names) + 3
 
 def newFile(title="测试测试", depart="其它", *, date=str(datetime.now())):
-	''' derive a new .xlsx from ./score-sheets/template.xlsx '''
-	filename = title + '.xlsx'
-	dst = os.path.join(FOLDER, filename)
+	'''
+	  derive a new .xlsx from ./score-sheets/template.xlsx
+	  (openpyxl Compatibility: always use MS Excel to generate the template.xlsx)
+	'''
+	assert session['filename'] == title + '.xlsx'
+	if session['filename'] in os.listdir(FOLDER):
+		flash("该表格已经存在！", category='error')
+		return 0
+	dst = os.path.join(FOLDER, session['filename'])
 	try:
 		wb = load_workbook(os.path.join(FOLDER, 'template.xlsx'))
 	except IOError:
+		flash("表格模板损坏！<br>请联系管理员！", category='error')
 		return 0
 	else:
 		ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+		# fill header
 		ws.title = title
 		ws['B1'].value, ws['F1'].value, ws['J1'].value = title, depart, date
+		# import names
 		with sqlite3.connect(DATABASE) as database:
 			cursor = database.execute("select name from test where depart = '%s'" % depart)
 			names = cursor.fetchall()
@@ -53,9 +63,11 @@ def newFile(title="测试测试", depart="其它", *, date=str(datetime.now())):
 		for i in range(len(names)):
 			ws['A'+str(i+3)].value = names[i][0]
 		wb.save(dst)
+		# register at inventory.db
 		with sqlite3.connect(INVENTORY) as database:
 			cursor = database.execute("insert into score values ('%s', '%s', '%s')" % (title, date, depart))
 			database.commit()
+		flash("成功创建表格！<br><sup>请一次性填写完表格！</sup>"， category='success')
 		return 1
 
 def write(filname, data_in):
@@ -74,23 +86,27 @@ def write(filname, data_in):
 		return 1
 
 def read(filename):
-	''' return * in filename '''
+	'''
+	  returns a dict of * in the file
+	    format:
+	    {'name':{'B':1, 'C': 2, ..., 'K':10}, 'next person':{...}, ...}
+	'''
+	# TODO: 同名问题
 	dst = os.path.join(FOLDER, filename)
 	try:
 		wb = load_workbook(dst)
 	except IOError:
 		print('IOError during read({})'.format(dst))
+		flash("表格读取错误！", category='error')
 		return []
 	else:
-		print('load sucessully!')
+		print('load successully!')
 		ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
 		end = _move_cursor(ws)
-		if end == 3:  # empty sheet
-			return []
-		rtr = []
-		for row in tuple(map(str, range(3, end))):  # ('3', '4', '5', ..., '{end-1}')
-			tmp = []  # single person container
-			for col in 'ABCDEFGHIJK':
-				tmp.append(ws[col+row].value)
-			rtr.append(tmp)
-		return rtr  # everyone contained
+		everyone = dict()
+		for row in tuple(map(str, range(3, end))):  # get ('3', '4', '5', ..., '{end-1}')
+			someone = dict()  # single person container
+			for col in 'BCDEFGHIJK':
+				someone[col] = ws[col+row].value
+			everyone[ws['A'+row].value] = tmp  # join the party
+		return everyone
