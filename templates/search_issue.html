@@ -2,42 +2,41 @@
 
 {% block main_content %}
 
-		<div class="container">
-			<div class="container">
-				<br>
-					<div class="row valign-wrapper">
-						<div class="input-field col s3 left">
-							<select id="direction" name="direction">
-								<option value="name" selected>姓名</option>
-								<option value="id">编号</option>
-							</select>
-						</div>
-						<div class="input-field col s8">
-							<input name="content" id="content" type="text" class="black-text" onkeypress="EnterKeyToSearch()" required>
-							<!--label for="search"><i class="material-icons black-text">search</i>搜索</label-->
-						</div>
-						<!-- original ver -->
-						<!--button class="btn-flat waves-effect waves-dark col s1 right valign" type="submit"><i class="material-icons">search</i></button-->
-						<!-- AJAX ver -->
-						<button class="btn-flat waves-effect waves-dark col s1 right valign" onclick="search()"><i class="material-icons">search</i></button>
-					</div>
+<div class="container">
+	<div class="container">
+		<br>
+		<div class="row valign-wrapper">
+			<div class="input-field col s3 left">
+				<select id="direction" name="direction">
+					<option value="name" selected>姓名</option>
+					<option value="id">编号</option>
+				</select>
 			</div>
-
-			<div id="result-table">
+			<div class="input-field col s8">
+				<input name="content" id="content" type="text" class="black-text" onkeypress="EnterKeyToSearch()" required>
 			</div>
-
+			<!-- original ver -->
+			<!--button class="btn-flat waves-effect waves-dark col s1 right valign" type="submit"><i class="material-icons">search</i></button-->
+			<!-- AJAX ver -->
+			<button class="btn-flat waves-effect waves-dark col s1 right valign" onclick="search()"><i class="material-icons">search</i></button>
 		</div>
+	</div>
 
-    <!-- Search AJAX controller module -->
-	<script src="../static/js/ugly_js_for_search_issue.js"></script>
-	<script>
-        /**
-         * Materialize Controller code
-         */
-		$(document).ready(function(){
-			$('.collapsible').collapsible();
-			$('select').material_select();
-		});
-	</script>
+	<div id="result-table">
+	</div>
+
+</div>
+
+<!-- Search AJAX controller module -->
+<script src="../static/js/ugly_js_for_search_issue.js"></script>
+<script>
+/**
+* Materialize Controller code
+*/
+$(document).ready(function(){
+	$('.collapsible').collapsible();
+	$('select').material_select();
+});
+</script>
 
 {% endblock %}
