@@ -8,10 +8,14 @@ function show_result(score){
     var bfr = "";
     for (var each in score) {
         // ugliest lines in the whole world!!!
-        bfr += "<li class=\"collection-item\"><div>" + score[each].title + "<a href=\"/downloading/" + score[each].title + "\" class=\"secondary-content\"><i class=\"material-icons\">file_download</i></a><a href=\"/deleting/" + score[each].title + "\" class=\"secondary-content\"><i class=\"material-icons\">delete</i></a></div></li>";
+        bfr += "<li class=\"collection-item\"><div>" + score[each].title + "<a href=\"/downloading/" + score[each].title + "\" class=\"secondary-content\"><i class=\"material-icons\">file_download</i></a><a  href=\"#!\" class=\"secondary-content\" onclick=\"delete_file(\'/deleting/" + score[each].title + "\')\"><i class=\"material-icons\">delete</i></a></div></li>";
     }
     document.getElementById("result-container").innerHTML=bfr;
-    document.getElementById("result-container").style.display="block";
+    if (bfr == "") {
+        document.getElementById("result-container").style.display="none";
+    } else {
+        document.getElementById("result-container").style.display="block";
+    }
 }
 
 function search(){
@@ -48,5 +52,15 @@ function EnterKeyToSearch() {
     if (keychar == "\r"){
         console.log("SEARCHBOX: Enter key pressed");
         search();
+    }
+}
+
+function delete_file(url) {
+    var s = confirm("删除后将不可恢复！<br>确认要删除吗？");
+    if (s == true) {
+        console.log("deletion comfirmed!");
+        location.href=url;
+    } else {
+        console.log("deletion declined!");
     }
 }
