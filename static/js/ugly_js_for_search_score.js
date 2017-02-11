@@ -11,6 +11,7 @@ function show_result(score){
         bfr += "<li class=\"collection-item\"><div>" + score[each].title + "<a href=\"/downloading/" + score[each].title + "\" class=\"secondary-content\"><i class=\"material-icons\">file_download</i></a><a href=\"/deleting/" + score[each].title + "\" class=\"secondary-content\"><i class=\"material-icons\">delete</i></a></div></li>";
     }
     document.getElementById("result-container").innerHTML=bfr;
+    document.getElementById("result-container").style.display="block";
 }
 
 function search(){

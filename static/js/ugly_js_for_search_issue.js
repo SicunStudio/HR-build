@@ -12,13 +12,13 @@ function show_result(issues){
 		bfr += "			<div class=\"card\">\
 						<div class=\"card-content\">\
 							<div class=\"row\">\
-								<span class=\"card-title col s4 left\">Issue&nbsp;No." + id + "</span>\
-								<span class=\"card-title col s7\">" + issues[id][0] + "</span>\
+								<span class=\"card-title col s4 left\">Issue&nbsp;No." + issues[id][0] + "</span>\
+								<span class=\"card-title col s7\">" + issues[id][1] + "</span>\
 							</div>\
 							<div class=\"row\">\
 								<div class=\"divider\"></div><br>\
-								<div class=\"col s4\"><a href=\"/update_issue/" + id + "\" class=\"light-green-text text-darken-4\" title=\"单击以修改\"><b>" + issues[id][1] + "</b></a></div>\
-								<pre class=\"col s8\" style=\"white-space:pre-wrap;word-wrap:break-word\">" + issues[id][2] + "</pre>\
+								<div class=\"col s4\"><a href=\"/update_issue/" + id + "\" class=\"light-green-text text-darken-4\" title=\"单击以修改\"><b>" + issues[id][2] + "</b></a></div>\
+								<pre class=\"col s8\" style=\"white-space:pre-wrap;word-wrap:break-word\">" + issues[id][3] + "</pre>\
 								<br>\
 							</div>\
 						</div>\

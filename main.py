@@ -126,7 +126,8 @@ def grepIssue(column, require):
             cursor = database.execute("select * from issue where id = '%s'" % id)
             data = cursor.fetchall()
             raw_data = data
-        return raw_data[0]
+        # print(raw_data)
+        return raw_data
 
 def addPerson():
     with sqlite3.connect(DATABASE) as database:
