@@ -78,6 +78,7 @@
 
                     {% for msg in get_flashed_messages(with_categories=true) %}
                         var message = {
+														// TODO: |safe 标签不管用
                             text: "{{ msg[1] }}".replace("&lt;", "<").replace("&gt;", ">"),
                             category: "{{ msg[0] }}"
                         };
