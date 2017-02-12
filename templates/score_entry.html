@@ -16,7 +16,7 @@
 				</ul>
 			</div>
 			{% for each in data %}
-			<form class="col s12 m8 offset-m2 l8 offset-l2" name="{{ each }}" id="{{ each }}" method="post">
+			<form class="col s12 m8 offset-m2 l8 offset-l2" name="{{ each }}" id="{{ each }}" oninput="count_now()">
 				<div class="row">
 					<!--h6 class="col s12 center">自评部分</h6>
 					<div class="divider col s12"></div-->
@@ -58,98 +58,23 @@
 						<label for="bonus">加分</label>
 					</div>
 					<div class="divider col s12"></div>
-					<h6 class="col s6 left-align">自评部分总分：<span id="self-total">59</span></h6>
-					<h6 class="col s6 left-align">最后得分：<span id="total">59</span></h6>
+					<h6 class="col s6 left-align">自评部分总分：<span id="self-total"></span></h6>
+					<h6 class="col s6 left-align">最后得分：<span id="total"></span></h6>
 				</div>
+				<button class="btn col s3 waves-effect waves-light right" onclick="submit('{{ each }}')">提交<i class="material-icons right">send</i></button>
 			</form>
 			{% endfor %}
 		</div>
-		<button class="btn col s3 waves-effect waves-light right" type="submit">提交<i class="material-icons right">send</i></button>
 	</div>
 </div>
 
 
-
-	<script>
-        $(document).ready(function() {
-            Materialize.updateTextFields();
-            $('ul.tabs').tabs();
-        });
-
-		/*
-		//Array.forEach implementation for IE support..
-		//https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/forEach
-		if (!Array.prototype.forEach) {
-			Array.prototype.forEach = function(callback, thisArg) {
-				var T, k;
-				if (this == null) {
-					throw new TypeError(" this is null or not defined");
-				}
-				var O = Object(this);
-				var len = O.length >>> 0; // Hack to convert O.length to a UInt32
-				if ({}.toString.call(callback) != "[object Function]") {
-					throw new TypeError(callback + " is not a function");
-				}
-				if (thisArg) {
-					T = thisArg;
-				}
-				k = 0;
-				while (k < len) {
-					var kValue;
-					if (k in O) {
-						kValue = O[k];
-						callback.call(T, kValue, k, O);
-					}
-					k++;
-				}
-			};
-		}
-		*/
-
-		/*
-        function count() {
-            // stupid way of instant updating count-result
-            var dim_self = Number(document.getElementById("dim-self").value);
-            var act_self = Number(document.getElementById("act-self").value);
-            var act_num = Number(document.getElementById("act-num").value);
-            var dly_self = Number(document.getElementById("dly-self").value);
-            var dly_act = Number(document.getElementById("dly-act").value);
-            var mntr_dim = Number(document.getElementById("mntr-dim").value);
-            var mntr_act = Number(document.getElementById("mntr-act").value);
-            var atdc = Number(document.getElementById("attd").value);
-            var bns = Number(document.getElementById("bonus").value);
-            var self_total = dim_self + act_self + act_num + dly_self + dly_act;
-            var total = self_total + mntr_dim + mntr_act + atdc + bns;
-            document.getElementById("self-total").innerHTML = self_total;
-            document.getElementById("total").innerHTML = total;
-            return;
-        }
-        setInterval("count()", 500);
-		*/
-
-		// TODO: 尝试用jQuery选择器及$.each()来实时处理表单中的数据
-		function jqcount() {
-			$("form[id=预言家] input").each(function(index, self){
-				// stupid way of instant updating count-result
-				var dim_self = Number(self.getElementById("dim-self").value);
-				var act_self = Number(self.getElementById("act-self").value);
-				var act_num = Number(self.getElementById("act-num").value);
-				var dly_self = Number(self.getElementById("dly-self").value);
-				var dly_act = Number(self.getElementById("dly-act").value);
-				var mntr_dim = Number(self.getElementById("mntr-dim").value);
-				var mntr_act = Number(self.getElementById("mntr-act").value);
-				var atdc = Number(self.getElementById("attd").value);
-				var bns = Number(self.getElementById("bonus").value);
-				var self_total = dim_self + act_self + act_num + dly_self + dly_act;
-				var total = self_total + mntr_dim + mntr_act + atdc + bns;
-				console.log(total);
-				document.getElementById("self-total").innerHTML = self_total;
-				document.getElementById("total").innerHTML = total;
-				return;
-			});
-		}
-		setInterval("jqcount()", 500);
-
-	</script>
+<script src="../static/js/js_for_score_page.js"></script>
+<script>
+	$(document).ready(function() {
+		Materialize.updateTextFields();
+		$('ul.tabs').tabs();
+	});
+</script>
 
 {% endblock %}

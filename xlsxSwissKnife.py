@@ -72,7 +72,7 @@ def newFile(title="测试测试", depart="其它", *, date=str(datetime.now())):
             ws['A'+str(i+3)].value = names[i][0]
         wb.save(dst)
         # register at inventory.db
-        flash("成功创建表格！<br><div>请一次性填写完表格！</div>", category='success')
+        flash("成功创建表格！<br>请一次性填写完表格！", category='success')
         return 1
 
 def write(filname, data_in):
