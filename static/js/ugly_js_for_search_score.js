@@ -16,6 +16,11 @@ function show_result(score){
     } else {
         document.getElementById("result-container").style.display="block";
     }
+
+    // Toast if EMPTY RESULT
+	if(bfr == ""){
+		Materialize.toast("查询结果为空", 3000, "toast-warning")
+	}
 }
 
 function search(){
@@ -33,7 +38,7 @@ function search(){
         },
         error: function(xhr, type){
         }
-    })
+    });
     //location.href="/searching_issue?d=" + direction + "&c=" + content;
 }
 

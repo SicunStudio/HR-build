@@ -26,6 +26,12 @@ function show_result(issues){
 "
 	}
 	document.getElementById("result-table").innerHTML=bfr;
+
+	// Toast if EMPTY RESULT
+	if(bfr == ""){
+		Materialize.toast("查询结果为空", 3000, "toast-warning");
+
+	}
 }
 
 function search(){

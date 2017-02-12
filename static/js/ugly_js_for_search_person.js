@@ -6,6 +6,7 @@
 
 function show_result(persons){
 	var bfr = "";
+
 	for (var id in persons) {
 		// ugliest lines in the whole world!!!
 		bfr += "			<div class=\"card\">\
@@ -47,6 +48,11 @@ function show_result(persons){
 					"
 	}
 	document.getElementById("result-table").innerHTML=bfr;
+
+	// Toast if EMPTY RESULT
+	if(bfr == ""){
+		Materialize.toast("查询结果为空", 3000, "toast-warning")
+	}
 }
 
 function search(){
@@ -65,7 +71,7 @@ function search(){
 		error: function(xhr, type){
 			
 		}
-	})
+	});
 	//location.href="/searching_person?d=" + direction + "&c=" + content;
 }
 
