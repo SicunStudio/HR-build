@@ -352,10 +352,16 @@ def searching_issue():
     content = request.args.get('c')
     return jsonify(result=grepIssue(direction, content))
 
-@app.route('/scoring_page/', methods=['GET'])
+@app.route('/scoring_page/', methods=['POST'])
 @login_verify
 def scoring():
-    pass
+    data = request.get_json()
+    print(data['dim-self'])
+    for each in data:
+        print(each, data[each])
+    xlsxSwissKnife.write(session['filename'], data)
+    return jsonify(result=data)
+
 
 
 @app.route('/downloading/<title>')

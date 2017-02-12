@@ -75,8 +75,11 @@ def newFile(title="测试测试", depart="其它", *, date=str(datetime.now())):
         flash("成功创建表格！<br>请一次性填写完表格！", category='success')
         return 1
 
-def write(filname, data_in):
-    ''' write/update one persona at a time '''
+def write(filename, data_in):
+    '''
+      write/update ONE person at a time
+      data_in[0] should be person's name
+    '''
     dst = os.path.join(FOLDER, filename)
     try:
         wb = load_workbook(dst)

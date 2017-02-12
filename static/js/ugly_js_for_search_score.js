@@ -56,7 +56,7 @@ function EnterKeyToSearch() {
 }
 
 function delete_file(url) {
-    var s = confirm("删除后将不可恢复！<br>确认要删除吗？");
+    var s = confirm("删除后将不可恢复！确认要删除吗？");
     if (s == true) {
         console.log("deletion comfirmed!");
         location.href=url;
