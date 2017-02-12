@@ -129,6 +129,8 @@ def grepIssue(column, require):
         # print(raw_data)
         return raw_data
 
+
+# TODO: not safe ---- use parameters next time
 def addPerson():
     with sqlite3.connect(DATABASE) as database:
         SQL = "insert into test (id,name,gender,qq,tel,wchat,emg,school,class,apart,depart,grp,occup,dateofjoin) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (request.form['id'], request.form['name'], request.form['gender'], request.form['qq'], request.form['tel'], request.form['wchat'], request.form['emg'], request.form['school'], request.form['class'], request.form['apart'], request.form['depart'], request.form['group'], request.form['occup'], request.form['dateofjoin'])
@@ -146,6 +148,8 @@ def addPerson():
             flash("成功录入人员：%s，<br>编号 %s" % (request.form['name'], request.form['id']), category="success")
             return
 
+
+# TODO: not safe ---- use parameters next time
 def addIssue():
     with sqlite3.connect(DATABASE) as database:
         SQL = "insert into issue (id,title,body) values ('%s','%s','%s')" % (request.form['id'],request.form['title'],request.form['body'])
@@ -192,9 +196,10 @@ def grepScore(direction, content):
 
 ######## route ########
 
+''' user page '''
+
 @app.route('/')
 def index():
-    # a useless port
     return redirect(url_for('login'))
 
 @app.route('/login/', methods=['GET', 'POST'])
@@ -205,8 +210,25 @@ def login():
         session['id'] = request.form['id']
         session['passwd'] = request.form['passwd']
         if verify(session['id'], session['passwd']):
+            try:
+                # don't carry your passwd with you
+                assert session.pop('passwd', None) != None
+            except:
+                pass
             return redirect(url_for('personal'))
         return redirect(url_for('logout'))
+
+
+@app.route('/logout/')
+def logout():
+    if 'id' in session:
+        # clear session
+        session.pop('id', None)
+        print(session.pop('passwd', None))  # should get `None`
+        session.pop('filename', None)
+        flash("已登出", category='message')
+        return redirect(url_for('index'))
+
 
 @app.route('/personal/', methods=['GET', 'POST'])
 @login_verify
@@ -223,41 +245,10 @@ def personal():
             # flash msg added in xlsxSwissKnife
             return redirect(url_for('personal'))
 
-@app.route('/logout/')
-def logout():
-    if 'id' in session:
-        session.pop('id', None)
-        # the following lines are weird
-        session.pop('passwd', None)
-        session.pop('filename', None)
-        # Give out a flash toast
-        flash("已登出", category='message')
-    return redirect(url_for('index'))
 
-@app.route('/update/<id>', methods=['GET', 'POST'])
-@login_verify
-def update(id):
-    '''  update for personale info  '''
-    if request.method == 'GET':
-        printLog(id)
-        return render_template('info_update.html', database=getConditonal('*','id',id),id=id)
-    elif request.method == 'POST':
-        updatePerson(id)
-        return redirect(url_for('personal'))
 
-@app.route('/search_person/')
-@login_verify
-def search_person():
-    ''' search_person entry '''
-    return render_template('search_person.html', result=grepPerson('id','苟'))
 
-@app.route('/searching_person/', methods=['GET'])
-@login_verify
-def searching_person():
-    ''' search_person process '''
-    direction = request.args.get('d')
-    content = request.args.get('c')
-    return jsonify(result=grepPerson(direction, content))
+''' add to server '''
 
 @app.route('/entry_person/', methods=['GET', 'POST'])
 @login_verify
@@ -268,6 +259,7 @@ def entryPerson():
         return redirect(url_for('personal'))
     elif request.method == 'GET':
         return render_template('info_entry.html')
+
 
 @app.route('/entry_issue/', methods=['GET', 'POST'])
 @login_verify
@@ -280,18 +272,31 @@ def entryIssue():
         return render_template('issue_entry.html')
 
 
-@app.route('/search_issue/')
+@app.route('/score_page/<title>')
 @login_verify
-def search_issue():
-    return render_template('search_issue.html', result=grepIssue('id', '苟'))
+def score(title):
+    if 'filename' not in session:
+        return redirect(url_for('personal'))
+    else:
+        data = xlsxSwissKnife.read(session['filename'])
+        printLog(data)
+        return render_template('score_entry.html', data=data)
 
 
-@app.route('/searching_issue/', methods=['GET'])
+
+
+''' commit updates to server '''
+
+@app.route('/update/<id>', methods=['GET', 'POST'])
 @login_verify
-def searching_issue():
-    direction = request.args.get('d')
-    content = request.args.get('c')
-    return jsonify(result=grepIssue(direction, content))
+def update(id):
+    '''  update for personale info  '''
+    if request.method == 'GET':
+        printLog(id)
+        return render_template('info_update.html', database=getConditonal('*','id',id),id=id)
+    elif request.method == 'POST':
+        updatePerson(id)
+        return redirect(url_for('personal'))
 
 
 @app.route('/update_issue/<idx>', methods=['GET', 'POST'])
@@ -307,34 +312,50 @@ def alter(idx):
         return redirect(url_for('personal'))
 
 
-@app.route('/score_page/<title>')
+
+
+''' search entries '''
+
+@app.route('/search_person/')
 @login_verify
-def score(title):
-    if 'filename' not in session:
-        return redirect(url_for('personal'))
-    else:
-        data = xlsxSwissKnife.read(session['filename'])
-        printLog(data)
-        return render_template('score_entry.html', data=data)
+def search_person():
+    ''' search_person entry '''
+    return render_template('search_person.html', result=grepPerson('id','苟'))
 
-
-@app.route('/scoring_page/', methods=['GET'])
+@app.route('/search_issue/')
 @login_verify
-def scoring():
-    pass
-
+def search_issue():
+    return render_template('search_issue.html', result=grepIssue('id', '苟'))
 
 @app.route('/search_score/')
 @login_verify
 def search_score():
     return render_template('score_download.html', collection=grepScore('date', '*'))
 
-@app.route('/searching_score/', methods=['GET'])
-def searching_score():
-    direction = request.args.get('d', 'date')
-    content = request.args.get('c', '*')
-    return jsonify(result=grepScore(direction, content))
 
+
+
+######## process ########
+
+@app.route('/searching_person/', methods=['GET'])
+@login_verify
+def searching_person():
+    ''' search_person process '''
+    direction = request.args.get('d')
+    content = request.args.get('c')
+    return jsonify(result=grepPerson(direction, content))
+
+@app.route('/searching_issue/', methods=['GET'])
+@login_verify
+def searching_issue():
+    direction = request.args.get('d')
+    content = request.args.get('c')
+    return jsonify(result=grepIssue(direction, content))
+
+@app.route('/scoring_page/', methods=['GET'])
+@login_verify
+def scoring():
+    pass
 
 @app.route('/downloading/<title>')
 @login_verify
@@ -346,6 +367,12 @@ def downloading(title):
 def deleting(title):
     xlsxSwissKnife.delFile(title+'.xlsx')
     return redirect(url_for('search_score'))
+
+@app.route('/searching_score/', methods=['GET'])
+def searching_score():
+    direction = request.args.get('d', 'date')
+    content = request.args.get('c', '*')
+    return jsonify(result=grepScore(direction, content))
 
 
 
