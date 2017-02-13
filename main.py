@@ -8,6 +8,7 @@ from flask import make_response, flash, jsonify, send_from_directory
 from functools import wraps
 from operator import itemgetter
 import sqlite3, os, re, xlsxSwissKnife
+from pymysql.err import *
 
 
 from debug_utils import *
@@ -78,7 +79,9 @@ def updatePerson(id):
             database.execute(SQL)
             database.commit()
         except Exception as e:
-            flash("(⊙﹏⊙)b 修改资料时出错了：%s <br>请狠狠地戳开发人员~~~" % e.args(0), category="error")
+            flash("(⊙﹏⊙)b 修改资料时出错了：%s <br>请狠狠地戳开发人员~~~" % e.args[0], category="error")
+            printLog("[updatePerson Error] %s" % e.args[0])
+            printErrTraceback(title="updatePerson", exception=e)
             return
         else:
             flash("成功修改 %s 的资料" % id, category="success")
@@ -96,38 +99,53 @@ def updateIssue(idx):
             database.execute(SQL)
             database.commit()
         except Exception as e:
-            flash("(⊙﹏⊙)b 修改资料时出错了：%s 请狠狠地戳开发人员~~~" % e.args(0), category="error")
+            flash("(⊙﹏⊙)b 修改资料时出错了：%s 请狠狠地戳开发人员~~~" % e.args[0], category="error")
+            printLog("[updateIssue Error] %s" % e.args[0])
+            printErrTraceback(title="updateIssue", exception=e)
             return
         else:
             flash("成功修改事务", category="success")
             return
 
 def grepPerson(column, require):
-    with sqlite3.connect(DATABASE) as database:
-        cursor = database.execute("select * from test where %s GLOB '*%s*'" % (column, require))
-        data = cursor.fetchall()
-        result = dict()
-        for each in data:
-            result[each[0]] = each[1:]
-        return result
+    try:
+        with sqlite3.connect(DATABASE) as database:
+            cursor = database.execute("select * from test where %s GLOB '*%s*'" % (column, require))
+            data = cursor.fetchall()
+            result = dict()
+            for each in data:
+                result[each[0]] = each[1:]
+            return result
+    except Exception as e:
+        flash("(⊙﹏⊙)b 查询资料时出错了：%s 请狠狠地戳开发人员~~~" % e.args[0], category="error")
+        printLog("[grepPerson Error] %s" % e.args[0])
+        printErrTraceback(title="grepPerson", exception=e)
+        return
+
 
 def grepIssue(column, require):
-    with sqlite3.connect(DATABASE) as database:
-        raw_data = []
-        if column == 'idx':
-            cursor = database.execute("select * from issue where idx = %s" % require)
-            raw_data = cursor.fetchall()
-        else:
-            if column == 'name':
-                cursor = database.execute("select id from test where name = '%s'" % require)
-                id = cursor.fetchone()
-            elif column == 'id':
-                id = require
-            cursor = database.execute("select * from issue where id = '%s'" % id)
-            data = cursor.fetchall()
-            raw_data = data
-        # print(raw_data)
-        return raw_data
+    try:
+        with sqlite3.connect(DATABASE) as database:
+            raw_data = []
+            if column == 'idx':
+                cursor = database.execute("select * from issue where idx = %s" % require)
+                raw_data = cursor.fetchall()
+            else:
+                if column == 'name':
+                    cursor = database.execute("select id from test where name = '%s'" % require)
+                    id = cursor.fetchone()
+                elif column == 'id':
+                    id = require
+                cursor = database.execute("select * from issue where id = '%s'" % id)
+                data = cursor.fetchall()
+                raw_data = data
+            # print(raw_data)
+            return raw_data
+    except Exception as e:
+        flash("(⊙﹏⊙)b 查询资料时出错了：%s 请狠狠地戳开发人员~~~" % e.args[0], category="error")
+        printLog("[grepIssue Error] %s" % e.args[0])
+        printErrTraceback(title="grepIssue", exception=e)
+        return
 
 
 # TODO: not safe ---- use parameters next time
@@ -142,7 +160,9 @@ def addPerson():
             database.execute(SQL)
             database.commit()
         except Exception as e:
-            flash("(⊙﹏⊙)b 修改资料时出错了：%s <br>请狠狠地戳开发人员~~~" % e.args(0), category="error")
+            flash("(⊙﹏⊙)b 修改资料时出错了：%s <br>请狠狠地戳开发人员~~~" % e.args[0], category="error")
+            printLog("[addPerson Error] %s" % e.args[0])
+            printErrTraceback(title="addPerson", exception=e)
             return
         else:
             flash("成功录入人员：%s，<br>编号 %s" % (request.form['name'], request.form['id']), category="success")
@@ -161,7 +181,9 @@ def addIssue():
             database.execute(SQL)
             database.commit()
         except Exception as e:
-            flash("(⊙﹏⊙)b 录入资料时出错了：%s <br>请狠狠地戳开发人员~~~" % e.args(0), category="error")
+            flash("(⊙﹏⊙)b 录入资料时出错了：%s <br>请狠狠地戳开发人员~~~" % e.args[0], category="error")
+            printLog("[addIssue Error] %s" % e.args[0])
+            printErrTraceback(title="addIssue", exception=e)
             return
         else:
             flash("成功录入事务：%s" % request.form['title'], category="success")
@@ -175,21 +197,26 @@ def grepScore(direction, content):
     '''
     result = []
     ls = []
-    with sqlite3.connect(INVENTORY) as database:
-        if direction=='title':
-            cur = database.execute("select * from score where title = '%s'" % content)
-            ls = cur.fetchall()
-        elif direction=='date':
-            cur = database.execute("select * from score where date glob '%s'" % content)
-            ls = cur.fetchall()
-        elif direction=='depart':
-            cur = database.execute("select * from score where depart = '%s'" % content)
-            ls = cur.fetchall()
-    # re-formatting
-    for each in ls:
-        result.append({'title':each[0], 'date':each[1], 'depart':each[2], 'id': each[3]})
-    result_ordered_by_date = sorted(result, key=itemgetter('id'))  # i.e. sorted in time of creation
-    return result_ordered_by_date
+    try:
+        with sqlite3.connect(INVENTORY) as database:
+            if direction=='title':
+                cur = database.execute("select * from score where title = '%s'" % content)
+                ls = cur.fetchall()
+            elif direction=='date':
+                cur = database.execute("select * from score where date glob '%s'" % content)
+                ls = cur.fetchall()
+            elif direction=='depart':
+                cur = database.execute("select * from score where depart = '%s'" % content)
+                ls = cur.fetchall()
+        # re-formatting
+        for each in ls:
+            result.append({'title':each[0], 'date':each[1], 'depart':each[2], 'id': each[3]})
+        result_ordered_by_date = sorted(result, key=itemgetter('id'))  # i.e. sorted in time of creation
+        return result_ordered_by_date
+    except Exception as e:
+        flash("(⊙﹏⊙)b 查询资料时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
+        printLog("[grepScore Error] %s" % e.args[0])
+        printErrTraceback(title="grepScore",exception=e)
 
 
 

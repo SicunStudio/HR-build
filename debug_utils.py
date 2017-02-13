@@ -17,6 +17,16 @@ def printLog(content):
     currentTime = datetime.datetime.now().isoformat("-")
     print("[LOG] [ %s ]\t %s" % (currentTime, content))
 
+def printErrTraceback(title, exception):
+    """
+    Print error traceback in Python console when catching exceptions.
+    :param title: The action name you want to tag where traceback should be logged.
+    :return:
+    """
+    currentTime = datetime.datetime.now().isoformat("-")
+    print("[ERROR] [ %s ] [ %s ]\t %s" % (title, currentTime, exception.args[0]))
+
+
 ######## Notification utils #########
 @app.route('/clear_flash/', methods=['GET', 'POST'])
 def clear_flash_messages():
