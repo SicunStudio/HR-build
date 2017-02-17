@@ -8,14 +8,14 @@
     <br>
     <div class="row valign-wrapper">
       <div class="input-field col s3 left">
-        <select id="direction" name="direction">
+        <select id="direction" name="direction" onchange="change_searchbox()">
           <option value="title" selected>标题</option>
           <option value="date">时间</option>
           <option value="depart">部门</option>
         </select>
       </div>
-      <div class="input-field col s8">
-        <input name="content" id="content" type="text" class="black-text" onkeypress="EnterKeyToSearch()" required>
+      <div class="input-field col s8" id="content-wrap">
+        <input name="content" id="content" type="text" class="black-text" placeholder="请输入表格标题" onkeypress="EnterKeyToSearch()" required>
       </div>
       <!-- original ver -->
       <!--button class="btn-flat waves-effect waves-dark col s1 right valign" type="submit"><i class="material-icons">search</i></button-->
@@ -37,6 +37,10 @@
     $('.collapsible').collapsible();
     $('select').material_select();
     // $('.tooltipped').tooltip({delay: 50, position: bottom});
+    // $('.datepicker').pickadate({
+		// 	selectMonths: true, // Creates a dropdown to control month
+		// 	selectYears: 15 // Creates a dropdown of 15 years to control year
+		// });
   });
 </script>
 

@@ -8,7 +8,10 @@ from flask import make_response, flash, jsonify, send_from_directory
 from functools import wraps
 from operator import itemgetter
 import sqlite3, os, re, xlsxSwissKnife
-from pymysql.err import *
+try:
+    from pymysql.err import *
+except:
+    pass
 
 
 from debug_utils import *
@@ -243,7 +246,11 @@ def login():
             except:
                 pass
             return redirect(url_for('personal'))
-        return redirect(url_for('logout'))
+        else:
+            session.pop('id', None)
+            session.pop('passwd', None)
+            #session.pop('filename', None)
+            return redirect(url_for('login'))
 
 
 @app.route('/logout/')
