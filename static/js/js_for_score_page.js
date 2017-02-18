@@ -24,20 +24,27 @@ function count_each(name) {
 
 function submit_now(name, e) {
     var f = document.getElementsByName(name);
+    for (var each = 1; each < 10; each++) {
+        if (f[each].value === '') {
+            Materialize.toast(
+                $("<div>分数不能为空！</div>"), 3000, 'toast-warning');
+            return;
+        }
+    }
     // console.log(f);
     // JSON data is sent in RANDOM order!!!
     var data = {
         "name": name,
-        "dim-self": Number(f[1].value),
-        "act-self": Number(f[2].value),
-        "act-num": Number(f[3].value),
-        "dly-self": Number(f[4].value),
-        "dly-act": Number(f[5].value),
-        "mntr-dim": Number(f[6].value),
-        "mntr-act": Number(f[7].value),
-        "attd": Number(f[8].value),
-        "bonus": Number(f[9].value),
-        "total": Number(f[11].innerHTML)
+        "dim-self": f[1].value,
+        "act-self": f[2].value,
+        "act-num": f[3].value,
+        "dly-self": f[4].value,
+        "dly-act": f[5].value,
+        "mntr-dim": f[6].value,
+        "mntr-act": f[7].value,
+        "attd": f[8].value,
+        "bonus": f[9].value,
+        "total": f[11].innerHTML
     };
     $.ajax({
         type: 'POST',

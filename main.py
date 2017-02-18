@@ -8,13 +8,11 @@ from flask import make_response, flash, jsonify, send_from_directory
 from functools import wraps
 from operator import itemgetter
 import sqlite3, os, re, xlsxSwissKnife
+from debug_utils import *
 try:
     from pymysql.err import *
 except:
     pass
-
-
-from debug_utils import *
 
 ######## initializaton ########
 
@@ -345,6 +343,11 @@ def alter(idx):
         updateIssue(idx)
         return redirect(url_for('personal'))
 
+# @app.route('/reassess/<title>')
+# @login_verify
+# def reassess(title):
+#
+
 
 
 
@@ -394,8 +397,8 @@ def scoring():
     #     print(each, data[each])
     xlsxSwissKnife.write(session['filename'], data)
     # print('===========================')
-    for each in xlsxSwissKnife.getPerson(session['filename'], data['name']):
-        print(each, data[each])
+    # for each in xlsxSwissKnife.getPerson(session['filename'], data['name']):
+    #     print(each, data[each])
     return jsonify(result=xlsxSwissKnife.getPerson(
         session['filename'], data['name']))
 

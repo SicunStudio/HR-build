@@ -96,7 +96,7 @@ def write(filename, raw):
             raw['total']
         ]
         for o, i in zip(ws['B'+cur:'K'+cur][0], ordered):
-            o.value = i
+            o.value = int(i)
         wb.save(dst)
         # Flask's flash won't show until refreshing, use js instead
         # flash("成功写入 %s 的分数！" % raw['name'], 'success')
