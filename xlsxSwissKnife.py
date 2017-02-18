@@ -128,6 +128,37 @@ def read(filename):
             everyone[ws['A'+row].value] = someone  # join the party
         return everyone
 
+
+def getPerson(filename, name):
+    '''
+      return a person at a time, in:
+        {'name':'xxx', 'dim-self':x, 'act-self':x, ...}
+    '''
+    dst = os.path.join(FOLDER, filename)
+    try:
+        wb = load_workbook(dst)
+    except IOError:
+        print('IOError during read({})'.format(dst))
+        flash("表格读取错误!", category='error')
+        return dict()
+    else:
+        ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+        cur = str(_move_cursor(ws, name))
+        person = {
+            'name': ws['A'+cur].value,
+            'dim-self': ws['B'+cur].value,
+            'act-self': ws['C'+cur].value,
+            'act-num': ws['D'+cur].value,
+            'dly-self': ws['E'+cur].value,
+            'dly-act': ws['F'+cur].value,
+            'mntr-dim': ws['G'+cur].value,
+            'mntr-act': ws['H'+cur].value,
+            'attd': ws['I'+cur].value,
+            'bonus': ws['J'+cur].value
+        }
+        return person
+
+
 def delFile(filename):
     ''' delete a file and cancel its registration '''
     dst = os.path.join(FOLDER, filename)

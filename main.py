@@ -390,10 +390,14 @@ def searching_issue():
 @login_verify
 def scoring():
     data = request.get_json()
-    for each in data:
-        print(each, data[each])
+    # for each in data:
+    #     print(each, data[each])
     xlsxSwissKnife.write(session['filename'], data)
-    return jsonify(result=data)
+    # print('===========================')
+    for each in xlsxSwissKnife.getPerson(session['filename'], data['name']):
+        print(each, data[each])
+    return jsonify(result=xlsxSwissKnife.getPerson(
+        session['filename'], data['name']))
 
 
 

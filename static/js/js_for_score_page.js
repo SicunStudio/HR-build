@@ -49,7 +49,6 @@ function submit_now(name, e) {
             var result = data.result;
             var i;
             var f = document.getElementsByName(result["name"]);
-            console.log("Running ajax.success");
             // TODO: code structue could be simplified using jQuery
             f[1].value = result["dim-self"];
             f[2].value = result["act-self"];
@@ -62,13 +61,13 @@ function submit_now(name, e) {
             f[9].value = result["bonus"];
             toast_msg =
             Materialize.toast(
-                $("<div>成功写入 "+result["name"]+" 的分数！</div>"),
+                $("<div>成功写入 "+result['name']+" 的分数！</div>"),
                 3000, 'toast-success');
-            console.log("finish running");
+            $("ul li a[href=#"+result['name']+"]").attr("class", "teal-text")
         },
         error: function(xhr, type){
             Materialize.toast(
-                $("<div>刷新页面数据失败！</div>"),
+                $("<div>数据交换失败！</div>"),
                 3000, 'toast-error'
             )
         }
