@@ -312,6 +312,8 @@ def score(title):
     else:
         data = xlsxSwissKnife.read(session['filename'])
         printLog(data)
+        for each in data:
+            print(each, data[each])
         return render_template('score_entry.html', data=data)
 
 

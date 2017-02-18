@@ -1,6 +1,4 @@
-{% extends "base.html" %}
-
-{% block main_content %}
+{% extends "base.html" %} {% block main_content %}
 
 <div class="container">
 	<!-- don'no how 2 let <div> auto-fit height -->
@@ -15,55 +13,58 @@
 					{% endfor %}
 				</ul>
 			</div>
-			{% for each in data %}
-			<div class="col s12 m8 offset-m2 l8 offset-l2" name="{{ each }}" id="{{ each }}" oninput="count_now('{{ each }}')">
-				<div class="row">
-					<!--h6 class="col s12 center">自评部分</h6>
+			<div id="input-wrap">
+				{% for each in data %}
+				<div class="col s12 m8 offset-m2 l8 offset-l2" name="{{ each }}" id="{{ each }}" oninput="count_now('{{ each }}')">
+					<div class="row">
+						<!--h6 class="col s12 center">自评部分</h6>
 					<div class="divider col s12"></div-->
-					<div class="input-field col s4">
-						<input type="number" name="{{ each }}" id="dim-self" value="{{ each['B'] }}" required>
-						<label for="dim-self">维度自评</label>
+						<div class="input-field col s4">
+							<!-- TODO: if data does not exist, eg a new sheet, value will be set to the string "None" -->
+							<input type="number" name="{{ each }}" id="dim-self" value="{{ data[each]['B'] }}" required>
+							<label for="dim-self">维度自评</label>
+						</div>
+						<div class="input-field col s4">
+							<input type="number" name="{{ each }}" id="act-self" value="{{ data[each]['C'] }}" required>
+							<label for="act-self">活动自评</label>
+						</div>
+						<div class="input-field col s4">
+							<input type="number" name="{{ each }}" id="act-num" value="{{ data[each]['D'] }}" required>
+							<label for="act-num">活动项数</label>
+						</div>
+						<div class="input-field col s6">
+							<input type="number" name="{{ each }}" id="dly-self" value="{{ data[each]['E'] }}" required>
+							<label for="dly-self">日常自评</label>
+						</div>
+						<div class="input-field col s6">
+							<input type="number" name="{{ each }}" id="dly-act" value="{{ data[each]['F'] }}" required>
+							<label for="dly-act">日常项目</label>
+						</div>
+						<div class="divider col s12"></div>
+						<div class="input-field col s6">
+							<input type="number" name="{{ each }}" id="mntr-dim" value="{{ data[each]['G'] }}" required>
+							<label for="mntr-dim">部长维度评分</label>
+						</div>
+						<div class="input-field col s6">
+							<input type="number" name="{{ each }}" id="mntr-act" value="{{ data[each]['H'] }}" required>
+							<label for="mntr-act">部长活动评分</label>
+						</div>
+						<div class="input-field col s6">
+							<input type="number" name="{{ each }}" id="attd" value="{{ data[each]['I'] }}" required>
+							<label for="attd">考勤得分</label>
+						</div>
+						<div class="input-field col s6">
+							<input type="number" name="{{ each }}" id="bonus" value="{{ data[each]['J'] }}" required>
+							<label for="bonus">加分</label>
+						</div>
+						<div class="divider col s12"></div>
+						<h6 class="col s6 left-align">自评部分总分：<span name="{{ each }}" id="self-total"></span></h6>
+						<h6 class="col s6 left-align">最后得分：<span name="{{ each }}" id="total"></span></h6>
 					</div>
-					<div class="input-field col s4">
-						<input type="number" name="{{ each }}" id="act-self" required>
-						<label for="act-self">活动自评</label>
-					</div>
-					<div class="input-field col s4">
-						<input type="number" name="{{ each }}" id="act-num" required>
-						<label for="act-num">活动项数</label>
-					</div>
-					<div class="input-field col s6">
-						<input type="number" name="{{ each }}" id="dly-self" required>
-						<label for="dly-self">日常自评</label>
-					</div>
-					<div class="input-field col s6">
-						<input type="number" name="{{ each }}" id="dly-act" required>
-						<label for="dly-act">日常项目</label>
-					</div>
-					<div class="divider col s12"></div>
-					<div class="input-field col s6">
-						<input type="number" name="{{ each }}" id="mntr-dim" required>
-						<label for="mntr-dim">部长维度评分</label>
-					</div>
-					<div class="input-field col s6">
-						<input type="number" name="{{ each }}" id="mntr-act" required>
-						<label for="mntr-act">部长活动评分</label>
-					</div>
-					<div class="input-field col s6">
-						<input type="number" name="{{ each }}" id="attd" required>
-						<label for="attd">考勤得分</label>
-					</div>
-					<div class="input-field col s6">
-						<input type="number" name="{{ each }}" id="bonus" required>
-						<label for="bonus">加分</label>
-					</div>
-					<div class="divider col s12"></div>
-					<h6 class="col s6 left-align">自评部分总分：<span name="{{ each }}" id="self-total"></span></h6>
-					<h6 class="col s6 left-align">最后得分：<span name="{{ each }}" id="total"></span></h6>
+					<button class="btn col s3 waves-effect waves-light right" onclick="submit_now('{{ each }}', this)" name="{{ each }}">提交<i class="material-icons right">send</i></button>
 				</div>
-				<button class="btn col s3 waves-effect waves-light right" onclick="submit_now('{{ each }}', this)" name="{{ each }}">提交<i class="material-icons right">send</i></button>
+				{% endfor %}
 			</div>
-			{% endfor %}
 		</div>
 	</div>
 </div>
@@ -74,6 +75,7 @@
 	$(document).ready(function() {
 		Materialize.updateTextFields();
 		$('ul.tabs').tabs();
+		prefill();
 	});
 </script>
 

@@ -5,7 +5,7 @@ function count_now(name) {
         this_form.getElementsByTagName("span")[0].innerHTML=result[0];
         this_form.getElementsByTagName("span")[1].innerHTML=result[1];
     });
-};
+}
 
 
 function count_each(name) {
@@ -19,7 +19,16 @@ function count_each(name) {
         total += Number(f[i].value);
     }
     return [self_total, total];
-};
+}
+
+
+function prefill() {
+    var range = $("#input-wrap").children();
+    // console.log(range.length);
+    for (var i = 0; i < range.length; i++) {
+        count_now(range[i].attributes.name.value);
+    }
+}
 
 
 function submit_now(name, e) {

@@ -124,7 +124,10 @@ def read(filename):
         for row in tuple(map(str, range(3, end))):  # get ('3', '4', '5', ..., '{end-1}')
             someone = dict()  # single person container
             for col in 'BCDEFGHIJK':
-                someone[col] = ws[col+row].value
+                if ws[col+row].value is None:
+                    someone[col] = ''
+                else:
+                    someone[col] = ws[col+row].value
             everyone[ws['A'+row].value] = someone  # join the party
         return everyone
 
