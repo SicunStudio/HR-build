@@ -75,10 +75,10 @@ def newFile(title="测试测试", depart="其它", *, date=str(datetime.now())):
         flash("成功创建表格！<br>请一次性填写完表格！", category='success')
         return 1
 
-def write(filename, data_in):
+def write(filename, raw):
     '''
       write/update ONE person at a time
-      data_in[0] should be person's name
+      raw[0] should be person's name
     '''
     dst = os.path.join(FOLDER, filename)
     try:
@@ -88,10 +88,18 @@ def write(filename, data_in):
         return 0
     else:
         ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
-        cur = str(_move_cursor(ws, data_in[0]))
-        for i, o in zip(ws['B'+cur:'K'+cur][0], data_in[1:]):
+        cur = str(_move_cursor(ws, raw['name']))
+        ordered = [
+            raw['dim-self'], raw['act-self'], raw['act-num'],
+            raw['dly-self'], raw['dly-act'], raw['mntr-dim'],
+            raw['mntr-act'], raw['attd'], raw['bonus'],
+            raw['total']
+        ]
+        for o, i in zip(ws['B'+cur:'K'+cur][0], ordered):
             o.value = i
         wb.save(dst)
+        # Flask's flash won't show until refreshing, use js instead
+        # flash("成功写入 %s 的分数！" % raw['name'], 'success')
         return 1
 
 def read(filename):

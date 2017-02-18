@@ -390,7 +390,6 @@ def searching_issue():
 @login_verify
 def scoring():
     data = request.get_json()
-    print(data['dim-self'])
     for each in data:
         print(each, data[each])
     xlsxSwissKnife.write(session['filename'], data)
