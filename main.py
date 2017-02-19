@@ -7,7 +7,7 @@ from flask import Flask, request, session, render_template, url_for, redirect
 from flask import make_response, flash, jsonify, send_from_directory
 from functools import wraps
 from operator import itemgetter
-import sqlite3, os, re, xlsxSwissKnife
+import sqlite3, os, re, hashlib, xlsxSwissKnife
 from debug_utils import *
 try:
     from pymysql.err import *
@@ -53,7 +53,8 @@ def verify(id, passwd):
             flash("用户名或密码错误！", category="error")
             return 0
         else:  # correct
-            if passwd==correct[0]:
+            treated = hashlib.sha256((passwd+'do_not_change_me!!!'+id).encode('utf-8'))
+            if treated.hexdigest()==correct[0]:
                 return 1
             else:  # wrong passwd
                 flash("用户名或密码错误！", category="error")
