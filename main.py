@@ -24,6 +24,8 @@ app.secret_key = 'DogLeeNation(2B||!2B)-->|'
 FOLDER = os.path.join(os.curdir, 'score-sheets')  # xlsx location
 INVENTORY = os.path.join(FOLDER, 'inventory.db')
 DATABASE = os.path.join(app.root_path, 'data.db')  # db loaction
+SALT = 'do_not_change_me!!!'
+INVITATION = 'you may want to change this regularly'
 
 ######## functions ########
 
@@ -53,12 +55,34 @@ def verify(id, passwd):
             flash("用户名或密码错误！", category="error")
             return 0
         else:  # correct
-            treated = hashlib.sha256((passwd+'do_not_change_me!!!'+id).encode('utf-8'))
+            treated = hashlib.sha256((passwd+SALT+id).encode('utf-8'))
             if treated.hexdigest()==correct[0]:
                 return 1
             else:  # wrong passwd
                 flash("用户名或密码错误！", category="error")
                 return 0
+
+def adminRegist(id, passwd):
+    if id == '':
+        flash("用户名不能为空！", category='error')
+        return 0
+    elif passwd == '':
+        flash("密码不能为空！", category='error')
+        return 0
+    with sqlite3.connect(DATABASE) as database:
+        cur = database.execute("select passwd from admin where id = '%s'" % id)
+        empty = cur.fetchone()
+        if empty != None:
+            flash("用户名已经存在!", category='info')
+            return 0
+        else:  # id is new
+            treated = hashlib.sha256((passwd+SALT+id).encode('utf-8'))
+            sql_sentence = "insert into admin (id, passwd) values ('%s', '%s')" % (id, treated.hexdigest())
+            cur = database.execute(sql_sentence)
+            database.commit()
+            flash("注册成功！<br>请登录！", category='success')
+            return 1
+
 
 def login_verify(to_be_decorated):
     '''  check-in decorator  '''
@@ -249,6 +273,27 @@ def login():
             session.pop('id', None)
             session.pop('passwd', None)
             #session.pop('filename', None)
+            return redirect(url_for('login'))
+
+
+@app.route('/registering/', methods=['POST'])
+def register():
+    id = request.form.get('id', '')
+    passwd = request.form.get('passwd_first', '')
+    if passwd != request.form.get('passwd_second', ''):
+        # TODO: if using 'warning', will toast an empty warning and then the info-toast containning the message
+        flash("两次密码不相同！<br>换个好记一点的吧？", category='info')
+        return redirect(url_for('login'))
+    elif len(passwd) < 8:
+        flash("密码太短了！", category='info')
+        return redirect(url_for('login'))
+    elif request.form.get('invitation', '') != INVITATION:
+        flash("邀请码错误！", category='info')
+        return redirect(url_for('login'))
+    else:
+        if adminRegist(id, passwd):
+            return redirect(url_for('login'))
+        else:
             return redirect(url_for('login'))
 
 

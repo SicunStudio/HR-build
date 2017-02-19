@@ -91,7 +91,8 @@
                                 Materialize.toast($messageHTML, 3000, "toast-success");
                                 break;
                             case "warning":
-                                Materialize.toast($messageHTML, 3000, "toast-warning")
+																// TODO: causing an empty toast-warning and then a message-contained toast-info
+                                Materialize.toast($messageHTML, 3000, "toast-warning");
                             default:
                                 Materialize.toast($messageHTML, 3000, "toast-info");
                         }
