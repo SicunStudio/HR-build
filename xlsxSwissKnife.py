@@ -10,9 +10,11 @@ import os, sqlite3
 
 ######## general config ########
 
-FOLDER = os.path.join(os.curdir, 'score-sheets')  # xlsx location
+HR_SYSTEM_ROOT = os.path.split(os.path.realpath(__file__))[0]
+
+FOLDER = os.path.join(HR_SYSTEM_ROOT, 'score-sheets')  # xlsx location
 INVENTORY = os.path.join(FOLDER, 'inventory.db')
-DATABASE = os.path.join(os.curdir, 'data.db')  # db loaction
+DATABASE = os.path.join(HR_SYSTEM_ROOT, 'data.db')  # db loaction
 # that is to say: main.py, xlsxSwissKnife.py and data.da must be under the same dir
 
 ######## utils ########

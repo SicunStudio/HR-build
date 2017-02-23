@@ -24,6 +24,12 @@
                     <div class="nav-wrapper light-green darken-4">
                         <!-- Header title link should redirect to the home page -->
                         <a href="{{ url_for('personal') }}" class="brand-logo" title="点击返回主页面"><img src="" style="width:1em; height:1em;" alt="something to fill in"/>HR系统_demo</a>
+                        <!-- Return to home button -->
+                            <ul class="right">
+                                <li>
+                                    <a class="dropdown-button" href="{{ url_for('personal') }}">返回首页</a>
+                                </li>
+                            </ul>
                         {% if 'id' in session %}
                             <!-- Log-out Switcher
                                 The following part will only be seen after logging in
