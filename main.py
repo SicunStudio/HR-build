@@ -19,8 +19,10 @@ except:
 app = Flask(__name__)
 app.secret_key = 'DogLeeNation(2B||!2B)-->|'
 
-######## global configuration ########
 
+######## global configuration ########
+HR_SYSTEM_ROOT = os.path.split(os.path.realpath(__file__))[0]
+SSL_CONTEXT_ROOT = os.path.join(HR_SYSTEM_ROOT, "ssl")
 FOLDER = os.path.join(os.curdir, 'score-sheets')  # xlsx location
 INVENTORY = os.path.join(FOLDER, 'inventory.db')
 DATABASE = os.path.join(app.root_path, 'data.db')  # db loaction
@@ -475,4 +477,6 @@ def searching_score():
 ######## run ########
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True)
+    # Introduce SSL support
+    ssl_context = (os.path.join(SSL_CONTEXT_ROOT,'feiyuqing.crt'), os.path.join(SSL_CONTEXT_ROOT, 'feiyuqing.heyheyhey.key'))
+    app.run(host="0.0.0.0", debug=True, ssl_context=ssl_context)
