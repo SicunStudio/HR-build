@@ -33,9 +33,16 @@ def getConditonal(column, conditon, require):
 
 ######## person ########
 
-def addPerson(data):
+def addPerson(d):
     with sqlite3.connect(DATABASE) as database:
-        SQL = "insert into test (id,name,gender,qq,tel,wchat,emg,school,class,apart,depart,grp,occup,dateofjoin) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (data['id'], data['name'], data['gender'], data['qq'], data['tel'], data['wchat'], data['emg'], data['school'], data['class'], data['apart'], data['depart'], data['group'], data['occup'], data['dateofjoin'])
+        data = dict(
+            id=d.get('id', ''), name=d.get('name', ''), gender=d.get('gender', ''),
+            qq=d.get('qq', ''), tel=d.get('tel', ''), wchat=d.get('wchat', ''), emg=d.get('emg', ''),
+            school=d.get('school', ''), clas=d.get('class', ''), apart=d.get('apart', ''),
+            depart=d.get('depart', ''), group=d.get('group', ''), occup=d.get('occup', ''),
+            dateofjoin=d.get('dateofjoin', '')
+        )
+        SQL = "insert into test (id,name,gender,qq,tel,wchat,emg,school,class,apart,depart,grp,occup,dateofjoin) values ('{id}','{name}','{gender}','{qq}','{tel}','{wchat}','{emg}','{school}','{clas}','{apart}','{depart}','{group}','{occup}','{dateofjoin}')".format_map(data)
         printLog("============== ADD PERSON ==============")
         printLog(SQL)
         printLog("===========================================")
@@ -49,13 +56,21 @@ def addPerson(data):
             printErrTraceback(title="addPerson", exception=e)
             return 0
         else:
-            flash("成功录入人员：%s，<br>编号 %s" % (data['name'], data['id']), category="success")
+            flash("成功录入人员：{}，<br>编号 {}".format(data['name'], data['id']), category="success")
             return 1
 
 
-def updatePerson(id, data):
+def updatePerson(id, d):
     with sqlite3.connect(DATABASE) as database:
-        SQL = "update test set name = '%s', gender = '%s', qq = '%s', tel = '%s', wchat = '%s', emg = '%s', school = '%s', class = '%s', apart = '%s', depart = '%s', grp = '%s', occup = '%s', dateofjoin = '%s' where id = '%s'" % (data['name'], data['gender'], data['qq'], data['tel'], data['wchat'], data['emg'], data['school'], data['class'], data['apart'], data['depart'], data['group'], data['occup'], data['dateofjoin'], id)
+        data = dict(
+            name=d.get('name', ''), gender=d.get('gender', ''),
+            qq=d.get('qq', ''), tel=d.get('tel', ''), wchat=d.get('wchat', ''), emg=d.get('emg', ''),
+            school=d.get('school', ''), clas=d.get('class', ''), apart=d.get('apart', ''),
+            depart=d.get('depart', ''), group=d.get('group', ''), occup=d.get('occup', ''),
+            dateofjoin=d.get('dateofjoin', ''), id=id
+        )
+        print(data)
+        SQL = "update test set name = '{name}', gender = '{gender}', qq = '{qq}', tel = '{tel}', wchat = '{wchat}', emg = '{emg}', school = '{school}', class = '{clas}', apart = '{apart}', depart = '{depart}', grp = '{group}', occup = '{occup}', dateofjoin = '{dateofjoin}' where id = '{id}'".format_map(data)
         printLog("============== UPDATE PERSON ==============")
         printLog(SQL)
         printLog("===========================================")
@@ -69,7 +84,7 @@ def updatePerson(id, data):
             printErrTraceback(title="updatePerson", exception=e)
             return 0
         else:
-            flash("成功修改 %s 的资料" % id, category="success")
+            flash("成功修改 {}（{}） 的资料".format(data['name'], data['id']), category="success")
             return 1
 
 

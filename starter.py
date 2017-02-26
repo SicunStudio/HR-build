@@ -28,14 +28,10 @@ except:
 # see globalvar.py
 
 
-
-
 ######## initializaton ########
 
 app = Flask(__name__)
 app.secret_key = 'DogLeeNation(2B||!2B)-->|'
-
-
 
 
 ######## user utils ########
@@ -74,7 +70,7 @@ def adminRegist(id, passwd):
         cur = database.execute("select passwd from admin where id = '%s'" % id)
         empty = cur.fetchone()
         if empty != None:
-            flash("用户名已经存在!", category='info')
+            flash("用户名已经存在!", category='warning')
             return 0
         else:  # id is new
             treated = hashlib.sha256((passwd+SALT+id).encode('utf-8'))
@@ -133,13 +129,13 @@ def register():
     passwd = request.form.get('passwd_first', '')
     if passwd != request.form.get('passwd_second', ''):
         # TODO: if using 'warning', will toast an empty warning and then the info-toast containning the message
-        flash("两次密码不相同！<br>换个好记一点的吧？", category='info')
+        flash("两次密码不相同！<br>换个好记一点的吧？", category='warning')
         return redirect(url_for('login'))
     elif len(passwd) < 8:
-        flash("密码太短了！", category='info')
+        flash("密码太短了！", category='warning')
         return redirect(url_for('login'))
     elif request.form.get('invitation', '') != INVITATION:
-        flash("邀请码错误！", category='info')
+        flash("邀请码错误！", category='warning')
         return redirect(url_for('login'))
     else:
         if adminRegist(id, passwd):

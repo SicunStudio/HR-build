@@ -22,47 +22,44 @@
             <div class="navbar-fixed">
                 <nav>
                     <div class="nav-wrapper light-green darken-4">
-                        <!-- Header title link should redirect to the home page -->
+                        <!-- Header title will redirect you to the home page -->
                         <a href="{{ url_for('personal') }}" class="brand-logo" title="点击返回主页面"><img src="" style="width:1em; height:1em;" alt="something to fill in"/>HR系统_demo</a>
-                        <!-- Return to home button -->
-                            <ul class="right">
-                                <li>
-                                    <a class="dropdown-button" href="{{ url_for('personal') }}">返回首页</a>
-                                </li>
-                            </ul>
-                        {% if 'id' in session %}
-                            <!-- Log-out Switcher
-                                The following part will only be seen after logging in
-                            -->
-                            <ul id="out" class="dropdown-content">
-                                <li><a href="#!">手滑了....</a></li>
-                                <li><a href="{{ url_for('logout') }}">确认登出</a></li>
-                            </ul>
-                            <ul class="right">
-                                <li>
-                                    <a class="dropdown-button" href="#!" data-activates="out" title="注销登录">登出</a>
-                                </li>
-                            </ul>
 
-                            <!-- Username Indicator -->
-                            <ul class="right hide-on-small-only">
-                                <li>
-                                    <a class="dropdown-button">{{ session['id'] }}</a>
-                                </li>
-                            </ul>
+                        {% if 'id' in session %}
+                          <ul id="logout-m" class="dropdown-content">
+                              <li><a href="#!">手滑了....</a></li>
+                              <li><a href="{{ url_for('logout') }}">确认登出</a></li>
+                          </ul>
+													<ul id="logout-l" class="dropdown-content">
+															<li><a href="#!">手滑了....</a></li>
+															<li><a href="{{ url_for('logout') }}">确认登出</a></li>
+													</ul>
+
+
+													<!-- for desktop -->
+                          <ul class="right hide-on-med-and-down">
+														<li>
+															<a class="dropdown-button">{{ session['id'] }}</a>
+														</li>
+														<li>
+															<a class="dropdown-button" href="#!" data-activates="logout-l" title="注销登录">登出</a>
+														</li>
+                          </ul>
+
+													<!-- for mobile -->
+													<ul class="right hide-on-large-only">
+														<li>
+															<a class="dropdown-button" href="#!" data-activates="logout-m" title="注销登录">登出</a>
+														</li>
+													</ul>
+
+												{% else %}
+
                         {% endif %}
                     </div>
                 </nav>
             </div>
 
-            <!-- primitive version -->
-			<!--div class="light-green darken-4 z-depth-2">
-				<div class="container">
-					<br>
-					<h3 class="header center-on-small-only white-text">HR系统_demo</h3>
-					<br>
-				</div>
-			</div-->
         </header>
 
     <!-- Page Body -->
@@ -76,6 +73,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
     <script id="notification-controller">
         $(document).ready(function() {
+					$(".dropdown-button").dropdown();
+
             var showFlashToast = function () {
 
                 var refresh_flag = document.getElementById("refresh-flag");

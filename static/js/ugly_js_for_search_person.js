@@ -6,7 +6,6 @@
 
 function show_result(persons){
 	var bfr = "";
-
 	for (var id in persons) {
 		// ugliest lines in the whole world!!!
 		bfr += "			<div class=\"card\">\
@@ -48,12 +47,14 @@ function show_result(persons){
 					"
 	}
 	document.getElementById("result-table").innerHTML=bfr;
-
 	// Toast if EMPTY RESULT
 	if(bfr == ""){
 		Materialize.toast("查询结果为空", 3000, "toast-warning")
 	}
 }
+
+
+
 
 function search(){
 	var search_data = {
@@ -69,11 +70,14 @@ function search(){
 			show_result(data.result);
 		},
 		error: function(xhr, type){
-			
+
 		}
 	});
 	//location.href="/searching_person?d=" + direction + "&c=" + content;
 }
+
+
+
 
 /**
  * Support pressing Enter key to perform a search
@@ -91,5 +95,4 @@ function EnterKeyToSearch() {
 		console.log("SEARCHBOX: Enter key pressed");
 		search();
 	}
-
 }

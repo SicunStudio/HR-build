@@ -8,7 +8,7 @@
 				<!--form-->
 					<div class="row valign-wrapper">
 						<div class="input-field col s3 left">
-							<select id="direction" name="direction">
+							<select id="direction" name="direction" onchange="change_searchbox()">
 								<option value="name">姓名</option>
 								<option value="apart">寝室</option>
 								<option value="depart">部门</option>
@@ -16,7 +16,7 @@
 								<option value="school">学院</option>
 							</select>
 						</div>
-						<div class="input-field col s8">
+						<div class="input-field col s8" id="content-wrap">
 							<input name="content" id="content" type="text" class="black-text" onkeypress="EnterKeyToSearch()" required>
 						</div>
 						<!-- original -->
@@ -36,8 +36,9 @@
 		</div>
 
 
-    <!-- Search AJAX controller module -->
-	<script src="../static/js/ugly_js_for_search_person.js"></script>
+  <!-- Search AJAX controller module -->
+	<script src="{{ url_for('static', filename='js/searchbox.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/ugly_js_for_search_person.js') }}"></script>
 	<script>
         /**
          * Materialize Controller code

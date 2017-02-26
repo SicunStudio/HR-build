@@ -7,3 +7,4 @@ HR-build 1st-attempt
 - Randy Orton: RKO!OutOfNoWhere!!!
 - Master Yoda: May the force be with you!
     - notice: with spaces!
+- Misaka Mikoto: only my railgun
