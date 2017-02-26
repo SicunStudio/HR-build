@@ -7,15 +7,9 @@ from openpyxl import Workbook, load_workbook
 from flask import flash
 from datetime import datetime
 import os, sqlite3
+from globalvar import *
 
-######## general config ########
 
-HR_SYSTEM_ROOT = os.path.split(os.path.realpath(__file__))[0]
-
-FOLDER = os.path.join(HR_SYSTEM_ROOT, 'score-sheets')  # xlsx location
-INVENTORY = os.path.join(FOLDER, 'inventory.db')
-DATABASE = os.path.join(HR_SYSTEM_ROOT, 'data.db')  # db loaction
-# that is to say: main.py, xlsxSwissKnife.py and data.da must be under the same dir
 
 ######## utils ########
 

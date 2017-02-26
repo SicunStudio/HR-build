@@ -5,7 +5,7 @@
 import datetime
 
 from flask import session, jsonify
-from main import app
+from starter import app
 
 ############ Logger ############
 def printLog(content):
@@ -41,6 +41,3 @@ def clear_flash_messages():
         return jsonify(result={'msg': 'Flash messages cleared'})
     else:
         return jsonify(result={'msg': 'No flash message yet'})
-
-
-
