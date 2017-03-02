@@ -2,20 +2,21 @@
 
 <div class="container">
 	<!-- don'no how 2 let <div> auto-fit height -->
-	<br><br>
+	<br>
 	<div class="row">
 		<h5 class="center">评分系统</h5>
-		<div class="row">
-			<div class="col s12 m8 offset-m2 l8 offset-l2">
-				<ul class="tabs tabs-fixed-width">
+		<div class="card col l10 offset-l1 s12">
+			<div class="card-tabs">
+				<ul class="tabs">
 					{% for each in data %}
-					<li class="tab"><a href="#{{ each }}">{{ each }}</a></li>
+					<li class="tab"><a href="#{{ each }}" class="teal-text">{{ each }}</a></li>
 					{% endfor %}
 				</ul>
+				<div class="divider"></div>
 			</div>
-			<div id="input-wrap">
+			<div id="input-wrap" class="card-content">
 				{% for each in data %}
-				<div class="col s12 m8 offset-m2 l8 offset-l2" name="{{ each }}" id="{{ each }}" oninput="count_now('{{ each }}')">
+				<div class="col s12 l10 offset-l1" name="{{ each }}" id="{{ each }}" oninput="count_now('{{ each }}')">
 					<div class="row">
 						<!--h6 class="col s12 center">自评部分</h6>
 					<div class="divider col s12"></div-->
@@ -62,6 +63,7 @@
 						<h6 class="col s6 left-align">最后得分：<span name="{{ each }}" id="total"></span></h6>
 					</div>
 					<button class="btn col s3 waves-effect waves-light right" onclick="submit_now('{{ each }}', this)" name="{{ each }}">提交<i class="material-icons right">send</i></button>
+					<br><br><br>
 				</div>
 				{% endfor %}
 			</div>

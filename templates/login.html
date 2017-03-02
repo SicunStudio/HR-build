@@ -2,79 +2,91 @@
 
 {% block main_content %}
 		<style>
-			#weizai {
-				/* TODO: should be on the right */
+			div #weizai {
+				/* TODO: different position on different devices, generally looks good */
 				position: absolute;
+				right: 34%;
 				height: 13em;
 				width: 13em;
 				z-index: -1;
 			}
+			.tabs .indicator {
+				height: 3px;
+				background-color: #ffffff;
+			}
 		</style>
 			<!-- don'no how 2 let <div> auto-fit -->
-			<div class="container">
-				<br><br><br><br>
+			<div class="container" style="padding: 2em 0 0 0">
 				<div class="row">
-					<div class="col s12 m6 offset-m3 l6 offset-l3">
-						<img id="weizai" class="responsive-img" src="{{ url_for('static', filename='img/weizai.jpg')}}">
-						<br><br>
-						<div class="row card-panel z-depth-2">
+					<div class="col s12 m10 offset-m1 l6 offset-l3">
+						<div id="weizai">
+							<img class="responsive-img" src="{{ url_for('static', filename='img/weizai.jpg')}}">
+						</div>
 
-							<div class="col s12">
-								<ul class="tabs">
-									<li class="tab col s6"><a href="#login" class="teal-text">登录</a></li>
-									<li class="tab col s6"><a href="#signup" class="teal-text">注册</a></li>
+
+						<div class="card" style="margin: 58px 0 0 0">
+
+							<div class="card-tabs">
+								<ul class="tabs light-green darken-4 z-depth-3">
+									<li class="tab col l3 offset-l3"><a href="#login" class="white-text">登录</a></li>
+									<li class="tab col l3"><a href="#signup" class="white-text">注册</a></li>
 								</ul>
 								<div class="divider"></div>
 							</div>
 
-							<div id="login" class="col s12">
-								<!--h5 class="center">登录HR管理系统</h5-->
-								<form action="{{ url_for('login') }}" method="post">
-									<div class="row">
-										<div class="input-field col s12">
-											<input id="id" name="id" type="text" class="validate" required>
-											<label for="id">用户名</label>
+							<div class="card-content" id="card-contents">
+								<div id="login" class="">
+									<!--h5 class="center">登录HR管理系统</h5-->
+									<form action="{{ url_for('login') }}" method="post">
+										<div class="row">
+											<div class="input-field col s12">
+												<input id="id" name="id" type="text" class="validate" required>
+												<label for="id">用户名</label>
+											</div>
+											<div class="input-field col s12">
+												<input id="passwd" name="passwd" type="password" class="validate" required>
+												<label for="passwd">密码</label>
+											</div>
 										</div>
-										<div class="input-field col s12">
-											<input id="passwd" name="passwd" type="password" class="validate" required>
-											<label for="passwd">密码</label>
+										<div class="valign-wrapper">
+											<button class="btn col s3 waves-effect waves-light right" type="submit">登录
+												<i class="material-icons right">send</i>
+											</button>
 										</div>
-									</div>
-									<div class="valign-wrapper">
-										<button class="btn col s3 waves-effect waves-light right" type="submit">登录
-											<i class="material-icons right">send</i>
-										</button>
-									</div>
-								</form>
+									</form>
+								</div>
+
+								<div id="signup" class="">
+									<form action="{{ url_for('register') }}" method="post">
+										<div class="row">
+											<div class="input-field col s12">
+												<input id="id" name="id" type="text" class="validate" required>
+												<label for="id">用户名</label>
+											</div>
+											<div class="input-field col s12">
+												<input id="passwd_first" name="passwd_first" type="password" class="validate" required>
+												<label for="passwd_first">密码</label>
+											</div>
+											<div class="input-field col s12">
+												<input id="passwd_second" name="passwd_second" type="password" class="validate" required>
+												<label for="passwd_second">确认密码</label>
+											</div>
+											<div class="input-field col s12">
+												<input type="text" name="invitation" required>
+												<label for="invitation">芝麻开门</label>
+											</div>
+										</div>
+										<div class="valign-wrapper">
+											<button class="btn col s3 waves-effect waves-light right" type="submit">注册
+												<i class="material-icons right">flight_takeoff</i>
+											</button>
+										</div>
+									</form>
+								</div>
+
+
 							</div>
 
-							<div id="signup" class="col s12">
-								<form action="{{ url_for('register') }}" method="post">
-									<div class="row">
-										<div class="input-field col s12">
-											<input id="id" name="id" type="text" class="validate" required>
-											<label for="id">用户名</label>
-										</div>
-										<div class="input-field col s12">
-											<input id="passwd_first" name="passwd_first" type="password" class="validate" required>
-											<label for="passwd_first">密码</label>
-										</div>
-										<div class="input-field col s12">
-											<input id="passwd_second" name="passwd_second" type="password" class="validate" required>
-											<label for="passwd_second">确认密码</label>
-										</div>
-										<div class="input-field col s12">
-											<input type="text" name="invitation" required>
-											<label for="invitation">芝麻开门</label>
-										</div>
-									</div>
-									<div class="valign-wrapper">
-										<button class="btn col s3 waves-effect waves-light right" type="submit">注册
-											<i class="material-icons right">flight_takeoff</i>
-										</button>
-									</div>
-								</form>
-							</div>
 
 						</div>
 					</div>
@@ -85,20 +97,6 @@
 
     <!-- TODO: Need to add sidebar or not? -->
 		<script>
-		/*$(document).ready(function(){
-			$('ul.tabs').tabs();
-			$('ul.tabs').tabs('select_tab', 'tab_id');
-		});*/
-
-			/* not yet into use *
-			$(document).ready(function(){
-				$('.parallax').parallax();
-			}); */
-			/* not yet understood *
-			$('.button-collapse').sideNav('show');
-			$('.collapsible').collapsible();
-			$('.button-collapse').sideNav('hide');
-			$('.button-collapse').sideNav('destroy'); */
 		</script>
 
 {% endblock %}

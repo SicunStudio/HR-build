@@ -10,11 +10,11 @@ from functools import wraps
 import sqlite3, os, re, hashlib
 
 from lib.sqlutil import *
-import xlsxSwissKnife
+from lib import xlsxSwissKnife
 
 from globalvar import *
 
-from debug_utils import *
+from lib.debug_utils import *
 try:
     from pymysql.err import *
 except:
@@ -200,14 +200,12 @@ def entryIssue():
 @app.route('/score_page/<title>')
 @login_verify
 def score(title):
-    if 'filename' not in session:
-        return redirect(url_for('personal'))
-    else:
-        data = xlsxSwissKnife.read(session['filename'])
-        printLog(data)
-        for each in data:
-            print(each, data[each])
-        return render_template('score_entry.html', data=data)
+    session['filename'] = title + '.xlsx'
+    data = xlsxSwissKnife.read(session['filename'])
+    printLog(data)
+    for each in data:
+        print(each, data[each])
+    return render_template('score_entry.html', data=data)
 
 
 

@@ -21,8 +21,8 @@ def _read_test():
 
 def _move_cursor(ws, name='something you have to mess up with'):
     '''
-    return the index asked
-    IF no match THEN return index-number of the adjacent empty row
+      return the index asked
+      IF no match THEN return index-number of the adjacent empty row
     '''
     nameCells = ws['A'][2:] # 1: test-use; running: 2
     names = tuple(filter(lambda s: s and s.strip(), [ content.value for content in nameCells ]))  # thx 2 MichealLiao
@@ -109,7 +109,7 @@ def read(filename):
     try:
         wb = load_workbook(dst)
     except IOError:
-        print('IOError during read({})'.format(dst))
+        print('IOError during read(\'{}\')'.format(dst))
         flash("表格读取错误！", category='error')
         return []
     else:

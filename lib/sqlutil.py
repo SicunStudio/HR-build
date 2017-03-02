@@ -1,7 +1,7 @@
 import sqlite3, os, re
 from operator import itemgetter
 from flask import flash
-from debug_utils import *
+from lib.debug_utils import *
 from globalvar import *
 try:
     from pymysql.err import *
