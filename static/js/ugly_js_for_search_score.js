@@ -8,7 +8,7 @@ function show_result(score){
     var bfr = "";
     for (var each in score) {
         // ugliest lines in the whole world!!!
-        bfr += ("<li class=\"collection-item\"><pre><a href=\"/score_page/" + score[each].title + "\" class=\"teal-text\" style=\"font-size:2em\">" + score[each].title + "</a>&nbsp;&nbsp;&nbsp;&nbsp;of " + score[each].depart + "&nbsp;&nbsp;&nbsp;&nbsp;@ " + score[each].date + "<a href=\"/downloading/" + score[each].title + "\" class=\"secondary-content\"><i class=\"small material-icons\">file_download</i></a><a  href=\"#!\" class=\"secondary-content\" onclick=\"delete_file(\'/deleting/" + score[each].title + "\')\"><i class=\"small material-icons\">delete</i></a></pre></li>");
+        bfr += ("<li class=\"collection-item\"><span><a href=\"/score_page/" + score[each].title + "\" class=\"teal-text\" style=\"font-size1.4em\">" + score[each].title + "</a>&nbsp;&nbsp;&nbsp;&nbsp;of " + score[each].depart + "&nbsp;&nbsp;&nbsp;&nbsp;@ " + score[each].date + "</span><a href=\"/downloading/" + score[each].title + "\" class=\"secondary-content\"><i class=\"small material-icons\">file_download</i></a><a  href=\"#!\" class=\"secondary-content\" onclick=\"delete_file(\'/deleting/" + score[each].title + "\')\"><i class=\"small material-icons\">delete</i></a></pre></li>");
     }
     if (bfr == "") {
         document.getElementById("result-container").style.display="none";
