@@ -220,7 +220,7 @@ def update(id):
         printLog(id)
         return render_template('info_update.html', database=getConditonal('*','id',id),id=id)
     elif request.method == 'POST':
-        updatePerson(id, request.form)
+        updatePerson(request.form, id)
         return redirect(url_for('personal'))
 
 

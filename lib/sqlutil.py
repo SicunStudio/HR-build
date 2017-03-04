@@ -1,6 +1,7 @@
 import sqlite3, os, re
 from operator import itemgetter
-from flask import flash
+from functools import wraps
+from flask import flash, redirect, url_for
 from lib.debug_utils import *
 from globalvar import *
 try:
@@ -29,11 +30,30 @@ def getConditonal(column, conditon, require):
         return data
 
 
+def check_person_info(person_modifier):
+    @wraps(person_modifier)
+    def prerequisite_person(d, *args, **kwargs):
+        if ' ' in d.get('name', ''):
+            flash("名字中不能包含空格！", 'warning')
+            return redirect(url_for('personal'))
+        elif not re.match(r'^AU\d{9}$', d.get('id', '')):
+            flash("社联编号格式不正确！", 'warning')
+            return redirect(url_for('personal'))
+        else:
+            return person_modifier(*args, **kwargs)
+    return prerequisite_person
+
+
 
 
 ######## person ########
 
+@check_person_info
 def addPerson(d):
+    '''
+      return 1 if success
+      otherwise return 0
+    '''
     with sqlite3.connect(DATABASE) as database:
         data = dict(
             id=d.get('id', ''), name=d.get('name', ''), gender=d.get('gender', ''),
@@ -60,7 +80,8 @@ def addPerson(d):
             return 1
 
 
-def updatePerson(id, d):
+@check_person_info
+def updatePerson(d, id):
     with sqlite3.connect(DATABASE) as database:
         data = dict(
             name=d.get('name', ''), gender=d.get('gender', ''),
