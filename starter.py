@@ -316,10 +316,5 @@ def searching_score():
 ######## run ########
 
 if __name__ == '__main__':
-    # Introduce SSL support
-    ssl_context = (
-        os.path.join(SSL_CONTEXT_ROOT,'feiyuqing.crt'),
-        os.path.join(SSL_CONTEXT_ROOT, 'feiyuqing.heyheyhey.key')
-    )
 
-    app.run(host="0.0.0.0", debug=True, ssl_context=ssl_context)
+    app.run(host="0.0.0.0", debug=True)
