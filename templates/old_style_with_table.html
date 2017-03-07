@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>空闲时间选择器测试</title>
+
+    <script src="../static/js/jquery-1.11.0.js"></script>
+
+    <link href="../static/css/google_material_icons.css" rel="stylesheet">
+    <link href="../static/css/materialize.css" rel="stylesheet">
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/materialize.js') }}"></script>
+</head>
+<body>
+
+    <div class="container">
+
+        <table class="bordered">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>周一</th>
+                  <th>周二</th>
+                  <th>周三</th>
+                    <th>周四</th>
+                    <th>周五</th>
+                    <th>周六</th>
+                    <th>周日</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <th scope="row">1-2</th>
+                  <td id="MON-1-2"></td>
+                  <td id="TUE-1-2"></td>
+                  <td id="WED-1-2"></td>
+                    <td id="THU-1-2"></td>
+                    <td id="FRI-1-2"></td>
+                   <td id="SAT-1-2"></td>
+                    <td id="SUN-1-2"></td>
+                </tr>
+                <tr>
+                  <th scope="row">3-4</th>
+                  <td id="MON-3-4"></td>
+                  <td id="TUE-3-4"></td>
+                  <td id="WED-3-4"></td>
+                    <td id="THU-3-4"></td>
+                    <td id="FRI-3-4"></td>
+                   <td id="SAT-3-4"></td>
+                    <td id="SUN-3-4"></td>
+                </tr>
+                <tr>
+                  <th scope="row">5-6</th>
+                  <td id="MON-5-6" class="waves-effect">&nbsp;</td>
+                  <td id="TUE-5-6"></td>
+                  <td id="WED-5-6"></td>
+                    <td id="THU-5-6"></td>
+                    <td id="FRI-5-6"></td>
+                   <td id="SAT-5-6"></td>
+                    <td id="SUN-5-6"></td>
+                </tr>
+                <tr>
+                  <th scope="row">7-8</th>
+                  <td id="MON-7-8"></td>
+                  <td id="TUE-7-8"></td>
+                  <td id="WED-7-8"></td>
+                    <td id="THU-7-8"></td>
+                    <td id="FRI-7-8"></td>
+                   <td id="SAT-7-8"></td>
+                    <td id="SUN-7-8"></td>
+                </tr>
+                <tr>
+                  <th scope="row">9-10</th>
+                  <td id="MON-9-10"></td>
+                  <td id="TUE-9-10"></td>
+                  <td id="WED-9-10"></td>
+                    <td id="THU-9-10"></td>
+                    <td id="FRI-9-10"></td>
+                   <td id="SAT-9-10"></td>
+                    <td id="SUN-9-10"></td>
+                </tr>
+                <tr>
+                  <th scope="row">11-12</th>
+                  <td id="MON-11-12"></td>
+                  <td id="TUE-11-12"></td>
+                  <td id="WED-11-12"></td>
+                    <td id="THU-11-12"></td>
+                    <td id="FRI-11-12"></td>
+                   <td id="SAT-11-12"></td>
+                    <td id="SUN-11-12"></td>
+                </tr>
+              </tbody>
+
+            </table>
+
+    </div>
+    <script>
+    function handleFreeTimePick(cellID){
+        var cell = $("#"+cellID);
+        switch(cell.attr("freetime_checked")){
+            case "yes":
+                cell.attr("freetime_checked", "no");
+                //TODO: 要用Materialize的波纹效果来装饰单元格点击
+                cell.css("background-color", "#FFFFFF");
+                break;
+            default:
+                cell.attr("freetime_checked", "yes");
+                cell.css("background-color", "#008715")
+        }
+    }
+
+            var tds = document.getElementsByTagName("td");
+            for(var i=0; i<tds.length; i++)
+            {
+                $("#"+tds[i].id).attr("onclick","handleFreeTimePick('"+tds[i].id+"')")
+            }
+
+
+    </script>
+</body>
+</html>
