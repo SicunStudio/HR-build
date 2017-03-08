@@ -108,10 +108,10 @@
     <div class="container submit-bar">
         <div class="row">
             <div class="col s6">
-                <a class="btn orange submit-btn" onclick="clearFreeTimePick()">清除重选</a>
+                <a class="btn orange submit-btn waves-effect" onclick="clearFreeTimePick()">清除重选</a>
             </div>
             <div class="col s6">
-                <a class="btn submit-btn" onclick="submitFreeTimePick()">提交</a>
+                <a class="btn submit-btn waves-effect" onclick="submitFreeTimePick()">提交</a>
             </div>
         </div>
     </div>
@@ -142,7 +142,7 @@
             }
 
             //For debug
-            alert("已统计的空闲时间如下：\n" + result.toString());
+            //alert("已统计的空闲时间如下：\n" + result.toString());
 
             //TODO: 接下来可以将统计信息发往后台了。就用AJAX。
             var data={
@@ -167,6 +167,7 @@
             var tds = document.getElementsByName("free-time-picker");
             for(var i=0; i<tds.length; i++){
                 var cell=$("#"+tds[i].id);
+                cell.attr("free-time-picker", "no");
                 cell.css("background-color", "#FFFFFF")
             }
         }
