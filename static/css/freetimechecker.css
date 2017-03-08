@@ -23,7 +23,7 @@
             text-align: left;
             /* border-right: 1px solid #eee; */
         }
-        .row .col.s1
+        .freetime-picker-main > .row .col.s1
         {
             width: 12.5%
         }
