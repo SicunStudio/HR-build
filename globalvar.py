@@ -16,7 +16,9 @@ INVENTORY = os.path.join(FOLDER, 'inventory.db')
 DATABASE = os.path.join(HR_SYSTEM_ROOT, 'data.db')  # db loaction
 
 SALT = 'do_not_change_me!!!'
-INVITATION = 'you may want to change this regularly'
+
+# TODO: you may want to change invitation code regularly
+INVITATION = 'AUHR'
 
 
 
