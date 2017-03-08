@@ -258,6 +258,11 @@ def search_score():
     return render_template('score_download.html', collection=grepScore('date', '*'))
 
 
+''' Free time entry/search '''
+@app.route('/freetime_entry/')
+@login_verify
+def freetime_entry():
+    return render_template('freetime_entry.html')
 
 
 ######## process ########
