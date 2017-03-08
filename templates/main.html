@@ -108,10 +108,10 @@
     <div class="container submit-bar">
         <div class="row">
             <div class="col s6">
-                <a class="btn orange" onclick="clearFreeTimePick()">清除重选</a>
+                <a class="btn orange submit-btn" onclick="clearFreeTimePick()">清除重选</a>
             </div>
             <div class="col s6">
-                <a class="btn" onclick="submitFreeTimePick()">提交</a>
+                <a class="btn submit-btn" onclick="submitFreeTimePick()">提交</a>
             </div>
         </div>
     </div>
@@ -145,6 +145,21 @@
             alert("已统计的空闲时间如下：\n" + result.toString());
 
             //TODO: 接下来可以将统计信息发往后台了。就用AJAX。
+            var data={
+                result: result.toString()
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/submit_freetime',
+                data: data,
+                dataType: 'json',
+                success: function(data){
+                    //TODO: 后台要回传一些数据，如处理成功的提示。
+                    //TODO: 但是具体如何处理，还要取决于怎么样设计录入部分（自动接续逐一录入，还是每次都要重新检索）
+                    alert(data.backMessage['message'])
+                },
+                error: function(xhr, type){}
+            })
 
         }
 
@@ -160,6 +175,7 @@
         for(var i=0; i<tds.length; i++)
         {
             $("#"+tds[i].id).attr("onclick","handleFreeTimePick('"+tds[i].id+"')")
+                .attr("free-time-picker", "no")
         }
 
 
