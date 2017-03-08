@@ -167,7 +167,7 @@
             var tds = document.getElementsByName("free-time-picker");
             for(var i=0; i<tds.length; i++){
                 var cell=$("#"+tds[i].id);
-                cell.attr("free-time-picker", "no");
+                cell.attr("freetime_checked", "no");
                 cell.css("background-color", "#FFFFFF")
             }
         }
@@ -176,7 +176,7 @@
         for(var i=0; i<tds.length; i++)
         {
             $("#"+tds[i].id).attr("onclick","handleFreeTimePick('"+tds[i].id+"')")
-                .attr("free-time-picker", "no")
+                .attr("freetime_checked", "no")
         }
 
 
