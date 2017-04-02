@@ -1,278 +1,296 @@
 {% extends 'base.html' %}
 
 {% block main_content %}
-    <!--
-        <style>
-            .top-searchbar
-            {
-                width:
-            }
-        </style>
+<!--
+<style>
+.top-searchbar
+{
+width:
+}
+</style>
 
-		<div class="container">
+<div class="container">
 
-			<br><br>
+<br><br>
 
-                <div class="top-searchbar row nav-wrapper green z-depth-2">
+<div class="top-searchbar row nav-wrapper green z-depth-2">
 
-                    <h5 class="input-field left col s2">空闲时间录入</h5>
-                    <div class="input-field col s2 left">
-							<select name="depart">
-						      <option value="" disabled selected>选择部门</option>
-						      <option value="财务部" id="fun">财务部</option>
-						      <option value="秘书部" id="sec">秘书部</option>
-						      <option value="人力资源部" id="hr">人力资源部</option>
-							  <option value="社团部" id="clb">社团部</option>
-							  <option value="行政监察部" id="sup">行政监察部</option>
-							  <option value="外联部" id="out">外联部</option>
-							  <option value="公共关系部" id="pr">公共关系部</option>
-							  <option value="宣传部" id="pub">宣传部</option>
-							  <option value="媒体部" id="med">媒体部</option>
-							  <option value="思存工作室" id="sicun">思存工作室</option>
-							  <option value="新媒体工作室" id="nmed">新媒体工作室</option>
-							  <option value="社团外联企划小组" id="cop">社团外联企划小组</option>
-							  <option value="文艺拓展部" id="ext">文艺拓展部</option>
-							  <option value="其它" id="o">其它</option>
-						    </select>
+<h5 class="input-field left col s2">空闲时间录入</h5>
+<div class="input-field col s2 left">
+<select name="depart">
+<option value="" disabled selected>选择部门</option>
+<option value="财务部" id="fun">财务部</option>
+<option value="秘书部" id="sec">秘书部</option>
+<option value="人力资源部" id="hr">人力资源部</option>
+<option value="社团部" id="clb">社团部</option>
+<option value="行政监察部" id="sup">行政监察部</option>
+<option value="外联部" id="out">外联部</option>
+<option value="公共关系部" id="pr">公共关系部</option>
+<option value="宣传部" id="pub">宣传部</option>
+<option value="媒体部" id="med">媒体部</option>
+<option value="思存工作室" id="sicun">思存工作室</option>
+<option value="新媒体工作室" id="nmed">新媒体工作室</option>
+<option value="社团外联企划小组" id="cop">社团外联企划小组</option>
+<option value="文艺拓展部" id="ext">文艺拓展部</option>
+<option value="其它" id="o">其它</option>
+</select>
 
-                        </div>
-                    <div class="input-field col s7">
-							<input name="title" type="text" class="validate" required>
-							<label for="title">关键字</label>
-						</div>
-                    <div class="input-field btn col s1"></div>
-                </div>
+</div>
+<div class="input-field col s7">
+<input name="title" type="text" class="validate" required>
+<label for="title">关键字</label>
+</div>
+<div class="input-field btn col s1"></div>
+</div>
 
-        -->
-        <style>
-            .page-title
-            {
-                margin-top: 2rem;
-                margin-bottom: 0.5rem;
-            }
-            .search-bar
-            {
-                margin-bottom: 0.5em;
-            }
+-->
+<style>
+.page-title
+{
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+.search-bar
+{
+  margin-bottom: 0.5em;
+}
 
-        </style>
+</style>
 
-			<div class="row search-bar">
-				<form class="col s12 m8 offset-m2 l8 offset-l2" action="{{ url_for('entryIssue') }}" method="post">
-                    <div class="row page-title">
-                            <h5 class="center">空闲时间录入</h5>
+<div class="row search-bar">
+  <form class="col s12 m8 offset-m2 l8 offset-l2" action="{{ url_for('entryIssue') }}" method="post">
+    <div class="row page-title">
+      <h5 class="center">空闲时间录入</h5>
 
-                    </div>
+    </div>
 
-                    <div class="row search-bar">
-                        <div class="input-field col s3 left">
-							<select name="depart">
-						      <option value="" disabled selected>选择部门</option>
-						      <option value="财务部" id="fun">财务部</option>
-						      <option value="秘书部" id="sec">秘书部</option>
-						      <option value="人力资源部" id="hr">人力资源部</option>
-							  <option value="社团部" id="clb">社团部</option>
-							  <option value="行政监察部" id="sup">行政监察部</option>
-							  <option value="外联部" id="out">外联部</option>
-							  <option value="公共关系部" id="pr">公共关系部</option>
-							  <option value="宣传部" id="pub">宣传部</option>
-							  <option value="媒体部" id="med">媒体部</option>
-							  <option value="思存工作室" id="sicun">思存工作室</option>
-							  <option value="新媒体工作室" id="nmed">新媒体工作室</option>
-							  <option value="社团外联企划小组" id="cop">社团外联企划小组</option>
-							  <option value="文艺拓展部" id="ext">文艺拓展部</option>
-							  <option value="其它" id="o">其它</option>
-						    </select>
+    <div class="row search-bar valign-wrapper">
+      <div class="input-field col s3 left">
+        <select name="depart">
+          <option value="" disabled selected>选择部门</option>
+          <option value="财务部" id="fun">财务部</option>
+          <option value="秘书部" id="sec">秘书部</option>
+          <option value="人力资源部" id="hr">人力资源部</option>
+          <option value="社团部" id="clb">社团部</option>
+          <option value="行政监察部" id="sup">行政监察部</option>
+          <option value="外联部" id="out">外联部</option>
+          <option value="公共关系部" id="pr">公共关系部</option>
+          <option value="宣传部" id="pub">宣传部</option>
+          <option value="媒体部" id="med">媒体部</option>
+          <option value="思存工作室" id="sicun">思存工作室</option>
+          <option value="新媒体工作室" id="nmed">新媒体工作室</option>
+          <option value="社团外联企划小组" id="cop">社团外联企划小组</option>
+          <option value="文艺拓展部" id="ext">文艺拓展部</option>
+          <option value="其它" id="o">其它</option>
+        </select>
 
-                        </div>
-						<div class="input-field col s8">
-							<input name="title" type="text" class="validate" required>
-							<label for="title">关键字</label>
-						</div>
-                        <a class="input-field btn waves-effect waves-dark col s1 right valign" onclick="search()"><i class="material-icons">search</i></a>
-					</div>
-
-				</form>
-			</div>
+      </div>
 
 
-    <div class="container freetime-picker-main">
 
-        <div class="row">
+      <div class="input-field col s2 valign-wrapper">
+        <select class="" name="direction">
+          <option value="id" selected>编号</option>
+          <<option value="name">姓名</option>
+        </select>
+      </div>
 
-                <span class="flow-text">在这里点选空闲时间</span>
 
-        </div>
 
-        <div class="row">
-             <div class="col s1 freetime-head">&nbsp;</div>
-             <div class="col s1 freetime-head">周一</div>
-            <div class="col s1 freetime-head">周二</div>
-            <div class="col s1 freetime-head">周三</div>
-            <div class="col s1 freetime-head">周四</div>
-            <div class="col s1 freetime-head">周五</div>
-            <div class="col s1 freetime-head">周六</div>
-            <div class="col s1 freetime-head">周日</div>
-        </div>
+      <div class="input-field col s6 valign-wrapper">
+        <input name="title" type="text" class="validate" required>
+        <label for="title">关键字</label>
+      </div>
 
-        <div class="row">
-            <div class="col s1 freetime">1-2</div>
-            <div name="free-time-picker" id="MON-1-2" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="TUE-1-2" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="WED-1-2" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="THU-1-2" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="FRI-1-2" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="SAT-1-2" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="SUN-1-2" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-        </div>
+      <!-- <a class="input-field btn-flat waves-effect waves-dark right valign" onclick="search()"><i class="material-icons">search</i></a> -->
 
-        <div class="row">
-            <div class="col s1 freetime">3-4</div>
-            <div name="free-time-picker" id="MON-3-4" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="TUE-3-4" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="WED-3-4" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="THU-3-4" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="FRI-3-4" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="SAT-3-4" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="SUN-3-4" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-        </div>
 
-        <div class="row">
-            <div class="col s1 freetime">5-6</div>
-            <div name="free-time-picker" id="MON-5-6" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="TUE-5-6" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="WED-5-6" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="THU-5-6" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="FRI-5-6" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="SAT-5-6" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="SUN-5-6" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-        </div>
-
-        <div class="row">
-            <div class="col s1 freetime">7-8</div>
-            <div name="free-time-picker" id="MON-7-8" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="TUE-7-8" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="WED-7-8" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="THU-7-8" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="FRI-7-8" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="SAT-7-8" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="SUN-7-8" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-        </div>
-
-        <div class="row">
-            <div class="col s1 freetime">9-10</div>
-            <div name="free-time-picker" id="MON-9-10" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="TUE-9-10" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="WED-9-10" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="THU-9-10" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="FRI-9-10" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="SAT-9-10" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="SUN-9-10" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-        </div>
-
-        <div class="row">
-            <div class="col s1 freetime">11-12</div>
-            <div name="free-time-picker" id="MON-11-12" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="TUE-11-12" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="WED-11-12" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="THU-11-12" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="FRI-11-12" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="SAT-11-12" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-            <div name="free-time-picker" id="SUN-11-12" class="col s1 waves-effect freetime btn-large">&nbsp;</div>
-        </div>
+      <button onclick="search()" class="btn-flat waves-effect waves-dark col s1 right valign"><i class="material-icons">search</i></button>
 
 
     </div>
 
-    <div class="container submit-bar">
-        <div class="row">
-            <div class="col s6">
-                <a class="btn orange submit-btn waves-effect left" onclick="clearFreeTimePick()">清除重选
-                    <i class="material-icons left">tab_unselected</i>
-                </a>
-            </div>
-            <div class="col s6">
-                <a class="btn submit-btn waves-effect right" onclick="submitFreeTimePick()">提交
-                    <i class="material-icons right">send</i>
-                </a>
-            </div>
-        </div>
+  </form>
+</div>
+
+
+<div class="container freetime-picker-main">
+
+  <div class="row">
+
+    <span class="flow-text">在这里点选空闲时间</span>
+
+  </div>
+
+  <div class="row">
+    <div class="col s1 freetime-head">&nbsp;</div>
+    <div class="col s1 freetime-head">周一</div>
+    <div class="col s1 freetime-head">周二</div>
+    <div class="col s1 freetime-head">周三</div>
+    <div class="col s1 freetime-head">周四</div>
+    <div class="col s1 freetime-head">周五</div>
+    <div class="col s1 freetime-head">周六</div>
+    <div class="col s1 freetime-head">周日</div>
+  </div>
+
+  <div class="row">
+    <div class="col s1 freetime">1-2</div>
+    <div name="free-time-picker" id="MON-1-2" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="TUE-1-2" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="WED-1-2" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="THU-1-2" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="FRI-1-2" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="SAT-1-2" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="SUN-1-2" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+  </div>
+
+  <div class="row">
+    <div class="col s1 freetime">3-4</div>
+    <div name="free-time-picker" id="MON-3-4" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="TUE-3-4" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="WED-3-4" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="THU-3-4" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="FRI-3-4" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="SAT-3-4" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="SUN-3-4" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+  </div>
+
+  <div class="row">
+    <div class="col s1 freetime">5-6</div>
+    <div name="free-time-picker" id="MON-5-6" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="TUE-5-6" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="WED-5-6" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="THU-5-6" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="FRI-5-6" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="SAT-5-6" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="SUN-5-6" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+  </div>
+
+  <div class="row">
+    <div class="col s1 freetime">7-8</div>
+    <div name="free-time-picker" id="MON-7-8" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="TUE-7-8" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="WED-7-8" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="THU-7-8" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="FRI-7-8" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="SAT-7-8" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="SUN-7-8" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+  </div>
+
+  <div class="row">
+    <div class="col s1 freetime">9-10</div>
+    <div name="free-time-picker" id="MON-9-10" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="TUE-9-10" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="WED-9-10" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="THU-9-10" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="FRI-9-10" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="SAT-9-10" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="SUN-9-10" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+  </div>
+
+  <div class="row">
+    <div class="col s1 freetime">11-12</div>
+    <div name="free-time-picker" id="MON-11-12" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="TUE-11-12" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="WED-11-12" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="THU-11-12" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="FRI-11-12" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="SAT-11-12" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+    <div name="free-time-picker" id="SUN-11-12" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+  </div>
+
+
+</div>
+
+<div class="container submit-bar">
+  <div class="row">
+    <div class="col s6">
+      <a class="btn orange submit-btn waves-effect waves-light left" onclick="clearFreeTimePick()">清除重选
+        <i class="material-icons left">tab_unselected</i>
+      </a>
     </div>
+    <div class="col s6">
+      <a class="btn submit-btn waves-effect waves-light right" onclick="submitFreeTimePick()">提交
+        <i class="material-icons right">send</i>
+      </a>
+    </div>
+  </div>
+</div>
 
 
-	<script id="materialize-controller">
-        /**
-         * Materialize Controller code
-         */
-        $(document).ready(function() {
-            Materialize.updateTextFields();
-            $('select').material_select();
-        });
-	</script>
+<script id="materialize-controller">
+  /**
+  * Materialize Controller code
+  */
+  $(document).ready(function() {
+    Materialize.updateTextFields();
+    $('select').material_select();
+  });
+</script>
 
-    <script id="freetime-checker-controller">
+<script id="freetime-checker-controller">
 
-        function handleFreeTimePick(cellID){
-            var cell = $("#"+cellID);
-            if(cell.attr("freetime_checked") == "yes"){
-                    cell.attr("freetime_checked", "no");
-                    cell.css("background-color", "#FFFFFF");
-            }
-            else{
-                    cell.attr("freetime_checked", "yes");
-                    cell.css("background-color", "#4db6ac")
-            }
-        }
+  function handleFreeTimePick(cellID){
+    var cell = $("#"+cellID);
+    if(cell.attr("freetime_checked") == "yes"){
+      cell.attr("freetime_checked", "no");
+      cell.css("background-color", "#FFFFFF");
+    }
+    else{
+      cell.attr("freetime_checked", "yes");
+      cell.css("background-color", "#4db6ac")
+    }
+  }
 
-        function submitFreeTimePick(){
-            var tds = document.getElementsByName("free-time-picker");
-            var result=[];
+  function submitFreeTimePick(){
+    var tds = document.getElementsByName("free-time-picker");
+    var result=[];
 
-            for(var i=0; i<tds.length; i++){
-                var cell=$("#"+tds[i].id);
-                if(cell.attr("freetime_checked") == "yes"){
-                    result.push(tds[i].id)
-                }
-            }
+    for(var i=0; i<tds.length; i++){
+      var cell=$("#"+tds[i].id);
+      if(cell.attr("freetime_checked") == "yes"){
+        result.push(tds[i].id)
+      }
+    }
 
-            //For debug
-            //alert("已统计的空闲时间如下：\n" + result.toString());
+    //For debug
+    //alert("已统计的空闲时间如下：\n" + result.toString());
 
-            //TODO: 接下来可以将统计信息发往后台了。就用AJAX。
-            var data={
-                result: result.toString()
-            };
-            $.ajax({
-                type: 'POST',
-                url: '/submit_freetime',
-                data: data,
-                dataType: 'json',
-                success: function(data){
-                    //TODO: 后台要回传一些数据，如处理成功的提示。
-                    //TODO: 但是具体如何处理，还要取决于怎么样设计录入部分（自动接续逐一录入，还是每次都要重新检索）
-                    Materialize.toast(data.backMessage['message'], 4000, "toast-info")
-                },
-                error: function(xhr, type){}
-            })
+    //TODO: 接下来可以将统计信息发往后台了。就用AJAX。
+    var data={
+      result: result.toString()
+    };
+    $.ajax({
+      type: 'POST',
+      url: '/submit_freetime',
+      data: data,
+      dataType: 'json',
+      success: function(data){
+        //TODO: 后台要回传一些数据，如处理成功的提示。
+        //TODO: 但是具体如何处理，还要取决于怎么样设计录入部分（自动接续逐一录入，还是每次都要重新检索）
+        Materialize.toast(data.backMessage['message'], 4000, "toast-info")
+      },
+      error: function(xhr, type){}
+    })
 
-        }
+  }
 
-        function clearFreeTimePick(){
-            var tds = document.getElementsByName("free-time-picker");
-            for(var i=0; i<tds.length; i++){
-                var cell=$("#"+tds[i].id);
-                cell.attr("freetime_checked", "no");
-                cell.css("background-color", "#FFFFFF")
-            }
-        }
+  function clearFreeTimePick(){
+    var tds = document.getElementsByName("free-time-picker");
+    for(var i=0; i<tds.length; i++){
+      var cell=$("#"+tds[i].id);
+      cell.attr("freetime_checked", "no");
+      cell.css("background-color", "#FFFFFF")
+    }
+  }
 
-        var tds = document.getElementsByName("free-time-picker");
-        for(var i=0; i<tds.length; i++)
-        {
-            $("#"+tds[i].id).attr("onclick","handleFreeTimePick('"+tds[i].id+"')")
-                .attr("freetime_checked", "no")
-        }
+  var tds = document.getElementsByName("free-time-picker");
+  for(var i=0; i<tds.length; i++)
+  {
+    $("#"+tds[i].id).attr("onclick","handleFreeTimePick('"+tds[i].id+"')")
+    .attr("freetime_checked", "no")
+  }
 
-    </script>
+</script>
 
 {% endblock %}
