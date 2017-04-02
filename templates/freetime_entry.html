@@ -62,15 +62,15 @@ width:
 
 
 <div class="row search-bar">
-  <form class="col s12 m10 offset-m1 l8 offset-l2" action="{{ url_for('entryIssue') }}" method="post">
+  <div class="col s12 m10 offset-m1 l8 offset-l2">
     <div class="row page-title">
       <h5 class="center">空闲时间录入</h5>
 
     </div>
 
-    <div class="row search-bar valign-wrapper">
+    <div class="row search-bar valign-wrapper" id="search-bar">
       <div class="input-field col s3 left">
-        <select name="depart" required>
+        <select name="depart" id="depart" required>
           <option value="" disabled selected>选择部门</option>
           <option value="财务部" id="fun">财务部</option>
           <option value="秘书部" id="sec">秘书部</option>
@@ -109,12 +109,12 @@ width:
       <!-- <a class="input-field btn-flat waves-effect waves-dark right valign" onclick="search()"><i class="material-icons">search</i></a> -->
 
 
-      <button onclick="search()" class="btn-flat waves-effect waves-dark col s1 right valign"><i class="material-icons">search</i></button>
+      <button onclick="searchPerson()" class="btn-flat waves-effect waves-dark col s1 right valign"><i class="material-icons">search</i></button>
 
 
     </div>
 
-  </form>
+  </div>
 </div>
 
 
@@ -124,10 +124,10 @@ width:
 
 <div class="container freetime-picker-main">
 
-  <div class="row">
+  <div class="row" name="search-result">
     <!-- TODO: tempting to add search status here -->
-    <span class="col s6 flow-text teal-text" style="font-size:1.4rem;">姓名</span>
-    <span class="col s6 flow-text teal-text" style="font-size:1.4rem;">社联编号</span>
+    <span class="col s6 flow-text teal-text" style="font-size:1.4rem;">&nbsp;</span>
+    <span class="col s6 flow-text teal-text" style="font-size:1.4rem;"></span>
 
   </div>
 
@@ -237,69 +237,7 @@ width:
   });
 </script>
 
-<script id="freetime-checker-controller">
-
-  function handleFreeTimePick(cellID){
-    var cell = $("#"+cellID);
-    if(cell.attr("freetime_checked") == "yes"){
-      cell.attr("freetime_checked", "no");
-      cell.css("background-color", "#FFFFFF");
-    }
-    else{
-      cell.attr("freetime_checked", "yes");
-      cell.css("background-color", "#4db6ac")
-    }
-  }
-
-  function submitFreeTimePick(){
-    var tds = document.getElementsByName("free-time-picker");
-    var result=[];
-
-    for(var i=0; i<tds.length; i++){
-      var cell=$("#"+tds[i].id);
-      if(cell.attr("freetime_checked") == "yes"){
-        result.push(tds[i].id)
-      }
-    }
-
-    //For debug
-    //alert("已统计的空闲时间如下：\n" + result.toString());
-
-    //TODO: 接下来可以将统计信息发往后台了。就用AJAX。
-    var data={
-      result: result.toString()
-    };
-    $.ajax({
-      type: 'POST',
-      url: '/submit_freetime',
-      data: data,
-      dataType: 'json',
-      success: function(data){
-        //TODO: 后台要回传一些数据，如处理成功的提示。
-        //TODO: 但是具体如何处理，还要取决于怎么样设计录入部分（自动接续逐一录入，还是每次都要重新检索）
-        Materialize.toast(data.backMessage['message'], 4000, "toast-info")
-      },
-      error: function(xhr, type){}
-    })
-
-  }
-
-  function clearFreeTimePick(){
-    var tds = document.getElementsByName("free-time-picker");
-    for(var i=0; i<tds.length; i++){
-      var cell=$("#"+tds[i].id);
-      cell.attr("freetime_checked", "no");
-      cell.css("background-color", "#FFFFFF")
-    }
-  }
-
-  var tds = document.getElementsByName("free-time-picker");
-  for(var i=0; i<tds.length; i++)
-  {
-    $("#"+tds[i].id).attr("onclick","handleFreeTimePick('"+tds[i].id+"')")
-    .attr("freetime_checked", "no")
-  }
-
+<script id="freetime-checker-controller" src="{{ url_for('static', filename='js/ugly_js_for_freetime_entry.js') }}">
 </script>
 
 {% endblock %}

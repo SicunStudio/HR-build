@@ -310,6 +310,7 @@ def deleting(title):
     return redirect(url_for('search_score'))
 
 @app.route('/searching_score/', methods=['GET'])
+@login_verify
 def searching_score():
     direction = request.args.get('d', 'date')
     content = request.args.get('c', '*')
@@ -317,7 +318,8 @@ def searching_score():
 
 
 ###### TODO: TEST AREA! ######
-@app.route('/submit_freetime', methods=('GET', 'POST'))
+@app.route('/submit_freetime/', methods=('GET', 'POST'))
+@login_verify
 def submit_freetime():
     raw_data = request.form.get('result','')
     output=parse_result(raw_data=raw_data)
@@ -338,6 +340,17 @@ def parse_result(raw_data):
         result.append("%s %s节" % (weekdays_name[day], time))
 
     return result
+
+
+@app.route('/get_person_freetime/', methods=['GET'])
+@login_verify
+def get_person_freetime():
+    depart = request.args.get('depart', '')
+    direction = request.args.get('direction', '')
+    content = request.args.get('content', '')
+    # print(depart)
+    return jsonify(result=getOnePerson(depart, direction, content))
+
 
 
 ######## run ########

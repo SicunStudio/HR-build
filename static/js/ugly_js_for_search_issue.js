@@ -41,7 +41,7 @@ function search(){
 	};
 	$.ajax({
 		type: 'GET',
-		url: /searching_issue/,
+		url: '/searching_issue/',
 		data: search_data,
 		dataType: 'json',
 		success: function(data){

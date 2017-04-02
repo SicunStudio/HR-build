@@ -226,3 +226,32 @@ def grepScore(direction, content):
         printLog("[grepScore Error] %s" % e.args[0])
         printErrTraceback(title="grepScore",exception=e)
         return dict()
+
+
+
+
+######## freetime ########
+
+def getOnePerson(depart, direction, content):
+    try:
+        with sqlite3.connect(DATABASE) as db:
+            raw = tuple()
+            SQL = (
+                "SELECT id, name FROM test "
+                "WHERE {} = '{}' AND depart = '{}'".format(direction, content, depart)
+            )
+            # print(SQL)
+            cur = db.execute(SQL)
+            raw = cur.fetchall()
+
+            # only one person should be passed to the front
+            if len(raw) == 1:
+                return raw
+            else:
+                return ('', "无查询结果")
+
+    except Exception as e:
+        flash("(⊙﹏⊙)b 查询资料时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
+        printLog("[getOnePerson Error] %s" % e.args[0])
+        printErrTraceback(title="getOnePerson",exception=e)
+        return tuple()
