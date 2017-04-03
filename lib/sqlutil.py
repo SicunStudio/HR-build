@@ -246,7 +246,7 @@ def getOnePerson(depart, direction, content):
 
             # only one person should be passed to the front
             if len(raw) == 1:
-                return raw
+                return raw[0]
             else:
                 return ('', "无查询结果")
 
@@ -255,3 +255,17 @@ def getOnePerson(depart, direction, content):
         printLog("[getOnePerson Error] %s" % e.args[0])
         printErrTraceback(title="getOnePerson",exception=e)
         return tuple()
+
+
+def registerFreetime(data):
+    '''
+      parameter format:
+        data = {
+            'depart': ...,
+            'id': ...,
+            'name': ...,
+            'freetime': [ list of freetime in 'MON_1' ]
+        }
+    '''
+    try:
+        with sqlite3.connect(DATABASE) as db:

@@ -342,6 +342,10 @@ def parse_result(raw_data):
     return result
 
 
+
+
+
+
 @app.route('/get_person_freetime/', methods=['GET'])
 @login_verify
 def get_person_freetime():

@@ -69,7 +69,7 @@ function searchPerson() {
         direction: search_bar.getElementsByTagName("select")[1].value,
         content: search_bar.getElementsByTagName("input")[2].value
     };
-    console.log(data);
+    // console.log(data);
     if (data['depart'] == '' || data['direction'] == '' || data['content'] == '') {
         console.log("Invalid search!");
     }
@@ -80,7 +80,9 @@ function searchPerson() {
             data: data,
             dataType: 'json',
             success: function(data) {
-                show_person_freetime(data.result);
+                if (show_person(data.result)) {
+                    show_freetime(data.freetime);
+                }
             },
             error: function(xhr, type) {}
         });
@@ -91,9 +93,24 @@ function searchPerson() {
 
 
 
-function show_person_freetime(data) {
+function show_person(data) {
     var target_range = document.getElementsByName("search-result")[0];
     var target = target_range.getElementsByTagName("span");
+    // console.log(data);
     target[0].innerText = data[1];
     target[1].innerText = data[0];
+    if (data[0] != "") {
+        console.log("person in db!");
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+
+
+function show_freetime(data) {
+    var target_range = document.getElementsByName("free-time-picker")
+    console.log(target_range);
 }
