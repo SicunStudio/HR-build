@@ -322,24 +322,49 @@ def searching_score():
 @login_verify
 def submit_freetime():
     raw_data = request.form.get('result','')
-    output=parse_result(raw_data=raw_data)
 
+    # target_id = request.
+    print(raw_data)
+    output=parse_result(
+        raw_data=raw_data,
+        id=request.form.get('id', '')
+    )
     return jsonify(backMessage={'message':output})
 
 
-def parse_result(raw_data):
+def parse_result(raw_data, id):
+    '''
+      raw_data = 'MON-1-2,TUE-3-4'
+      lesson_time = ['MON-1-2', 'TUE-3-4']
+      result = ['周一 1-2节', '周二 3-4节']
+      to_SQL = {
+          'id': "AU000000",
+          'freetime': lesson_time
+      }
+    '''
     result=[]
     weekdays_name = {
         'MON': '周一', 'TUE': '周二', 'WED': '周三', 'THU': '周四', 'FRI': '周五', 'SAT': '周六', 'SUN': '周日'
     }
     lesson_time = raw_data.split(',')
+    print(lesson_time)
+    # result
     for item in lesson_time:
         buff=item.split('-', 1)
         day=buff[0]
         time=buff[1]
         result.append("%s %s节" % (weekdays_name[day], time))
 
+    # to_SQL
+    to_SQL = dict(
+        id = id,
+        freetime = lesson_time
+    )
+
+
+    # flash msg after written into database
     return result
+
 
 
 

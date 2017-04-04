@@ -26,11 +26,13 @@ function submitFreeTimePick(){
 
   //TODO: 接下来可以将统计信息发往后台了。就用AJAX。
   var data={
-    result: result.toString()
+    result: result.toString(),
+    id: document.getElementById("id").innerText,
+    name: document.getElementById("name").innerText,
   };
   $.ajax({
     type: 'POST',
-    url: '/submit_freetime',
+    url: '/submit_freetime/',
     data: data,
     dataType: 'json',
     success: function(data){
@@ -112,5 +114,5 @@ function show_person(data) {
 
 function show_freetime(data) {
     var target_range = document.getElementsByName("free-time-picker")
-    console.log(target_range);
+    // console.log(target_range);
 }

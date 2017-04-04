@@ -261,11 +261,25 @@ def registerFreetime(data):
     '''
       parameter format:
         data = {
-            'depart': ...,
             'id': ...,
-            'name': ...,
-            'freetime': [ list of freetime in 'MON_1' ]
+            'freetime': [ list of freetime in 'MON-1-2' ]
         }
     '''
     try:
         with sqlite3.connect(DATABASE) as db:
+            SQL = "INSERT INTO freetime (id, "
+            if len(data['freetime']) == 0:
+                SQL = SQL[:-2] + ') VALUES ("{}")'.format(data['id'])
+            else:
+                for each in data['freetime']:
+                    SQL += each + ', '
+                SQL = SQL[:-2] + ') values ("{}", '.format(data['id'])
+                for each in data['freetime']:
+                    SQL += '1, '    # 1 as the freetime flag
+                SQL = SQL[:-2] + ')'
+            print(SQL)
+
+    except Exception as e:
+        flash("(⊙﹏⊙)b 查询资料时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
+        printLog("[getOnePerson Error] %s" % e.args[0])
+        printErrTraceback(title="getOnePerson",exception=e)
