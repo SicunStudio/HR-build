@@ -308,6 +308,9 @@ def getFreetime(depart, direction, content):
             '''.format(id)
             cur = db.execute(SQL)
             result = cur.fetchone() # id primary key - only one will be found
+            # print(result)
+            if result == None:
+                result = []
             return result
 
     except Exception as e:

@@ -1,64 +1,64 @@
 function handleFreeTimePick(cellID){
-  var cell = $("#"+cellID);
-  if(cell.attr("freetime_checked") == "yes"){
-    cell.attr("freetime_checked", "no");
-    cell.css("background-color", "#FFFFFF");
-  }
-  else{
-    cell.attr("freetime_checked", "yes");
-    cell.css("background-color", "#4db6ac")
-  }
+    var cell = $("#"+cellID);
+    if(cell.attr("freetime_checked") == "yes"){
+        cell.attr("freetime_checked", "no");
+        cell.css("background-color", "#FFFFFF");
+    }
+    else{
+        cell.attr("freetime_checked", "yes");
+        cell.css("background-color", "#4db6ac")
+    }
 }
 
 function submitFreeTimePick(){
-  var tds = document.getElementsByName("free-time-picker");
-  var result=[];
+    var tds = document.getElementsByName("free-time-picker");
+    var result=[];
 
-  for(var i=0; i<tds.length; i++){
-    var cell=$("#"+tds[i].id);
-    if(cell.attr("freetime_checked") == "yes"){
-      result.push(tds[i].id)
+    for(var i=0; i<tds.length; i++){
+        var cell=$("#"+tds[i].id);
+        if(cell.attr("freetime_checked") == "yes"){
+            result.push(tds[i].id)
+        }
     }
-  }
 
-  //For debug
-  //alert("已统计的空闲时间如下：\n" + result.toString());
+    //For debug
+    //alert("已统计的空闲时间如下：\n" + result.toString());
 
-  //TODO: 接下来可以将统计信息发往后台了。就用AJAX。
-  var data={
-    result: result.toString(),
-    id: document.getElementById("id").innerText,
-    name: document.getElementById("name").innerText,
-  };
-  $.ajax({
-    type: 'POST',
-    url: '/submit_freetime/',
-    data: data,
-    dataType: 'json',
-    success: function(data){
-      //TODO: 后台要回传一些数据，如处理成功的提示。
-      //TODO: 但是具体如何处理，还要取决于怎么样设计录入部分（自动接续逐一录入，还是每次都要重新检索）
-      Materialize.toast(data.backMessage['message'], 4000, "toast-info")
-    },
-    error: function(xhr, type){}
-  })
+    //TODO: 接下来可以将统计信息发往后台了。就用AJAX。
+    var data={
+        result: result.toString(),
+        id: document.getElementById("id").innerText,
+        name: document.getElementById("name").innerText,
+    };
+    $.ajax({
+        type: 'POST',
+        url: '/submit_freetime/',
+        data: data,
+        dataType: 'json',
+        success: function(data){
+            //TODO: 后台要回传一些数据，如处理成功的提示。
+            //TODO: 但是具体如何处理，还要取决于怎么样设计录入部分（自动接续逐一录入，还是每次都要重新检索）
+            Materialize.toast(data.backMessage['message'], 4000, "toast-info")
+        },
+        error: function(xhr, type){}
+    })
 
 }
 
 function clearFreeTimePick(){
-  var tds = document.getElementsByName("free-time-picker");
-  for(var i=0; i<tds.length; i++){
-    var cell=$("#"+tds[i].id);
-    cell.attr("freetime_checked", "no");
-    cell.css("background-color", "#FFFFFF")
-  }
+    var tds = document.getElementsByName("free-time-picker");
+    for(var i=0; i<tds.length; i++){
+        var cell=$("#"+tds[i].id);
+        cell.attr("freetime_checked", "no");
+        cell.css("background-color", "#FFFFFF")
+    }
 }
 
 var tds = document.getElementsByName("free-time-picker");
 for(var i=0; i<tds.length; i++)
 {
-  $("#"+tds[i].id).attr("onclick","handleFreeTimePick('"+tds[i].id+"')")
-  .attr("freetime_checked", "no")
+    $("#"+tds[i].id).attr("onclick","handleFreeTimePick('"+tds[i].id+"')")
+    .attr("freetime_checked", "no")
 }
 
 
@@ -116,16 +116,50 @@ function show_freetime(data) {
     var target_range = document.getElementsByName("free-time-picker");
     console.log(data);
     // TODO: only loop 4 times...
+    /*
     for (var each in target_range) {
-        var target = target_range[each];
-        console.log(data[each+1]);
-        if (data[each+1] == 0) {
-            $(target).attr("freetime_checked", "no");
-            $(target).css("background-color", "#FFFFFF");
-        }
-        else if (data[each+1] == 1) {
-            $(target).attr("freetime_checked", "yes");
-            $(target).css("background-color", "#4db6ac");
+    var target = target_range[each];
+    console.log(data[each+1]);
+    if (data[each+1] == 0) {
+    $(target).attr("freetime_checked", "no");
+    $(target).css("background-color", "#FFFFFF");
+}
+else if (data[each+1] == 1) {
+$(target).attr("freetime_checked", "yes");
+$(target).css("background-color", "#4db6ac");
+}
+}
+*/
+    // var tds = document.getElementsByName("free-time-picker");
+    for (var i = 0; i < target_range.length; i++) {
+        var cell = $("#" + target_range[i].id);
+        if (data[i+1] == 0 || data.length == 0) {
+            cell.attr("freetime_checked", "no");
+            cell.css("background-color", "#FFFFFF");
+        } else if (data[i+1] == 1) {
+            cell.attr("freetime_checked", "yes");
+            cell.css("background-color", "#4db6ac");
         }
     }
+
+
+
+}
+
+
+
+
+function EnterKeyToSearch() {
+	var key;
+	if(window.event)
+		key = event.keyCode;
+	else if(event.which)
+		key = event.which;
+	var keychar = String.fromCharCode(key);
+
+	if (keychar == "\r"){
+		console.log("SEARCHBOX: Enter key pressed");
+		searchPerson();
+	}
+
 }
