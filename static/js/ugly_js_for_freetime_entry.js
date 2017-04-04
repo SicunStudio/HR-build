@@ -38,6 +38,7 @@ function submitFreeTimePick(){
         success: function(data){
             //TODO: 后台要回传一些数据，如处理成功的提示。
             //TODO: 但是具体如何处理，还要取决于怎么样设计录入部分（自动接续逐一录入，还是每次都要重新检索）
+            searchPerson();     // 刷新
             Materialize.toast(data.backMessage['message'], 4000, "toast-info")
         },
         error: function(xhr, type){}
@@ -82,7 +83,7 @@ function searchPerson() {
             data: data,
             dataType: 'json',
             success: function(data) {
-                console.log(data);
+                // console.log(data);
                 if (show_person(data.result)) {
                     show_freetime(data.freetime);
                 }

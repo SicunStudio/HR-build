@@ -265,6 +265,13 @@ def freetime_entry():
     return render_template('freetime_entry.html')
 
 
+@app.route('/freetime_search/', methods=['GET', 'POST'])
+@login_verify
+def freetime_search():
+    return render_template('freetime_search.html')
+
+
+
 ######## process ########
 
 @app.route('/searching_person/', methods=['GET'])
@@ -326,14 +333,18 @@ def searching_score():
 @login_verify
 def submit_freetime():
     raw_data = request.form.get('result','')
-
-    # target_id = request.
-    # print(raw_data)
     output=parse_result(
         raw_data=raw_data,
         id=request.form.get('id', '')
     )
     return jsonify(backMessage={'message':output})
+
+
+@app.route('/searching_freetime/', methods=['POST'])
+def searching_freetime():
+    require = request.form.get('result', '')
+    person = searchFreetime(require)
+    return jsonify(result=person)
 
 
 def parse_result(raw_data, id):
@@ -378,10 +389,6 @@ def parse_result(raw_data, id):
 
 
 
-
-
-
-
 @app.route('/get_person_freetime/', methods=['GET'])
 @login_verify
 def get_person_freetime():
@@ -393,6 +400,9 @@ def get_person_freetime():
         result=getOnePerson(depart, direction, content),
         freetime=getFreetime(depart, direction, content)
     )
+
+
+
 
 
 

@@ -317,3 +317,46 @@ def getFreetime(depart, direction, content):
         flash("(⊙﹏⊙)b 查询资料时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
         printLog("[getFreetime Error] %s" % e.args[0])
         printErrTraceback(title="getFreetime",exception=e)
+
+
+
+def searchFreetime(require):
+    '''
+      require = ['MON-1-2', ...]
+    '''
+    require = require.split(',')
+    # print(require)
+    try:
+        id_container = []
+        person = []
+        with sqlite3.connect(DATABASE) as db:
+            SQL = "SELECT id FROM freetime WHERE "
+            if require[0] == '':
+                SQL = "SELECT id FROM freetime WHERE id = '苟'"
+            else:
+                for each in require:
+                    tmp = each.split('-')
+                    SQL += tmp[0] + '_' + tmp [1] + '_' + tmp[2] + " = 1 AND "
+                SQL = SQL[:-4]
+            print(SQL)
+            cur = db.execute(SQL)
+            id_container = cur.fetchall()
+        with sqlite3.connect(DATABASE) as db:
+            # print(id_container)
+            SQL = "SELECT * FROM test WHERE id IN ("
+            if len(id_container) == 0:
+                SQL = "SELECT * FROM test WHERE id = '苟'"
+            else:
+                for each in id_container:
+                    SQL += '"' + each[0] + '"' + ', '
+                SQL = SQL[:-2] + ')'
+            print(SQL)
+            cur = db.execute(SQL)
+            person = cur.fetchall()
+        print(person)
+        return person
+
+    except Exception as e:
+        flash("(⊙﹏⊙)b 查询资料时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
+        printLog("[searchFreetime Error] %s" % e.args[0])
+        printErrTraceback(title="searchFreetime",exception=e)
