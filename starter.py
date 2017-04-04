@@ -317,6 +317,10 @@ def searching_score():
     return jsonify(result=grepScore(direction, content))
 
 
+
+
+''' freetime '''
+
 ###### TODO: TEST AREA! ######
 @app.route('/submit_freetime/', methods=('GET', 'POST'))
 @login_verify
@@ -324,7 +328,7 @@ def submit_freetime():
     raw_data = request.form.get('result','')
 
     # target_id = request.
-    print(raw_data)
+    # print(raw_data)
     output=parse_result(
         raw_data=raw_data,
         id=request.form.get('id', '')
@@ -385,7 +389,10 @@ def get_person_freetime():
     direction = request.args.get('direction', '')
     content = request.args.get('content', '')
     # print(depart)
-    return jsonify(result=getOnePerson(depart, direction, content))
+    return jsonify(
+        result=getOnePerson(depart, direction, content),
+        freetime=getFreetime(depart, direction, content)
+    )
 
 
 

@@ -82,6 +82,7 @@ function searchPerson() {
             data: data,
             dataType: 'json',
             success: function(data) {
+                console.log(data);
                 if (show_person(data.result)) {
                     show_freetime(data.freetime);
                 }
@@ -111,8 +112,20 @@ function show_person(data) {
 }
 
 
-
 function show_freetime(data) {
-    var target_range = document.getElementsByName("free-time-picker")
-    // console.log(target_range);
+    var target_range = document.getElementsByName("free-time-picker");
+    console.log(data);
+    // TODO: only loop 4 times...
+    for (var each in target_range) {
+        var target = target_range[each];
+        console.log(data[each+1]);
+        if (data[each+1] == 0) {
+            $(target).attr("freetime_checked", "no");
+            $(target).css("background-color", "#FFFFFF");
+        }
+        else if (data[each+1] == 1) {
+            $(target).attr("freetime_checked", "yes");
+            $(target).css("background-color", "#4db6ac");
+        }
+    }
 }

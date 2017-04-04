@@ -277,15 +277,40 @@ def registerFreetime(data):
                 for each in data['freetime']:
                     SQL += '1, '    # 1 as the freetime flag
                 SQL = SQL[:-2] + ')'
-            print(SQL)
+            # print(SQL)
             db.execute('''
                 DELETE FROM freetime
                 WHERE id = "{}"
             '''.format(data['id'])
             )
             db.execute(SQL)
+            db.commit()
 
     except Exception as e:
         flash("(⊙﹏⊙)b 查询资料时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
         printLog("[getOnePerson Error] %s" % e.args[0])
         printErrTraceback(title="getOnePerson",exception=e)
+
+
+
+def getFreetime(depart, direction, content):
+    '''
+      return format:
+      ("AU000000", 0, 0, 1, 0, ...) - in table head order
+    '''
+    # TODO: stupid way of getting id
+    id = getOnePerson(depart, direction, content)[0]
+    try:
+        with sqlite3.connect(DATABASE) as db:
+            SQL = '''
+                SELECT * FROM freetime
+                WHERE id = "{}"
+            '''.format(id)
+            cur = db.execute(SQL)
+            result = cur.fetchone() # id primary key - only one will be found
+            return result
+
+    except Exception as e:
+        flash("(⊙﹏⊙)b 查询资料时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
+        printLog("[getFreetime Error] %s" % e.args[0])
+        printErrTraceback(title="getFreetime",exception=e)
