@@ -347,11 +347,14 @@ def parse_result(raw_data, id):
         'MON': '周一', 'TUE': '周二', 'WED': '周三', 'THU': '周四', 'FRI': '周五', 'SAT': '周六', 'SUN': '周日'
     }
     lesson_time = raw_data.split(',')
-    print(lesson_time)
+    # print(lesson_time)
     # result
+    if lesson_time[0] == '':
+        lesson_time = []
     for item in lesson_time:
         buff=item.split('-', 1)
         day=buff[0]
+        # TODO: get error when there's no freetime
         time=buff[1]
         result.append("%s %s节" % (weekdays_name[day], time))
 
@@ -360,9 +363,13 @@ def parse_result(raw_data, id):
         id = id,
         freetime = lesson_time
     )
+    registerFreetime(to_SQL)
 
 
     # flash msg after written into database
+    # deal with empty input
+    if result ==  []:
+        result = "这位同学可真忙啊。。。。"
     return result
 
 
