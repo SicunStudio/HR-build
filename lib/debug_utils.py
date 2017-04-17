@@ -1,4 +1,7 @@
 """
+    DEBUGGER UTILITIES
+    ~~~~~~~~~~~~~~
+
     Debugger Assistant module for AUHR-HUST
 """
 
@@ -7,7 +10,7 @@ import datetime
 from flask import session, jsonify
 from starter import app
 
-############ Logger ############
+######################## LOGGER ########################
 def printLog(content):
     """
     Print log message in Python console.
@@ -15,7 +18,7 @@ def printLog(content):
     :return:
     """
     currentTime = datetime.datetime.now().isoformat("-")
-    print("[LOG] [ %s ]\t %s" % (currentTime, content))
+    print("[LOG] [ %s ]  %s" % (currentTime, content))
 
 def printErrTraceback(title, exception):
     """
@@ -27,12 +30,12 @@ def printErrTraceback(title, exception):
     print("[ERROR] [ %s ] [ %s ]\t %s" % (title, currentTime, exception.args[0]))
 
 
-######## Notification utils #########
+############### NOTIFICATION UTILS ###############
 @app.route('/clear_flash/', methods=['GET', 'POST'])
 def clear_flash_messages():
     """
     Clear flash message stack through an URL in front-end page.
-    This URL is AJAX-ive.
+    :NOTICE: This URL is AJAX-ive.
     :return: JSON info with log message.
     """
     print(session)

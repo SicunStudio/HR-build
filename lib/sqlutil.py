@@ -1,3 +1,10 @@
+"""
+    SQLITE DATABASE UTILITIES
+    ~~~~~~~~~~~~~~
+
+    Database manager module for AUHR-HUST. This is the core of the whole project.
+"""
+#################  IMPORTS  #################
 import sqlite3, os, re
 from operator import itemgetter
 from functools import wraps
@@ -9,21 +16,31 @@ try:
 except:
     pass
 
-######## configuration ########
-
-# DATABASE = os.path.join(app.root_path, 'data.db')  # db loaction
 
 
-
-######## _basic_funcs ########
+######################### BASIC FUNCTIONS #########################
 
 def getAll():
+    """
+    Query all PERSONAL data from database.
+    :return: Personal data assembly.
+    """
     with sqlite3.connect(DATABASE) as database:
         cursor = database.execute('select * from test')
         data = cursor.fetchall()
         return data
 
+
 def getConditonal(column, conditon, require):
+    # TODO: Must figure out what this function do.
+    """
+    Query a person with given conditions.
+
+    :param column:
+    :param conditon:
+    :param require:
+    :return: Personal data.
+    """
     with sqlite3.connect(DATABASE) as database:
         cursor = database.execute("select %s from test where %s = '%s'" % (column, conditon, require))
         data = cursor.fetchall()
@@ -31,29 +48,38 @@ def getConditonal(column, conditon, require):
 
 
 def check_person_info(person_modifier):
+    """
+    Check input of new person info, to avoid illegal inputs.
+    :param person_modifier:
+    :return:
+    """
     @wraps(person_modifier)
     def prerequisite_person(d, *args, **kwargs):
         if ' ' in d.get('name', ''):
             flash("名字中不能包含空格！", 'warning')
             return redirect(url_for('personal'))
-        elif not re.match(r'^AU\d{9}$', d.get('id', '')):
+        #elif not re.match(r'^AU\d{9}', d.get('id', '')):
+        elif not re.match(r'^AU\d{9}', kwargs['id']):
             flash("社联编号格式不正确！", 'warning')
+            flash("格式要求：AUxxxxxxxxx，其中X为数字！")
             return redirect(url_for('personal'))
         else:
-            return person_modifier(*args, **kwargs)
+            return person_modifier(d, *args, **kwargs)
     return prerequisite_person
 
 
 
 
-######## person ########
+#########################  PERSONAL DATA MANAGE  #########################
 
 @check_person_info
 def addPerson(d):
-    '''
-      return 1 if success
-      otherwise return 0
-    '''
+    """
+    Add a new personal data entry.
+    :param d:
+    :return: Return 1 if succeed, otherwise return 0.
+    """
+
     with sqlite3.connect(DATABASE) as database:
         data = dict(
             id=d.get('id', ''), name=d.get('name', ''), gender=d.get('gender', ''),
@@ -82,6 +108,12 @@ def addPerson(d):
 
 @check_person_info
 def updatePerson(d, id):
+    """
+    Update an modified personal data entry into database.
+    :param d:
+    :param id:
+    :return: Return 1 if succeed, otherwise return 0.
+    """
     with sqlite3.connect(DATABASE) as database:
         data = dict(
             name=d.get('name', ''), gender=d.get('gender', ''),
@@ -90,7 +122,10 @@ def updatePerson(d, id):
             depart=d.get('depart', ''), group=d.get('group', ''), occup=d.get('occup', ''),
             dateofjoin=d.get('dateofjoin', ''), id=id
         )
-        print(data)
+
+        printLog("[updatePerson]  User is submitting this modified personal data:")
+        printLog(data)
+
         SQL = "update test set name = '{name}', gender = '{gender}', qq = '{qq}', tel = '{tel}', wchat = '{wchat}', emg = '{emg}', school = '{school}', class = '{clas}', apart = '{apart}', depart = '{depart}', grp = '{group}', occup = '{occup}', dateofjoin = '{dateofjoin}' where id = '{id}'".format_map(data)
         printLog("============== UPDATE PERSON ==============")
         printLog(SQL)
@@ -110,6 +145,12 @@ def updatePerson(d, id):
 
 
 def grepPerson(column, require):
+    """
+    Query a personal data entry with given requirements.
+    :param column:
+    :param require:
+    :return: Queried entry.
+    """
     try:
         with sqlite3.connect(DATABASE) as database:
             cursor = database.execute("select * from test where %s GLOB '*%s*'" % (column, require))
@@ -127,9 +168,14 @@ def grepPerson(column, require):
 
 
 
-######## issue ########
-
-def addIssue():
+#########################  ISSUE MANAGE  #########################
+# TODO: The following function used to have a bug...
+def addIssue(data):
+    """
+    Add a new issue.
+    :param data:
+    :return:
+    """
     with sqlite3.connect(DATABASE) as database:
         SQL = "insert into issue (id,title,body) values ('%s','%s','%s')" % (data['id'],data['title'],data['body'])
         printLog("============== ADD ISSUE ==============")
@@ -150,6 +196,12 @@ def addIssue():
 
 
 def updateIssue(idx, data):
+    """
+    Update a modified existing issue.
+    :param idx:
+    :param data:
+    :return:
+    """
     with sqlite3.connect(DATABASE) as database:
         SQL = "update issue set title = '%s', body = '%s' where idx = '%s'" % (data['title'], data['body'], idx)
         printLog("============== UPDATE ISSUE ==============")
@@ -170,6 +222,12 @@ def updateIssue(idx, data):
 
 
 def grepIssue(column, require):
+    """
+    Query issues with given requirements.
+    :param column:
+    :param require:
+    :return:
+    """
     try:
         with sqlite3.connect(DATABASE) as database:
             raw_data = []
@@ -196,9 +254,15 @@ def grepIssue(column, require):
 
 
 
-######## score ########
+#########################  SCORE MANAGE  #########################
 
 def grepScore(direction, content):
+    """
+    Query an existing score table with given direction.
+    :param direction:
+    :param content:
+    :return:
+    """
     '''
       format:
       [{'title': 'title_0', 'date': '1 January, 1970', 'depart': '部门', 'id': 1}, ...]
@@ -230,9 +294,17 @@ def grepScore(direction, content):
 
 
 
-######## freetime ########
+#########################  FREE TIME MANAGE  #########################
+# TODO: Try to figure out valid introductions of the following functions.
 
 def getOnePerson(depart, direction, content):
+    """
+    Query a person's free time.
+    :param depart:
+    :param direction:
+    :param content:
+    :return:
+    """
     try:
         with sqlite3.connect(DATABASE) as db:
             raw = tuple()
@@ -258,6 +330,11 @@ def getOnePerson(depart, direction, content):
 
 
 def registerFreetime(data):
+    """
+
+    :param data:
+    :return:
+    """
     '''
       parameter format:
         data = {
@@ -287,13 +364,20 @@ def registerFreetime(data):
             db.commit()
 
     except Exception as e:
-        flash("(⊙﹏⊙)b 查询资料时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
+        flash("(⊙﹏⊙)b 录入空闲时间时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
         printLog("[getOnePerson Error] %s" % e.args[0])
         printErrTraceback(title="getOnePerson",exception=e)
 
 
 
 def getFreetime(depart, direction, content):
+    """
+
+    :param depart:
+    :param direction:
+    :param content:
+    :return:
+    """
     '''
       return format:
       ("AU000000", 0, 0, 1, 0, ...) - in table head order
@@ -314,13 +398,18 @@ def getFreetime(depart, direction, content):
             return result
 
     except Exception as e:
-        flash("(⊙﹏⊙)b 查询资料时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
+        flash("(⊙﹏⊙)b 查询某人的空闲时间时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
         printLog("[getFreetime Error] %s" % e.args[0])
         printErrTraceback(title="getFreetime",exception=e)
 
 
 
 def searchFreetime(require):
+    """
+    Query free time by a given time array. Those who are free at given time will be picked out.
+    :param require: A time array for querying person free at those time.
+    :return:
+    """
     '''
       require = ['MON-1-2', ...]
     '''
@@ -357,6 +446,6 @@ def searchFreetime(require):
         return person
 
     except Exception as e:
-        flash("(⊙﹏⊙)b 查询资料时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
+        flash("(⊙﹏⊙)b 查询空闲时间段时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
         printLog("[searchFreetime Error] %s" % e.args[0])
         printErrTraceback(title="searchFreetime",exception=e)

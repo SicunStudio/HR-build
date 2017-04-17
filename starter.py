@@ -217,10 +217,10 @@ def score(title):
 def update(id):
     '''  update for personale info  '''
     if request.method == 'GET':
-        printLog(id)
+        printLog("[update] Updating entry ID: %s" % id)
         return render_template('info_update.html', database=getConditonal('*','id',id),id=id)
     elif request.method == 'POST':
-        updatePerson(request.form, id)
+        updatePerson(request.form, id=id)
         return redirect(url_for('personal'))
 
 
