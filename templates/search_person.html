@@ -1,6 +1,19 @@
 {% extends "base.html" %}
 
 {% block main_content %}
+        <style>
+            .tips
+            {
+                letter-spacing: 5px;
+            }
+
+            .tips > .tips-content
+            {
+                background-color: #F2F2F2;
+                padding: 20px 25px;
+            }
+
+        </style>
 
 		<div class="container">
 			<div class="container">
@@ -31,13 +44,13 @@
             <!-- Search results will show here -->
 			<div id="result-table">
                     <div class="card" id="default-tips">
-						<div class="card-content" style="letter-spacing: 5px">
+						<div class="card-content tips">
 							<div class="row">
 								<span class="card-title col s4 left">提示</span>
 							</div>
 
-							<div class="row" style="background-color: #F2F2F2">
-								<span class="card-content" >查询关键字输入框为空时，点击搜索可以显示全部数据</span>
+							<div class="row tips-content">
+								<span class="card-content" >查询关键字输入框为空时，点击搜索可以显示全部数据。</span>
 							</div>
 						</div>
 					</div>
