@@ -102,7 +102,7 @@ width:
 
 
       <div class="input-field col s5 valign-wrapper">
-        <input name="title" type="text" class="validate" onkeypress="EnterKeyToSearch()" required>
+        <input name="title" type="text" class="validate" onkeypress="searchPerson()" required>
         <label for="title">关键字</label>
       </div>
 
@@ -124,7 +124,7 @@ width:
 
 <div class="container freetime-picker-main">
 
-  <div class="row" name="search-result">
+  <div class="row search-result-bar" name="search-result">
     <!-- TODO: tempting to add search status here -->
     <span class="col s6 flow-text teal-text" style="font-size:1.4rem;" id="name">&nbsp;</span>
     <span class="col s6 flow-text teal-text" style="font-size:1.4rem;" id="id"></span>

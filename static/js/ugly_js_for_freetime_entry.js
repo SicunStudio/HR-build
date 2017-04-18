@@ -1,3 +1,12 @@
+/** ###################### IN-PAGE ACTION HANDLER ###################### **/
+
+/**
+ * @CORE-FUNCTION
+ * Act the free time picker when you click a cell.
+ *  - Change color
+ *  - Mark your chosen free time cell with attr.
+ * @param cellID  The cell you clicked.
+ */
 function handleFreeTimePick(cellID){
     var cell = $("#"+cellID);
     if(cell.attr("freetime_checked") == "yes"){
@@ -10,12 +19,15 @@ function handleFreeTimePick(cellID){
     }
 }
 
+/**
+ * Submit your picked free time value to database.
+ */
 function submitFreeTimePick(){
     var tds = document.getElementsByName("free-time-picker");
-    var result=[];
+    var result = [];
 
     for(var i=0; i<tds.length; i++){
-        var cell=$("#"+tds[i].id);
+        var cell = $("#"+tds[i].id);
         if(cell.attr("freetime_checked") == "yes"){
             result.push(tds[i].id)
         }
@@ -38,14 +50,31 @@ function submitFreeTimePick(){
         success: function(data){
             //TODO: 后台要回传一些数据，如处理成功的提示。
             //TODO: 但是具体如何处理，还要取决于怎么样设计录入部分（自动接续逐一录入，还是每次都要重新检索）
-            searchPerson();     // 刷新
-            Materialize.toast(data.backMessage['message'], 4000, "toast-info")
+            searchPerson(true);     // 刷新. 所设参数为refresh_only，标示这仅仅是刷新而非人员检索
+
+            /** Show and log messages **/
+            console.log("Chosen free time:" + data.backMessage['free_time']);
+
+            if(data.backMessage['errorlevel'] == true){
+                showInpageToast(data.backMessage['message'], "success");
+            }
+            else{
+                showInpageToast(data.backMessage['message'], "error")
+            }
+
+            if(data.backMessage['sub_message']){
+                showInpageToast(data.backMessage['sub_message']);
+            }
+            //Materialize.toast(data.backMessage['message'], 4000, "toast-info")
         },
         error: function(xhr, type){}
     })
 
 }
 
+/**
+ * Clear the free time picker. This is benefit for refilling the table.
+ */
 function clearFreeTimePick(){
     var tds = document.getElementsByName("free-time-picker");
     for(var i=0; i<tds.length; i++){
@@ -55,6 +84,11 @@ function clearFreeTimePick(){
     }
 }
 
+/**
+ * @INIT-CODE
+ * Initialize the free time picker.
+ * @type {NodeList}
+ */
 var tds = document.getElementsByName("free-time-picker");
 for(var i=0; i<tds.length; i++)
 {
@@ -63,9 +97,16 @@ for(var i=0; i<tds.length; i++)
 }
 
 
+/** ###################### DATABASE RENDERER SECTION ###################### **/
 
-
-function searchPerson() {
+/**
+ * Query a person's free time from database.
+ * @param refresh_only: Set true if you only use this function for refreshing.
+ * @returns {number} -1 if fails.
+ * @dependency show_person(data).
+ */
+function searchPerson(refresh_only)
+{
     var search_bar = document.getElementById("search-bar");
     var data = {
         depart: search_bar.getElementsByTagName("select")[0].value,
@@ -75,6 +116,9 @@ function searchPerson() {
     // console.log(data);
     if (data['depart'] == '' || data['direction'] == '' || data['content'] == '') {
         console.log("Invalid search!");
+        //Give a toast
+        showInpageToast("无效检索，请检查关键字！", "warning");
+        return -1;
     }
     else {
         $.ajax({
@@ -86,25 +130,43 @@ function searchPerson() {
                 // console.log(data);
                 if (show_person(data.result)) {
                     show_freetime(data.freetime);
+                    // No need to show this toast if you use this func to refresh
+                    if(!refresh_only)
+                        showInpageToast("人员已检索到。现在可以开始编辑了", "success");
+                }
+                else {
+                    showInpageToast("未检索到成员！", "warning");
                 }
             },
-            error: function(xhr, type) {}
+            error: function(xhr, type) {
+
+            }
         });
     }
 }
 
 
-
-
-
+/**
+ * @INNER-TOOL
+ * After querying a person, parse the returned AJAX data from the backend, and generate the following data:
+ *  - Name
+ *  - ID
+ * Then, give a result of found or not.
+ * This function is used by searchPerson() to determine if we should render and toast, or not.
+ * @param data
+ *      AJAX data from backend.
+ * @returns {number}
+ *      If found, return 1, also print Name and ID on the top of free time picker;
+ *      If not found, return 0 instead.
+ */
 function show_person(data) {
     var target_range = document.getElementsByName("search-result")[0];
     var target = target_range.getElementsByTagName("span");
-    // console.log(data);
+     console.log(data);
     target[0].innerText = data[1];
     target[1].innerText = data[0];
     if (data[0] != "") {
-        console.log("person in db!");
+        console.log("This person is in db!");
         return 1;
     }
     else {
@@ -113,6 +175,10 @@ function show_person(data) {
 }
 
 
+/**
+ * Render a person's recorded free time (if have) to the free time picker.
+ * @param data
+ */
 function show_freetime(data) {
     var target_range = document.getElementsByName("free-time-picker");
     console.log(data);
@@ -148,8 +214,12 @@ $(target).css("background-color", "#4db6ac");
 }
 
 
+/** ###################### ADDITIONAL TWEAK FEATURES ###################### **/
 
-
+/**
+ * Press ENTER key to perform a search. This is a must for every mature sites.
+ * @constructor
+ */
 function EnterKeyToSearch() {
 	var key;
 	if(window.event)

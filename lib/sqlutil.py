@@ -76,7 +76,7 @@ def check_person_info(person_modifier):
 def addPerson(d):
     """
     Add a new personal data entry.
-    :param d:
+    :param d: A dict from Flask request object. Data of the form in webpage.
     :return: Return 1 if succeed, otherwise return 0.
     """
 
@@ -110,8 +110,8 @@ def addPerson(d):
 def updatePerson(d, id):
     """
     Update an modified personal data entry into database.
-    :param d:
-    :param id:
+    :param d: A dict from Flask request object. Data of the form in webpage.
+    :param id: Current person's ID.
     :return: Return 1 if succeed, otherwise return 0.
     """
     with sqlite3.connect(DATABASE) as database:
@@ -173,8 +173,8 @@ def grepPerson(column, require):
 def addIssue(data):
     """
     Add a new issue.
-    :param data:
-    :return:
+    :param data: A dict from Flask request object. Data of the form in webpage.
+    :return: Error level.
     """
     with sqlite3.connect(DATABASE) as database:
         SQL = "insert into issue (id,title,body) values ('%s','%s','%s')" % (data['id'],data['title'],data['body'])
@@ -200,7 +200,7 @@ def updateIssue(idx, data):
     Update a modified existing issue.
     :param idx:
     :param data:
-    :return:
+    :return: Error level.
     """
     with sqlite3.connect(DATABASE) as database:
         SQL = "update issue set title = '%s', body = '%s' where idx = '%s'" % (data['title'], data['body'], idx)
@@ -295,7 +295,9 @@ def grepScore(direction, content):
 
 
 #########################  FREE TIME MANAGE  #########################
-# TODO: Try to figure out valid introductions of the following functions.
+# TODO: 1. Try to figure out valid introductions of the following functions.
+# TODO: 2. Allow querying any person without specifying its department and requirement type.
+# TODO: 3. If repeated infos are found, pop up a warning dialog for choosing a valid one.
 
 def getOnePerson(depart, direction, content):
     """
@@ -320,7 +322,8 @@ def getOnePerson(depart, direction, content):
             if len(raw) == 1:
                 return raw[0]
             else:
-                return ('', "无查询结果")
+                #flash("查询结果为空！", category="warning")
+                return ("", "查询结果为空！")
 
     except Exception as e:
         flash("(⊙﹏⊙)b 查询资料时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
@@ -331,17 +334,15 @@ def getOnePerson(depart, direction, content):
 
 def registerFreetime(data):
     """
-
-    :param data:
-    :return:
-    """
-    '''
-      parameter format:
+    Add free time entry for a person.
+    :param data: A formatted dict. Free time entry data
+        parameter format:
         data = {
             'id': ...,
             'freetime': [ list of freetime in 'MON-1-2' ]
         }
-    '''
+    :return: True if succeed, and False if fail.
+    """
     try:
         with sqlite3.connect(DATABASE) as db:
             SQL = "INSERT INTO freetime (id, "
@@ -362,26 +363,28 @@ def registerFreetime(data):
             )
             db.execute(SQL)
             db.commit()
+            return True
 
     except Exception as e:
-        flash("(⊙﹏⊙)b 录入空闲时间时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
+        errmsg = "(⊙﹏⊙)b 录入空闲时间时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0]
+        #flash("(⊙﹏⊙)b 录入空闲时间时出错了：%s <br> 请狠狠地戳开发人员~~~" % e.args[0], category="error")
         printLog("[getOnePerson Error] %s" % e.args[0])
         printErrTraceback(title="getOnePerson",exception=e)
+        return errmsg
 
 
 
 def getFreetime(depart, direction, content):
     """
-
+    (??????) Query free time by department.
     :param depart:
     :param direction:
     :param content:
-    :return:
+    :return: Queried result in the following format:
+          :format:
+            ("AU000000", 0, 0, 1, 0, ...) - in table head order
     """
-    '''
-      return format:
-      ("AU000000", 0, 0, 1, 0, ...) - in table head order
-    '''
+
     # TODO: stupid way of getting id
     id = getOnePerson(depart, direction, content)[0]
     try:
@@ -407,12 +410,12 @@ def getFreetime(depart, direction, content):
 def searchFreetime(require):
     """
     Query free time by a given time array. Those who are free at given time will be picked out.
-    :param require: A time array for querying person free at those time.
+    :param require: A list of time array for querying person free at those time.
+        :format
+            require = ['MON-1-2', ...]
     :return:
     """
-    '''
-      require = ['MON-1-2', ...]
-    '''
+
     require = require.split(',')
     # print(require)
     try:

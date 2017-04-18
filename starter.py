@@ -328,7 +328,7 @@ def searching_score():
 
 ''' freetime '''
 
-###### TODO: TEST AREA! ######
+###### TODO: This area is still under construction! ######
 @app.route('/submit_freetime/', methods=('GET', 'POST'))
 @login_verify
 def submit_freetime():
@@ -337,7 +337,7 @@ def submit_freetime():
         raw_data=raw_data,
         id=request.form.get('id', '')
     )
-    return jsonify(backMessage={'message':output})
+    return jsonify(backMessage=output)
 
 
 @app.route('/searching_freetime/', methods=['POST'])
@@ -357,10 +357,16 @@ def parse_result(raw_data, id):
           'freetime': lesson_time
       }
     '''
-    result=[]
+    result={
+        'errorlevel': "",    # Set true if succeed in adding entry, otherwise error messages.
+        'message': "",
+        'sub_message': "",
+        'free_time': []
+    }
     weekdays_name = {
         'MON': '周一', 'TUE': '周二', 'WED': '周三', 'THU': '周四', 'FRI': '周五', 'SAT': '周六', 'SUN': '周日'
     }
+
     lesson_time = raw_data.split(',')
     # print(lesson_time)
     # result
@@ -371,20 +377,27 @@ def parse_result(raw_data, id):
         day=buff[0]
         # TODO: get error when there's no freetime
         time=buff[1]
-        result.append("%s %s节" % (weekdays_name[day], time))
+        result['free_time'].append("%s %s节" % (weekdays_name[day], time))
 
     # to_SQL
     to_SQL = dict(
         id = id,
         freetime = lesson_time
     )
-    registerFreetime(to_SQL)
+    result['errorlevel'] = registerFreetime(to_SQL)
 
 
     # flash msg after written into database
-    # deal with empty input
-    if result ==  []:
-        result = "这位同学可真忙啊。。。。"
+    # Show normal message
+    if result['errorlevel'] == True:        # If succeed
+        result['message'] = "空闲时间录入成功！"
+    else:           # If met error, show error message instead
+        result['message'] = result['errorlevel']
+
+    # Show a specified message if empty input
+    if len(result['free_time']) == 0:
+        result['sub_message'] = "这位同学可真忙啊，居然没有空闲时间。。。。"
+
     return result
 
 
