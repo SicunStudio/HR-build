@@ -2,16 +2,21 @@
 <!DOCTYPE html>
 <html>
 <head>
+        <!-- Core CSSes -->
 		<link href="{{ url_for('static', filename='css/google_material_icons.css') }}" rel="stylesheet">
 		<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/materialize.css') }}"  media="screen,projection"/>
+
+        <!-- Metadata -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<title>HR系统_demo</title>
 		<meta name="theme-color" content="#33691E">
 
-        <!-- //Should localize necessary Javascript libraries -->
+        <title>华中大学生社团联合会 HR系统</title>
+
+        <!-- Should localize necessary Javascript libraries -->
 		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-2.1.1.min.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='js/materialize.min.js') }}"></script>
 
+        <!-- Free time checker's own CSS -->
         <link href="{{ url_for('static', filename='css/freetimechecker.css') }}" rel="stylesheet">
 </head>
 
@@ -24,39 +29,39 @@
                 <nav>
                     <div class="nav-wrapper light-green darken-4">
                         <!-- Header title will redirect you to the home page -->
-                        <a href="{{ url_for('personal') }}" class="brand-logo" title="点击返回主页面"><img src="" style="width:1em; height:1em;" alt="something to fill in"/>HR系统_demo</a>
+                        <a href="{{ url_for('personal') }}" class="brand-logo" title="点击返回主页面"><img src="" style="width:1em; height:1em;" alt="something to fill in"/>华中大学生社团联合会 HR系统</a>
 
                         {% if 'id' in session %}
-                          <ul id="logout-m" class="dropdown-content">
-                              <li><a href="#!">手滑了....</a></li>
-                              <li><a href="{{ url_for('logout') }}">确认登出</a></li>
-                          </ul>
+                            <!-- for desktop -->
+                              <ul id="logout-m" class="dropdown-content">
+                                  <li><a href="#!">手滑了....</a></li>
+                                  <li><a href="{{ url_for('logout') }}">确认登出</a></li>
+                              </ul>
+                            <!-- for mobile -->
 													<ul id="logout-l" class="dropdown-content">
 															<li><a href="#!">手滑了....</a></li>
 															<li><a href="{{ url_for('logout') }}">确认登出</a></li>
 													</ul>
 
 
-													<!-- for desktop -->
-                          <ul class="right hide-on-med-and-down">
-														<li>
-															<a class="dropdown-button">{{ session['id'] }}</a>
-														</li>
-														<li>
-															<a class="dropdown-button" href="#!" data-activates="logout-l" title="注销登录">登出</a>
-														</li>
-                          </ul>
+							<!-- for desktop -->
+                             <ul class="right hide-on-med-and-down">
+									<li>
+											<a class="dropdown-button">{{ session['id'] }}</a>
+									</li>
+									<li>
+											<a class="dropdown-button" href="#!" data-activates="logout-l" title="注销登录">登出</a>
+									</li>
+                             </ul>
 
-													<!-- for mobile -->
+							<!-- for mobile -->
 													<ul class="right hide-on-large-only">
 														<li>
 															<a class="dropdown-button" href="#!" data-activates="logout-m" title="注销登录">登出</a>
 														</li>
 													</ul>
 
-												{% else %}
-
-                        {% endif %}
+                         {% endif %}
                     </div>
                 </nav>
             </div>
@@ -112,6 +117,7 @@
 
             $("body").bind("onload", showFlashToast())
         })
+
     </script>
 
 </body>

@@ -17,7 +17,8 @@
 							</select>
 						</div>
 						<div class="input-field col s8" id="content-wrap">
-							<input name="content" id="content" type="text" class="black-text" onkeypress="EnterKeyToSearch()" required>
+							<input name="content" id="content" type="text" class="black-text" onkeypress="EnterKeyToSearch()" onchange="tip_on_content_keywordbox()" required>
+                            <label id="label_for_content" for="content">查询关键字。为空时点击搜索，显示全部数据</label>
 						</div>
 						<!-- original -->
 						<!--button class="btn-flat waves-effect waves-dark col s1 right valign" type="submit"><i class="material-icons">search</i></button-->
@@ -29,7 +30,17 @@
 
             <!-- Search results will show here -->
 			<div id="result-table">
+                    <div class="card" id="default-tips">
+						<div class="card-content" style="letter-spacing: 5px">
+							<div class="row">
+								<span class="card-title col s4 left">提示</span>
+							</div>
 
+							<div class="row" style="background-color: #F2F2F2">
+								<span class="card-content" >查询关键字输入框为空时，点击搜索可以显示全部数据</span>
+							</div>
+						</div>
+					</div>
 			</div>
 
 
@@ -48,5 +59,20 @@
 			$('select').material_select();
 		});
 	</script>
+    <script>
+        /**
+         * Control the tip text for keyword box
+         */
+        function tip_on_content_keywordbox(){
+            var content_keywordbox = document.getElementById("content");
+            var label = document.getElementById("label_for_content");
+
+            if(content_keywordbox.value == "")
+                label.innerHTML = "查询关键字。为空时点击搜索，显示全部数据";
+            else
+                label.innerHTML = "查询关键字";
+
+        }
+    </script>
 
 {% endblock %}

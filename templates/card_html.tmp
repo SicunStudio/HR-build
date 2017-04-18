@@ -1,0 +1,19 @@
+<div class="card">
+						<div class="card-content">
+							<div class="row">
+								<span class="card-title col s4 left">提示</span>
+							</div>
+							<div class="row">
+								<span class="card-content">查询关键字输入框为空时，点击搜索可以显示全部数据</span>
+							</div>
+						</div>
+					</div>
+
+
+
+<table class="striped col s12">
+									<tr>
+										<th>性别</th><td>" + persons[id][1] + "</td>
+										<th>QQ</th><td>" + persons[id][2] + "</td>
+									</tr>
+</table>
