@@ -1,62 +1,19 @@
 {% extends 'base.html' %}
 
 {% block main_content %}
-<!--
+
+
 <style>
-.top-searchbar
-{
-width:
-}
+    .page-title
+    {
+         margin-top: 2rem;
+         margin-bottom: 0.5rem;
+    }
+    .search-bar
+    {
+         margin-bottom: 0.5em;
+    }
 </style>
-
-<div class="container">
-
-<br><br>
-
-<div class="top-searchbar row nav-wrapper green z-depth-2">
-
-<h5 class="input-field left col s2">空闲时间录入</h5>
-<div class="input-field col s2 left">
-<select name="depart">
-<option value="" disabled selected>选择部门</option>
-<option value="财务部" id="fun">财务部</option>
-<option value="秘书部" id="sec">秘书部</option>
-<option value="人力资源部" id="hr">人力资源部</option>
-<option value="社团部" id="clb">社团部</option>
-<option value="行政监察部" id="sup">行政监察部</option>
-<option value="外联部" id="out">外联部</option>
-<option value="公共关系部" id="pr">公共关系部</option>
-<option value="宣传部" id="pub">宣传部</option>
-<option value="媒体部" id="med">媒体部</option>
-<option value="思存工作室" id="sicun">思存工作室</option>
-<option value="新媒体工作室" id="nmed">新媒体工作室</option>
-<option value="社团外联企划小组" id="cop">社团外联企划小组</option>
-<option value="文艺拓展部" id="ext">文艺拓展部</option>
-<option value="其它" id="o">其它</option>
-</select>
-
-</div>
-<div class="input-field col s7">
-<input name="title" type="text" class="validate" required>
-<label for="title">关键字</label>
-</div>
-<div class="input-field btn col s1"></div>
-</div>
-
--->
-<style>
-.page-title
-{
-  margin-top: 2rem;
-  margin-bottom: 0.5rem;
-}
-.search-bar
-{
-  margin-bottom: 0.5em;
-}
-
-</style>
-
 
 
 
@@ -103,7 +60,7 @@ width:
 
       <div class="input-field col s5 valign-wrapper">
         <!-- TODO: why `onkeypress`??? Shouldn't it be EnterKeyToSearch() ??? -->
-        <input name="title" type="text" class="validate" onkeypress="searchPerson()" required>
+        <input name="title" type="text" class="validate" onkeypress="EnterKeyToSearch()" required>
         <label for="title">关键字</label>
       </div>
 
@@ -117,10 +74,6 @@ width:
 
   </div>
 </div>
-
-
-
-
 
 
 <div class="container freetime-picker-main">
@@ -226,6 +179,7 @@ width:
     </div>
   </div>
 </div>
+
 
 
 <script id="materialize-controller">
