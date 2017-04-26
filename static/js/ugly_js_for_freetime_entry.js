@@ -1,4 +1,4 @@
-/** ###################### IN-PAGE ACTION HANDLER ###################### **/
+/** ###################### FREE-TIME PICKER CONTROLLER ###################### **/
 
 /**
  * @CORE-FUNCTION
