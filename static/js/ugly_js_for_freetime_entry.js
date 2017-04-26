@@ -1,41 +1,9 @@
-/** ###################### FREE-TIME PICKER CONTROLLER ###################### **/
 
-/**
- * @CORE-FUNCTION
- * Act the free time picker when you click a cell.
- *  - Change color
- *  - Mark your chosen free time cell with attr.
- * @param cellID  The cell you clicked.
- */
-function handleFreeTimePick(cellID){
-    var cell = $("#"+cellID);
-    if(cell.attr("freetime_checked") == "yes"){
-        cell.attr("freetime_checked", "no");
-        cell.css("background-color", "#FFFFFF");
-    }
-    else{
-        cell.attr("freetime_checked", "yes");
-        cell.css("background-color", "#4db6ac")
-    }
-}
 
-/**
- * Submit your picked free time value to database.
- */
-function submitFreeTimePick(){
-    var tds = document.getElementsByName("free-time-picker");
-    var result = [];
+/** ###################### DATABASE RENDERER SECTION ###################### **/
 
-    for(var i=0; i<tds.length; i++){
-        var cell = $("#"+tds[i].id);
-        if(cell.attr("freetime_checked") == "yes"){
-            result.push(tds[i].id)
-        }
-    }
-
-    //For debug
-    //alert("已统计的空闲时间如下：\n" + result.toString());
-
+function submit_freetime_to_background(result)
+{
     //TODO: 接下来可以将统计信息发往后台了。就用AJAX。
     var data={
         result: result.toString(),
@@ -69,35 +37,7 @@ function submitFreeTimePick(){
         },
         error: function(xhr, type){}
     })
-
 }
-
-/**
- * Clear the free time picker. This is benefit for refilling the table.
- */
-function clearFreeTimePick(){
-    var tds = document.getElementsByName("free-time-picker");
-    for(var i=0; i<tds.length; i++){
-        var cell=$("#"+tds[i].id);
-        cell.attr("freetime_checked", "no");
-        cell.css("background-color", "#FFFFFF")
-    }
-}
-
-/**
- * @INIT-CODE
- * Initialize the free time picker.
- * @type {NodeList}
- */
-var tds = document.getElementsByName("free-time-picker");
-for(var i=0; i<tds.length; i++)
-{
-    $("#"+tds[i].id).attr("onclick","handleFreeTimePick('"+tds[i].id+"')")
-    .attr("freetime_checked", "no")
-}
-
-
-/** ###################### DATABASE RENDERER SECTION ###################### **/
 
 /**
  * Query a person's free time from database.
