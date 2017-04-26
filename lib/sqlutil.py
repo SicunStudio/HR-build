@@ -294,10 +294,13 @@ def grepScore(direction, content):
 
 
 
-#########################  FREE TIME MANAGE  #########################
+# #########################  FREE TIME MANAGE  ##########################
 # TODO: 1. Try to figure out valid introductions of the following functions.
-# TODO: 2. Allow querying any person without specifying its department and requirement type.
-# TODO: 3. If repeated infos are found, pop up a warning dialog for choosing a valid one.
+# TODO: 2. GLOBAL QUERY SUPPORT: Allow querying any person without specifying its department and requirement type.
+# TODO: 3. Implement multi-editing-mode
+# TODO:    a) Edit by department: Choose a depart, and list members in a sidebar. Supports "prev/next" button.
+# TODO:    b) Query person before edit. It's our current interface. Should keep it.
+# TODO: 4. HANDLE REPEAT RECORDS: If repeated infos are found, pop up a warning dialog for choosing a valid one.
 
 def getOnePerson(depart, direction, content):
     """
