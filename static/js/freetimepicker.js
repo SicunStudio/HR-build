@@ -1,7 +1,8 @@
 /**
+ * ###################### FREE-TIME PICKER CONTROLLER ######################
  * Created by AnCla on 2017/4/26 0026.
+ * TODO: *** Fill JSDoc, add instruction of @param id_of_picker. ***
  */
-/** ###################### FREE-TIME PICKER CONTROLLER ###################### **/
 
 /**
  * @CORE-FUNCTION
@@ -10,8 +11,10 @@
  *  - Mark your chosen free time cell with attr.
  * @param cellID  The cell you clicked.
  */
-function handleFreeTimePick(cellID){
-    var cell = $("#"+cellID);
+function handleFreeTimePick(cellID, id_of_picker){
+    var selector = "[id='" + id_of_picker + "'] [id='" + cellID + "']";
+
+    var cell = $(selector);
     if(cell.attr("freetime_checked") == "yes"){
         cell.attr("freetime_checked", "no");
         cell.css("background-color", "#FFFFFF");
@@ -33,12 +36,15 @@ function handleFreeTimePick(cellID){
  * @param method_to_background: Your callback function's name.
  *      NOTICE: Just function name. Parameter isn't required.
  */
-function submitFreeTimePick(method_to_background){
+function submitFreeTimePick(method_to_background, id_of_picker){
+
     var tds = document.getElementsByName("free-time-picker");
     var result = [];
 
     for(var i=0; i<tds.length; i++){
-        var cell = $("#"+tds[i].id);
+        var selector = "[id='" + id_of_picker + "'] [id='" + tds[i].id + "']";
+
+        var cell = $(selector);
         if(cell.attr("freetime_checked") == "yes"){
             result.push(tds[i].id)
         }
@@ -55,24 +61,53 @@ function submitFreeTimePick(method_to_background){
 /**
  * Clear the free time picker. This is benefit for refilling the table.
  */
-function clearFreeTimePick(){
+function clearFreeTimePick(id_of_picker){
     var tds = document.getElementsByName("free-time-picker");
     for(var i=0; i<tds.length; i++){
-        var cell=$("#"+tds[i].id);
+        var selector = "[id='" + id_of_picker + "'] [id='" + tds[i].id + "']";
+
+        var cell=$(selector);
         cell.attr("freetime_checked", "no");
         cell.css("background-color", "#FFFFFF")
     }
 }
 
+
 /**
- * @INIT-CODE
- * Initialize the free time picker.
- * @type {NodeList}
+ * Initialize free time picker.
+ * @param id_of_picker
  */
-var tds = document.getElementsByName("free-time-picker");
-for(var i=0; i<tds.length; i++)
-{
-    $("#"+tds[i].id).attr("onclick","handleFreeTimePick('"+tds[i].id+"')")
-    .attr("freetime_checked", "no")
+function initFreeTimePick(id_of_picker){
+
+    const name_of_picker_cell = "free-time-picker";
+
+    var tds = document.getElementsByName(name_of_picker_cell);
+
+    for(var i=0; i<tds.length; i++)
+    {
+         //$("#"+tds[i].id).attr("onclick","handleFreeTimePick('"+tds[i].id+"')")
+         //   .attr("freetime_checked", "no")
+
+         var selector = "[id='" + id_of_picker + "'] [id='" + tds[i].id + "']";
+         $(selector).attr("onclick","handleFreeTimePick('"+tds[i].id+"', '"+ id_of_picker + "')")
+                     .attr("freetime_checked", "no")
+    }
+
+
 }
 
+
+function initFreeTimePick_ReadOnly(id_of_picker){
+    const name_of_picker_cell = "free-time-picker";
+
+    var tds = document.getElementsByName(name_of_picker_cell);
+
+    for(var i=0; i<tds.length; i++)
+    {
+         //$("#"+tds[i].id).attr("onclick","handleFreeTimePick('"+tds[i].id+"')")
+         //   .attr("freetime_checked", "no")
+
+         var selector = "[id='" + id_of_picker + "'] [id='" + tds[i].id + "']";
+         $(selector).attr("freetime_checked", "no")
+    }
+}

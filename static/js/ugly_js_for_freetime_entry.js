@@ -20,7 +20,9 @@ function submit_freetime_to_background(result)
             //TODO: 但是具体如何处理，还要取决于怎么样设计录入部分（自动接续逐一录入，还是每次都要重新检索）
             searchPerson(true);     // 刷新. 所设参数为refresh_only，标示这仅仅是刷新而非人员检索
 
-            /** Show and log messages **/
+            /** Show and log messages
+             *  Note: backMessage[] is a JSON-ified dict defined by background.
+             * **/
             console.log("Chosen free time:" + data.backMessage['free_time']);
 
             if(data.backMessage['errorlevel'] == true){

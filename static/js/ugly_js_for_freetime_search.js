@@ -1,22 +1,3 @@
-/** ###################### FREE-TIME PICKER CONTROLLER ###################### **/
-
-/**
- * Clear the free time picker. This is benefit for refilling the table.
- */
-function clearFreeTimePick(){
-    var tds = document.getElementsByName("free-time-picker");
-    for(var i=0; i<tds.length; i++){
-        var cell=$("#"+tds[i].id);
-        cell.attr("freetime_checked", "no");
-        cell.css("background-color", "#FFFFFF")
-    }
-}
-
-var tds = document.getElementsByName("free-time-picker");
-for(var i=0; i<tds.length; i++)
-{
-    $("#"+tds[i].id).attr("freetime_checked", "no")
-}
 
 /** ###################### DATABASE RENDERER SECTION ###################### **/
 

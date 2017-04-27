@@ -76,7 +76,7 @@
 </div>
 
 
-<div class="container freetime-picker-main">
+<div id="_freetime_picker_Entry" class="container freetime-picker-main">
 
   <div class="row search-result-bar" name="search-result">
     <!-- TODO: tempting to add search status here -->
@@ -168,12 +168,12 @@
 <div class="container submit-bar">
   <div class="row">
     <div class="col s6">
-      <a class="btn orange submit-btn waves-effect waves-light left" onclick="clearFreeTimePick()">清除重选
+      <a class="btn orange submit-btn waves-effect waves-light left" onclick="clearFreeTimePick('_freetime_picker_Entry')">清除重选
         <i class="material-icons left">tab_unselected</i>
       </a>
     </div>
     <div class="col s6">
-      <a class="btn submit-btn waves-effect waves-light right" onclick="submitFreeTimePick()">提交
+      <a class="btn submit-btn waves-effect waves-light right" onclick="submitFreeTimePick(submit_freetime_to_background, '_freetime_picker_Entry')">提交
         <i class="material-icons right">send</i>
       </a>
     </div>
@@ -181,18 +181,26 @@
 </div>
 
 
+<script id="freetime-picker-controller" src="{{ url_for('static', filename='js/freetimepicker.js') }}"></script>
+<script id="freetime-entry-dbcontroller" src="{{ url_for('static', filename='js/ugly_js_for_freetime_entry.js') }}"></script>
 
-<script id="materialize-controller">
-  /**
-  * Materialize Controller code
-  */
-  $(document).ready(function() {
-    Materialize.updateTextFields();
-    $('select').material_select();
-  });
+<script id="materialize-initializer">
+      /**
+      * Materialize Controller code
+      * Initialize Material elements.
+      */
+      $(document).ready(function() {
+            Materialize.updateTextFields();
+            $('select').material_select();
+      });
+
+      /**
+      * @INIT-CODE
+      * Initialize the free time picker.
+      * @type {NodeList}
+      */
+      initFreeTimePick("_freetime_picker_Entry")
 </script>
 
-<script id="freetime-checker-controller" src="{{ url_for('static', filename='js/ugly_js_for_freetime_entry.js') }}">
-</script>
 
 {% endblock %}

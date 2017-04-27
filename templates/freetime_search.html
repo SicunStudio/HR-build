@@ -19,6 +19,15 @@
         margin-bottom: 0.5em;
     }
 
+    .row > .side-navbar
+    {
+        padding-left: 1rem;
+    }
+
+    .divider-in-query-section
+    {
+        margin: 2.5rem 0
+    }
 </style>
 
 
@@ -33,14 +42,15 @@
 
       <div class="query-mode-switcher col s8 m7 l8 right" id="query-mode-switcher">
           <ul id="tabs-query-mode-switcher" class="tabs">
-              <li class="tab col s3"><a class="active" href="#_Query_By_Member">按单个成员</a></li>
-              <li class="tab col s3"><a href="#_Query_By_Time">按时间段</a></li>
+              <li class="tab col s3"><a  href="#_Query_By_Member">按单个成员</a></li>
+              <li class="tab col s3"><a class="active" href="#_Query_By_Time">按时间段</a></li>
               <li class="tab col s3"><a href="#_Query_By_Depart">按部门</a></li>
           </ul>
       </div>
 
-</div>
 
+</div>
+<div class="row divider"></div>
 
 
 <div id="_Query_By_Member" class="col s12">
@@ -94,7 +104,7 @@
 
       </div>
     </div>
-    <div class="container freetime-picker-main">
+    <div id="_freetime_picker_Member" class="container freetime-picker-main">
 
       <div class="row search-result-bar" name="search-result">
         <!-- TODO: tempting to add search status here -->
@@ -185,16 +195,143 @@
 </div>
 
 
-<div id="_Query_By_Time" class="col s12 red">
+<div id="_Query_By_Time" class="row">
     <!-- TODO: Choose free-time on the table, then print people who satisfy it.
          TODO:  CARD format: Every depart has a card, writing the names of whom satisfy.   Each name should also contains their free-time chosen.
     -->
 
-    <div class="divider"></div>
-
-    <div class="container" id="result-table-Time">
-        <!-- TODO: Print format: Use Card! -->
+    <div class="side-navbar col m3 l2" id="navigator_Time">
+        <ul class="section table-of-contents">
+          <li><a href="#step-1" class="active">Sidebar</a></li>
+          <li><a href="#step-2" class="">Toast</a></li>
+        </ul>
     </div>
+
+    <div class="col m9 l8" id="mainpart_Time">
+
+        <div class="step-1" id="step-1">
+            <h5>第一步  先选择空闲时间段</h5>
+
+            <div id="_freetime_picker_Time" class="container freetime-picker-main">
+
+              <div class="row search-result-bar" name="search-result">
+                <!-- TODO: tempting to add search status here -->
+                <span class="col s6 flow-text teal-text" style="font-size:1.4rem;" id="name">&nbsp;</span>
+                <span class="col s6 flow-text teal-text" style="font-size:1.4rem;" id="id"></span>
+
+              </div>
+
+              <div class="row">
+                <div class="col s1 freetime-head"></div>
+                <div class="col s1 freetime-head center">周一</div>
+                <div class="col s1 freetime-head center">周二</div>
+                <div class="col s1 freetime-head center">周三</div>
+                <div class="col s1 freetime-head center">周四</div>
+                <div class="col s1 freetime-head center">周五</div>
+                <div class="col s1 freetime-head center">周六</div>
+                <div class="col s1 freetime-head center">周日</div>
+              </div>
+
+              <div class="row">
+                <div class="col s1 freetime center">1-2</div>
+                <div name="free-time-picker" id="MON-1-2" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="TUE-1-2" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="WED-1-2" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="THU-1-2" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="FRI-1-2" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="SAT-1-2" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="SUN-1-2" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+              </div>
+
+              <div class="row">
+                <div class="col s1 freetime">3-4</div>
+                <div name="free-time-picker" id="MON-3-4" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="TUE-3-4" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="WED-3-4" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="THU-3-4" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="FRI-3-4" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="SAT-3-4" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="SUN-3-4" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+              </div>
+
+              <div class="row">
+                <div class="col s1 freetime">5-6</div>
+                <div name="free-time-picker" id="MON-5-6" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="TUE-5-6" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="WED-5-6" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="THU-5-6" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="FRI-5-6" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="SAT-5-6" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="SUN-5-6" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+              </div>
+
+              <div class="row">
+                <div class="col s1 freetime">7-8</div>
+                <div name="free-time-picker" id="MON-7-8" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="TUE-7-8" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="WED-7-8" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="THU-7-8" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="FRI-7-8" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="SAT-7-8" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="SUN-7-8" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+              </div>
+
+              <div class="row">
+                <div class="col s1 freetime">9-10</div>
+                <div name="free-time-picker" id="MON-9-10" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="TUE-9-10" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="WED-9-10" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="THU-9-10" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="FRI-9-10" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="SAT-9-10" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="SUN-9-10" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+              </div>
+
+              <div class="row">
+                <div class="col s1 freetime">11-12</div>
+                <div name="free-time-picker" id="MON-11-12" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="TUE-11-12" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="WED-11-12" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="THU-11-12" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="FRI-11-12" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="SAT-11-12" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+                <div name="free-time-picker" id="SUN-11-12" class="col s1 waves-effect waves-teal freetime btn-large">&nbsp;</div>
+              </div>
+
+
+            </div>
+
+            <div class="container submit-bar">
+              <div class="row">
+                <div class="col s6">
+                  <a class="btn orange submit-btn waves-effect waves-light left" onclick="clearFreeTimePick('_freetime_picker_Time')">清除重选
+                    <i class="material-icons left">tab_unselected</i>
+                  </a>
+                </div>
+                <div class="col s6">
+                  <a class="btn submit-btn waves-effect waves-light right" onclick="submitFreeTimePick()">提交
+                    <i class="material-icons right">send</i>
+                  </a>
+                </div>
+              </div>
+            </div>
+        </div>
+
+
+        <div class="divider divider-in-query-section"></div>
+
+        <div class="step-2" id="step-2">
+            <h5 id="step-2">第二步  结果如下所列</h5>
+
+            <div class="container" id="result-table-Time">
+                <!-- TODO: Print format: Use Card! -->
+            </div>
+        </div>
+    </div>
+
+
+
+
 
 </div>
 
@@ -216,20 +353,29 @@
 
 
 
+<script id="freetime-picker-controller" src="{{ url_for('static', filename='js/freetimepicker.js') }}"></script>
+<script id="freetime-search-dbcontroller" src="{{ url_for('static', filename='js/ugly_js_for_freetime_search.js') }}"></script>
 
+<script id="materialize-initializer">
+      /**
+      * Materialize Controller code
+      * Initialize Material elements.
+      */
+      $(document).ready(function() {
+            Materialize.updateTextFields();
+            $('select').material_select();
+      });
 
-<script id="materialize-controller">
-    /**
-     * Materialize Controller code
-     */
-    $(document).ready(function() {
-        Materialize.updateTextFields();
-        $('select').material_select();
-    });
+      /**
+      * @INIT-CODE
+      * Initialize the free time picker.
+      * @type {NodeList}
+      */
+
+      initFreeTimePick("_freetime_picker_Time");
+      initFreeTimePick_ReadOnly("_freetime_picker_Member")
+
 </script>
-
-<script id="freetime-checker-controller" src="{{ url_for('static', filename='js/ugly_js_for_freetime_search.js') }}">
-</script>
-
+    
 
 {% endblock %}
