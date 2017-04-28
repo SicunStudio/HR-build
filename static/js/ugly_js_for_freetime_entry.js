@@ -37,7 +37,10 @@ function submit_freetime_to_background(result)
             }
             //Materialize.toast(data.backMessage['message'], 4000, "toast-info")
         },
-        error: function(xhr, type){}
+        error: function(xhr, type){
+            //Show a toast that we have bumped into an error
+            showInpageToast("啊哦。。连接出错了。。马上戳思存的小伙伴吧！", 'error');
+        }
     })
 }
 
@@ -81,7 +84,8 @@ function searchPerson(refresh_only)
                 }
             },
             error: function(xhr, type) {
-
+                //Show a toast that we have bumped into an error
+                showInpageToast("啊哦。。连接出错了。。马上戳思存的小伙伴吧！", 'error');
             }
         });
     }

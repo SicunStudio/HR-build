@@ -44,7 +44,10 @@ function searchPerson(refresh_only)
                 }
             },
             error: function(xhr, type) {
-                clearFreeTimePick();         //Clearing free time picker on failure is a mature choice
+                //Show a toast that we have bumped into an error
+                showInpageToast("啊哦。。连接出错了。。马上戳思存的小伙伴吧！", 'error');
+                //Clearing free time picker on failure is a mature choice
+                clearFreeTimePick();
             }
         });
     }
@@ -154,7 +157,8 @@ function submit_freetime_querier_to_background(result){
             }
         },
         error: function(xhr, type){
-            alert("Error..........")
+            //Show a toast that we have bumped into an error
+            showInpageToast("啊哦。。连接出错了。。马上戳思存的小伙伴吧！", 'error');
         }
     })
 
