@@ -415,7 +415,18 @@ def get_person_freetime():
     )
 
 
-
+@app.route('/get_time_freetime/', methods=['GET'])
+@login_verify
+def get_time_freetime():
+    freetime_choice_raw = request.args.get('freetime_choice','')
+    #freetime_choice = freetime_choice_raw.split(',')
+    # print(depart)
+    return jsonify(
+        # TODO: Write this method.
+        #result=getPersonsByFreetimeChoice(freetime_choice)
+        #result = searchFreetime(freetime_choice)
+        result=searchFreetime(freetime_choice_raw)
+    )
 
 
 

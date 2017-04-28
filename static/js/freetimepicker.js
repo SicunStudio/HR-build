@@ -37,6 +37,7 @@ function handleFreeTimePick(cellID, id_of_picker){
  *      NOTICE: Just function name. Parameter isn't required.
  */
 function submitFreeTimePick(method_to_background, id_of_picker){
+    /** TODO: Result may duplicate / even corrupt when more than two pickers in one page, if they are all read-write. **/
 
     var tds = document.getElementsByName("free-time-picker");
     var result = [];
@@ -52,6 +53,7 @@ function submitFreeTimePick(method_to_background, id_of_picker){
 
     //For debug
     //alert("已统计的空闲时间如下：\n" + result.toString());
+    console.log(tds.length);
 
     // Call your defined callback method
     method_to_background(result)

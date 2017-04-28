@@ -415,7 +415,8 @@ def searchFreetime(require):
     Query free time by a given time array. Those who are free at given time will be picked out.
     :param require: A list of time array for querying person free at those time.
         :format
-            require = ['MON-1-2', ...]
+            //require = ['MON-1-2', ...]
+            require = "MON-1-2', ..."
     :return:
     """
 

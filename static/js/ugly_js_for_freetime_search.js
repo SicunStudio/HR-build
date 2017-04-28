@@ -118,11 +118,55 @@ $(target).css("background-color", "#4db6ac");
 
 }
 
+/** ================== Section 2: Query by Time  ================= **/
+function submit_freetime_querier_to_background(result){
+    //FOR DEBUG
+    console.log("Picked free time (may duplicate):\n" + result);
+
+    if(result.length <= 0){
+        showInpageToast("请先点选要检索的时间！", 'warning');
+        return
+    }
+
+    var data = {
+        freetime_choice: String(result)
+    };
+
+    $.ajax({
+        type: 'GET',
+        url: '/get_time_freetime/',
+        data: data,
+        dataType: 'json',
+        success: function (data) {
+            //TODO: AJAX function for getting/showing person...
+            //For debug
+            console.log("Member searched:");
+            console.log(data.result);
+
+            //Show in result table
+            if(data.result.length <= 0) {
+                showInpageToast("啊哦。。这些时间段竟然没人有空。。", 'warning');
+                reset_result('result-table-Time')
+            }
+            else{
+                show_result(data.result, 'result-table-Time');
+                showInpageToast("已检索到符合条件的同学", 'success')
+            }
+        },
+        error: function(xhr, type){
+            alert("Error..........")
+        }
+    })
+
+}
 
 
 /** ###################### RESULT RENDERER SECTION ###################### **/
 
-function show_result(persons){
+function show_result(persons, target_result_table){
+
+    //TODO: Add "Registed free time info" column in this card in future.
+
 	var bfr = "";
 	for (var id in persons) {
 		// ugliest lines in the whole world!!!
@@ -164,13 +208,28 @@ function show_result(persons){
 					</div>\
 					"
 	}
-	document.getElementById("result-table").innerHTML=bfr;
+	document.getElementById(target_result_table).innerHTML=bfr;
 	// Toast if EMPTY RESULT
 	if(bfr == ""){
 		Materialize.toast("查询结果为空", 3000, "toast-warning")
 	}
 }
 
+function reset_result(target_result_table){
+    var bfr = "		<div class=\"card\">	\
+                    <div class=\"card-content tips\">\
+							<div class=\"row\">\
+								<span class=\"card-title col s8 left\">啊哦。。搜索结果为空。。</span>\
+							</div>\
+							<div class=\"row tips-content\">\
+								<span class=\"card-content\" >这个时间段竟然没有同学有空。。。。</span>\
+							</div>\
+						</div>\
+					</div>\
+				</div>\
+					"
+    document.getElementById(target_result_table).innerHTML=bfr;
+}
 
 /** ###################### ADDITIONAL TWEAK FEATURES ###################### **/
 

@@ -6,6 +6,10 @@
         margin-bottom: 0.5rem;
     }
 
+    .section-title {
+        margin-bottom: 2em;
+    }
+
     .top-bar {
         margin-bottom: 0.5em;
     }
@@ -201,16 +205,18 @@
     -->
 
     <div class="side-navbar col m3 l2" id="navigator_Time">
-        <ul class="section table-of-contents">
-          <li><a href="#step-1" class="active">Sidebar</a></li>
-          <li><a href="#step-2" class="">Toast</a></li>
-        </ul>
+        <div class="pinned">
+            <ul class="section table-of-contents">
+              <li><a href="#step-1" class="active">先在上方<br>选定你想检索的空闲时间</a></li>
+              <li><a href="#step-2" class="">向下滚动即可查看搜索结果</a></li>
+            </ul>
+        </div>
     </div>
 
     <div class="col m9 l8" id="mainpart_Time">
 
         <div class="step-1" id="step-1">
-            <h5>第一步  先选择空闲时间段</h5>
+            <h5 class="section-title">第一步  先选择空闲时间段</h5>
 
             <div id="_freetime_picker_Time" class="container freetime-picker-main">
 
@@ -309,7 +315,7 @@
                   </a>
                 </div>
                 <div class="col s6">
-                  <a class="btn submit-btn waves-effect waves-light right" onclick="submitFreeTimePick()">提交
+                  <a class="btn submit-btn waves-effect waves-light right" onclick="submitFreeTimePick(submit_freetime_querier_to_background, '_freetime_picker_Time')">提交
                     <i class="material-icons right">send</i>
                   </a>
                 </div>
@@ -321,10 +327,21 @@
         <div class="divider divider-in-query-section"></div>
 
         <div class="step-2" id="step-2">
-            <h5 id="step-2">第二步  结果如下所列</h5>
+            <h5 class="section-title">第二步  结果如下所列</h5>
 
             <div class="container" id="result-table-Time">
-                <!-- TODO: Print format: Use Card! -->
+                            <div class="card">
+                                    <div class="card-content tips">
+                                        <div class="row">
+                                            <span class="card-title col s4 left">你尚未搜索</span>
+                                        </div>
+
+                                        <div class="row tips-content">
+                                            <span class="card-content" >请在页面上方输入你的搜索条件。</span>
+                                        </div>
+                                    </div>
+
+                            </div>
             </div>
         </div>
     </div>
