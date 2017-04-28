@@ -18,19 +18,30 @@
         padding-top: 1rem;
     }
 
-    .search-bar
-    {
+    .search-bar {
         margin-bottom: 0.5em;
     }
 
-    .row > .side-navbar
-    {
-        padding-left: 1rem;
+    .section-title-line {
+        margin: 0 5em;
     }
 
-    .divider-in-query-section
-    {
+    .row > .side-navbar {
+        padding-left: 1rem;
+        margin-top: 3em;
+    }
+
+    .divider-in-query-section {
         margin: 2.5rem 0
+    }
+
+    .section-description{
+        /*padding-right: 6em;
+        padding-top: 1.5em;*/
+        margin: 0.82rem 0 0.656rem 0;
+
+        font-size: 1.125rem;
+        color: darkgray;
     }
 </style>
 
@@ -204,28 +215,31 @@
          TODO:  CARD format: Every depart has a card, writing the names of whom satisfy.   Each name should also contains their free-time chosen.
     -->
 
-    <div class="side-navbar col m3 l2" id="navigator_Time">
+    <div class="side-navbar col m1 l1 hide-on-small-only" id="navigator_Time">
         <div class="pinned">
             <ul class="section table-of-contents">
-              <li><a href="#step-1" class="active">先在上方<br>选定你想检索的空闲时间</a></li>
-              <li><a href="#step-2" class="">向下滚动即可查看搜索结果</a></li>
+              <li><a href="#step-1" class="active">选择空闲时间</a></li>
+              <li><a href="#step-2" class="">查看搜索结果</a></li>
             </ul>
         </div>
     </div>
 
-    <div class="col m9 l8" id="mainpart_Time">
+    <div class="col s12 m11 l11" id="mainpart_Time">
 
         <div class="step-1" id="step-1">
-            <h5 class="section-title">第一步  先选择空闲时间段</h5>
+            <div class="section-title-line row">
+                <div class="col s6 m6">
+                    <h5 class="section-title">第一步  先选择空闲时间段</h5>
+                </div>
+                <div class="col s6 m6">
+                    <div class="right section-description hide-on-small-only">在这里点选空闲时间段，<br>下拉即可看到搜索结果</div>
+                </div>
+            </div>
+
+
 
             <div id="_freetime_picker_Time" class="container freetime-picker-main">
 
-              <div class="row search-result-bar" name="search-result">
-                <!-- TODO: tempting to add search status here -->
-                <span class="col s6 flow-text teal-text" style="font-size:1.4rem;" id="name">&nbsp;</span>
-                <span class="col s6 flow-text teal-text" style="font-size:1.4rem;" id="id"></span>
-
-              </div>
 
               <div class="row">
                 <div class="col s1 freetime-head"></div>
@@ -309,12 +323,12 @@
 
             <div class="container submit-bar">
               <div class="row">
-                <div class="col s6">
+                <div class="col s12 l6">
                   <a class="btn orange submit-btn waves-effect waves-light left" onclick="clearFreeTimePick('_freetime_picker_Time')">清除重选
                     <i class="material-icons left">tab_unselected</i>
                   </a>
                 </div>
-                <div class="col s6">
+                <div class="col s12 l6">
                   <a class="btn submit-btn waves-effect waves-light right" onclick="submitFreeTimePick(submit_freetime_querier_to_background, '_freetime_picker_Time')">提交
                     <i class="material-icons right">send</i>
                   </a>
@@ -333,14 +347,13 @@
                             <div class="card">
                                     <div class="card-content tips">
                                         <div class="row">
-                                            <span class="card-title col s4 left">你尚未搜索</span>
+                                            <span class="card-title col s12 left">你尚未搜索</span>
                                         </div>
 
                                         <div class="row tips-content">
                                             <span class="card-content" >请在页面上方输入你的搜索条件。</span>
                                         </div>
                                     </div>
-
                             </div>
             </div>
         </div>

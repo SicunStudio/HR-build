@@ -173,7 +173,7 @@ function show_result(persons, target_result_table){
 		bfr += "			<div class=\"card\">\
 						<div class=\"card-content\">\
 							<div class=\"row\">\
-								<span class=\"card-title col s4 left\"><a href=\"/update/" + id + "\"\ class=\"light-green-text text-darken-4\">" + persons[id][0] + "</a></span>\
+								<span class=\"card-title col s4 left\"><a href=\"#" + id + "\"\ class=\"light-green-text text-darken-4\">" + persons[id][0] + "</a></span>\
 								<span class=\"card-title col s7\">" + id + "</span>\
 							</div>\
 							<div class=\"row\">\
