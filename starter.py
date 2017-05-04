@@ -429,6 +429,10 @@ def get_time_freetime():
     )
 
 
+######## Miscellaneous entries ########
+@app.route('/opensource/')
+def opensource_info():
+    return render_template("opensource-info.html")
 
 ######## run ########
 

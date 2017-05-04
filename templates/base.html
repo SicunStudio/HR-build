@@ -22,6 +22,10 @@
         <!-- Inpage Toast Manage --- For the sake of just giving toast in frontend, not background -->
         <script type="text/javascript" src="{{ url_for('static', filename='js/inpage_toast_manager.js') }}"></script>
 
+        <!-- Footer hack -->
+        <link href="{{ url_for('static',filename='css/footer_hack.css') }}" rel="stylesheet">
+
+
 </head>
 
 <body>
@@ -78,10 +82,22 @@
             {% endblock %}
         </main>
 
+
+    <!-- Footer -->
+    <footer class="page-footer light-green darken-4">
+        <div class="footer-copyright">
+            <div class="container">
+            © 2017 华中科技大学学生社团联合会  思存工作室
+            <a class="grey-text text-lighten-4 right" href="{{ url_for('opensource_info') }}">开源说明</a>
+            </div>
+         </div>
+    </footer>
+
+
     <!-- Flash Notification Controller based on Materialize Toaster -->
     <!-- Use the theme from Toastr -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
-    <script id="notification-controller">
+    <script id="Flash-notification-controller">
         $(document).ready(function() {
 					$(".dropdown-button").dropdown();
 
@@ -123,6 +139,7 @@
         })
 
     </script>
+
 
 </body>
 
