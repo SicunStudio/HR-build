@@ -58,8 +58,9 @@ def check_person_info(person_modifier):
         if ' ' in d.get('name', ''):
             flash("名字中不能包含空格！", 'warning')
             return redirect(url_for('personal'))
-        #elif not re.match(r'^AU\d{9}', d.get('id', '')):
-        elif not re.match(r'^AU\d{9}', kwargs['id']):
+        elif not re.match(r'^AU\d{9}', d.get('id', '')):
+        # TODO: using the following statement will cause problems!
+        # elif not re.match(r'^AU\d{9}', kwargs['id']):
             flash("社联编号格式不正确！", 'warning')
             flash("格式要求：AUxxxxxxxxx，其中X为数字！")
             return redirect(url_for('personal'))
