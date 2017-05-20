@@ -4255,7 +4255,7 @@ a {
 
 html {
   line-height: 1.5;
-  font-family: "Roboto", "Helvetica", "Segoe UI", "PingFang SC", "微软雅黑", "Microsoft YaHei UI", sans-serif;
+  font-family: "Roboto", "Helvetica", "Segoe UI", "PingFang SC", ".PingFang SC", "微软雅黑", "Microsoft YaHei UI", sans-serif;
   font-weight: normal;
   color: rgba(0, 0, 0, 0.87);
 }

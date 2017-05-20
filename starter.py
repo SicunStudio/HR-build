@@ -308,6 +308,8 @@ def scoring():
 @app.route('/downloading/<title>')
 @login_verify
 def downloading(title):
+    # print(title)
+    # TODO: 由于编码问题，下面的语句只支持英文文件名
     return send_from_directory(FOLDER, title+'.xlsx', as_attachment=True)
 
 @app.route('/deleting/<title>')

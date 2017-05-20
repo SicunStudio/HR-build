@@ -10,13 +10,17 @@ import os, sqlite3
 from globalvar import *
 
 
+######################
+
+TEMP_FILE = 'template.xlsx'
 
 ######## utils ########
 
 def _read_test():
     ''' return table header line '''
-    wb = load_workbook(os.path.join(FOLDER, 'template.xlsx'))
+    wb = load_workbook(os.path.join(FOLDER, TEMP_FILE))
     data = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+    # return tuple([ content.value for content in data['A2':'M2'][0] ])
     return tuple([ content.value for content in data['A2':'M2'][0] ])
 
 def _move_cursor(ws, name='something you have to mess up with'):
@@ -25,6 +29,7 @@ def _move_cursor(ws, name='something you have to mess up with'):
       IF no match THEN return index-number of the adjacent empty row
     '''
     nameCells = ws['A'][2:] # 1: test-use; running: 2
+    # nameCells = ws['B'][2:] # 1: test-use; running: 2
     names = tuple(filter(lambda s: s and s.strip(), [ content.value for content in nameCells ]))  # thx 2 MichealLiao
     if name in names:
         return names.index(name) + 3 # 2: test-use
@@ -42,7 +47,7 @@ def newFile(title="测试测试", depart="其它", *, date=str(datetime.now())):
         flash("该表格已经存在！", category='error')
         return 0
     try:
-        wb = load_workbook(os.path.join(FOLDER, 'template.xlsx'))
+        wb = load_workbook(os.path.join(FOLDER, TEMP_FILE))
     except IOError:
         flash("表格模板损坏！<br>请联系管理员！", category='error')
         return 0
@@ -62,10 +67,13 @@ def newFile(title="测试测试", depart="其它", *, date=str(datetime.now())):
         # import names
         with sqlite3.connect(DATABASE) as database:
             cursor = database.execute("select name from test where depart = '%s'" % depart)
+            # cursor = database.execute("select (id, name) from test where depart = '%s'" % depart)
             names = cursor.fetchall()
-            print('hi?')
+            print('hi?')    # wtf is this???
         for i in range(len(names)):
             ws['A'+str(i+3)].value = names[i][0]
+            # ws['A'+str(i+3)].value = names[i][0]    # AUID
+            # ws['B'+str(i+3)].value = names[i][1]    # name
         wb.save(dst)
         # register at inventory.db
         flash("成功创建表格！<br>请一次性填写完表格！", category='success')
@@ -92,6 +100,7 @@ def write(filename, raw):
             raw['total']
         ]
         for o, i in zip(ws['B'+cur:'K'+cur][0], ordered):
+        # for o, i in zip(ws['C'+cur:'L'+cur][0], ordered):
             o.value = int(i)
         wb.save(dst)
         # Flask's flash won't show until refreshing, use js instead
@@ -120,6 +129,7 @@ def read(filename):
         for row in tuple(map(str, range(3, end))):  # get ('3', '4', '5', ..., '{end-1}')
             someone = dict()  # single person container
             for col in 'BCDEFGHIJK':
+            # for col in 'CDEFGHIJKL':
                 if ws[col+row].value is None:
                     someone[col] = ''
                 else:
@@ -144,16 +154,16 @@ def getPerson(filename, name):
         ws = wb.get_sheet_by_name(wb.get_sheet_names()[0])
         cur = str(_move_cursor(ws, name))
         person = {
-            'name': ws['A'+cur].value,
+            'name':     ws['A'+cur].value,
             'dim-self': ws['B'+cur].value,
             'act-self': ws['C'+cur].value,
-            'act-num': ws['D'+cur].value,
+            'act-num':  ws['D'+cur].value,
             'dly-self': ws['E'+cur].value,
-            'dly-act': ws['F'+cur].value,
+            'dly-act':  ws['F'+cur].value,
             'mntr-dim': ws['G'+cur].value,
             'mntr-act': ws['H'+cur].value,
-            'attd': ws['I'+cur].value,
-            'bonus': ws['J'+cur].value
+            'attd':     ws['I'+cur].value,
+            'bonus':    ws['J'+cur].value
         }
         return person
 
