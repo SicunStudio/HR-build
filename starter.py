@@ -25,7 +25,7 @@ except:
 
 ######## global configuration ########
 
-# see globalvar.py
+# see ./globalvar.py
 
 
 ######## initializaton ########
@@ -44,41 +44,49 @@ def getAdmin(column, conditon, require):
 
 
 def verify(id, passwd):
+    '''
+    see if passwd is correct
+        passwd is encoded using SHA256
+        TODO: hashed passwd at front-end
+    '''
     with sqlite3.connect(DATABASE) as database:
         cursor = database.execute("select passwd from admin where id = '%s'" % id)
         correct = cursor.fetchone()
         if correct==None:  # wrong id
             flash("用户名或密码错误！", category="error")
-            return 0
-        else:  # correct
+            return False
+        else:  # correct id
             treated = hashlib.sha256((passwd+SALT+id).encode('utf-8'))
             if treated.hexdigest()==correct[0]:
-                return 1
+                return True    # correct id-pass pair
             else:  # wrong passwd
                 flash("用户名或密码错误！", category="error")
-                return 0
+                return False
 
 
 def adminRegist(id, passwd):
+    '''
+    register a new administrater
+    '''
     if id == '':
         flash("用户名不能为空！", category='error')
-        return 0
+        return False
     elif passwd == '':
         flash("密码不能为空！", category='error')
-        return 0
+        return False
     with sqlite3.connect(DATABASE) as database:
         cur = database.execute("select passwd from admin where id = '%s'" % id)
         empty = cur.fetchone()
         if empty != None:
             flash("用户名已经存在!", category='warning')
-            return 0
+            return False
         else:  # id is new
             treated = hashlib.sha256((passwd+SALT+id).encode('utf-8'))
             sql_sentence = "insert into admin (id, passwd) values ('%s', '%s')" % (id, treated.hexdigest())
             cur = database.execute(sql_sentence)
             database.commit()
             flash("注册成功！<br>请登录！", category='success')
-            return 1
+            return True
 
 
 def login_verify(to_be_decorated):
@@ -86,7 +94,7 @@ def login_verify(to_be_decorated):
     @wraps(to_be_decorated)
     def decorated(*args, **kwargs):
         if 'id' not in session:
-            flash("请登录！", category="error")
+            flash("请登录！", category="error")     # NOTE: flash-msg show in the NEXT page
             return redirect(url_for('login'))
         return to_be_decorated(*args, **kwargs)
     return decorated
@@ -96,7 +104,7 @@ def login_verify(to_be_decorated):
 
 ######## views ########
 
-''' user page '''
+''' Entrance & Exit '''
 
 @app.route('/')
 def index():
@@ -155,6 +163,10 @@ def logout():
         return redirect(url_for('index'))
 
 
+
+''' start-point - userpage '''
+
+
 @app.route('/personal/', methods=['GET', 'POST'])
 @login_verify
 def personal():
@@ -173,14 +185,17 @@ def personal():
 
 
 
-''' add to server '''
+''' PAGE: add to server '''
 
 @app.route('/entry_person/', methods=['GET', 'POST'])
 @login_verify
 def entryPerson():
+    ''' form to fill with personale info '''
     if request.method == 'POST':
         addPerson(request.form)
         printLog("addPerson() called")
+        # TODO: return to user-home, re-consider this
+        #       same as follow db operations
         return redirect(url_for('personal'))
     elif request.method == 'GET':
         return render_template('info_entry.html')
@@ -189,6 +204,7 @@ def entryPerson():
 @app.route('/entry_issue/', methods=['GET', 'POST'])
 @login_verify
 def entryIssue():
+    ''' a small form to fill with issue details '''
     if request.method == 'POST':
         addIssue(request.form)
         printLog("addIssue() called")
@@ -210,7 +226,10 @@ def score(title):
 
 
 
-''' commit updates to server '''
+''' PAGE: commit updates to server '''
+
+# TODO: should've RESTful this all mess!!!
+#       I just didn't know then...
 
 @app.route('/update/<id>', methods=['GET', 'POST'])
 @login_verify

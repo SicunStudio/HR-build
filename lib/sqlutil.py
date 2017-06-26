@@ -88,7 +88,7 @@ def addPerson(d):
             school=d.get('school', ''), clas=d.get('class', ''), apart=d.get('apart', ''),
             depart=d.get('depart', ''), group=d.get('group', ''), occup=d.get('occup', ''),
             dateofjoin=d.get('dateofjoin', '')
-        )
+        )   # default value set to empty string r''
         SQL = "insert into test (id,name,gender,qq,tel,wchat,emg,school,class,apart,depart,grp,occup,dateofjoin) values ('{id}','{name}','{gender}','{qq}','{tel}','{wchat}','{emg}','{school}','{clas}','{apart}','{depart}','{group}','{occup}','{dateofjoin}')".format_map(data)
         printLog("============== ADD PERSON ==============")
         printLog(SQL)
@@ -105,6 +105,8 @@ def addPerson(d):
         else:
             flash("成功录入人员：{}，<br>编号 {}".format(data['name'], data['id']), category="success")
             return 1
+        finally:
+            database.close()
 
 
 @check_person_info
